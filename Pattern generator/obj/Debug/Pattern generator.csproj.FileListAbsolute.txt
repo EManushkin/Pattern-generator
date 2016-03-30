@@ -9,3 +9,8 @@ D:\Генератор шаблонов\Project\Pattern generator\Pattern generat
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Newtonsoft.Json.dll
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Newtonsoft.Json.xml
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\obj\Debug\Pattern generator.csprojResolveAssemblyReference.cache
+D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\CsQuery.dll
+D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\CsQuery.xml
+D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\HtmlAgilityPack.dll
+D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\HtmlAgilityPack.pdb
+D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\HtmlAgilityPack.xml
