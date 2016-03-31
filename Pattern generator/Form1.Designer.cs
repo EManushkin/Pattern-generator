@@ -106,17 +106,17 @@
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(177, 171);
+            this.textBox4.Location = new System.Drawing.Point(140, 171);
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(262, 373);
+            this.textBox4.Size = new System.Drawing.Size(386, 373);
             this.textBox4.TabIndex = 9;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(524, 431);
+            this.ClientSize = new System.Drawing.Size(639, 431);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox3);

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Xml;
-using CsQuery;
-using HtmlAgilityPack;
 using System.Text.RegularExpressions;
+using HtmlAgilityPack;
+
 
 namespace Pattern_generator
 {
@@ -26,12 +26,15 @@ namespace Pattern_generator
         private void OpenFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
+            textBox1.Text = "C:\\Users\\Mann\\Desktop\\tpl";
+            RandSelectTemplateButton.Enabled = true;
 
-            if (dialog.ShowDialog() == DialogResult.OK)
+            /*if (dialog.ShowDialog() == DialogResult.OK)
             {
+                
                 textBox1.Text = dialog.SelectedPath;
                 RandSelectTemplateButton.Enabled = true;
-            }
+            }*/
         }
 
         private void RandSelectTemplateButton_Click(object sender, EventArgs e)
@@ -48,33 +51,52 @@ namespace Pattern_generator
         private void SaveFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-
-            if (dialog.ShowDialog() == DialogResult.OK)
+            textBox3.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
+            /*if (dialog.ShowDialog() == DialogResult.OK)
             {
                 textBox3.Text = dialog.SelectedPath;
-            }
+            }*/
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             string html = textBox1.Text + "\\" + textBox2.Text + "\\index.html";
-            html = File.ReadAllText(html);
-            //CQ dom = CQ.Create(html);
-            //CQ dom = CQ.CreateFromFile(html);
-            //string new_html = dom.Render();
-            //Directory.CreateDirectory(textBox3.Text + "\\" + textBox2.Text);
-            //File.WriteAllText(textBox3.Text + "\\" + textBox2.Text + "\\index.html", new_html);
-            //HtmlAgilityPack.HtmlDocument html_doc = new HtmlAgilityPack.HtmlDocument();
-            //html_doc.Load(html);
+            //html = File.ReadAllText(html);
+            Directory.CreateDirectory(textBox3.Text + "\\" + textBox2.Text);
+            
+            var html_doc = new HtmlAgilityPack.HtmlDocument();
+            html_doc.OptionWriteEmptyNodes = true;
+            html_doc.Load(html);
 
-            string pattern = @"(\<(/?[^\>]+)\>)";
+            //HtmlNodeCollection nodes = html_doc.DocumentNode.SelectNodes("//@id");
+            HtmlNodeCollection nodes = html_doc.DocumentNode.SelectNodes("//div[@class]");
+            string output1 = "";
+            string output2 = "";
+            foreach (var n in nodes)
+                {
+                //output1 += n.OuterHtml + "\n\n";
+                output2 += n.Attributes["class"].Name + "\t" + n.Attributes["class"].Value + "\n";
+            }
+            File.WriteAllText(textBox3.Text + "\\" + textBox2.Text + "\\index1.html", output2);
+            html_doc.CreateElement("inner");
+            html_doc.Save(textBox3.Text + "\\" + textBox2.Text + "\\index.html");
+
+            //HtmlNode node = html_doc.DocumentNode.SelectSingleNode("//div[@class]");
+
+
+            //File.WriteAllText(textBox3.Text + "\\" + textBox2.Text + "\\index.html", document.DocumentElement.OuterHtml);
+
+
+            textBox4.Text += "done!";
+
+            /*string pattern = @"<div.*?>.*?<\/div.*?>";
             string pattern1 = @"<div([^>]*[^/])>";
-            //RegexOptions option = RegexOptions.IgnoreCase;
-            Regex RegDiv = new Regex(pattern1, RegexOptions.IgnoreCase);
+            string pattern2 = @"<div.*?>(.*?)<\/div.*>?";
+            Regex RegDiv = new Regex(pattern, RegexOptions.Multiline);
             MatchCollection matches = RegDiv.Matches(html);
             foreach (Match mat in RegDiv.Matches(html))
-                textBox4.Text += mat.Value + Environment.NewLine;
+                textBox4.Text += mat.Value + Environment.NewLine;*/
 
         }
     }
