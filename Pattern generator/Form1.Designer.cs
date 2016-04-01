@@ -30,12 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.OpenFolderButton = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.OpenFolder = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.RandSelectTemplateButton = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.RandSelectTemplate = new System.Windows.Forms.TextBox();
             this.SaveFolderButton = new System.Windows.Forms.Button();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.SaveFolder = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
@@ -50,13 +50,13 @@
             this.OpenFolderButton.UseVisualStyleBackColor = true;
             this.OpenFolderButton.Click += new System.EventHandler(this.OpenFolderButton_Click);
             // 
-            // textBox1
+            // OpenFolder
             // 
-            this.textBox1.Location = new System.Drawing.Point(41, 31);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(398, 20);
-            this.textBox1.TabIndex = 3;
-            this.textBox1.Text = "Выбор папки tpl c набором мастер-шаблонов";
+            this.OpenFolder.Location = new System.Drawing.Point(41, 31);
+            this.OpenFolder.Name = "OpenFolder";
+            this.OpenFolder.Size = new System.Drawing.Size(398, 20);
+            this.OpenFolder.TabIndex = 3;
+            this.OpenFolder.Text = "Выбор папки tpl c набором мастер-шаблонов";
             // 
             // RandSelectTemplateButton
             // 
@@ -69,12 +69,12 @@
             this.RandSelectTemplateButton.UseVisualStyleBackColor = true;
             this.RandSelectTemplateButton.Click += new System.EventHandler(this.RandSelectTemplateButton_Click);
             // 
-            // textBox2
+            // RandSelectTemplate
             // 
-            this.textBox2.Location = new System.Drawing.Point(177, 117);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(262, 20);
-            this.textBox2.TabIndex = 5;
+            this.RandSelectTemplate.Location = new System.Drawing.Point(177, 117);
+            this.RandSelectTemplate.Name = "RandSelectTemplate";
+            this.RandSelectTemplate.Size = new System.Drawing.Size(262, 20);
+            this.RandSelectTemplate.TabIndex = 5;
             // 
             // SaveFolderButton
             // 
@@ -86,13 +86,13 @@
             this.SaveFolderButton.UseVisualStyleBackColor = true;
             this.SaveFolderButton.Click += new System.EventHandler(this.SaveFolderButton_Click);
             // 
-            // textBox3
+            // SaveFolder
             // 
-            this.textBox3.Location = new System.Drawing.Point(41, 72);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(398, 20);
-            this.textBox3.TabIndex = 7;
-            this.textBox3.Text = "Папка для сохранения результирующих шаблонов";
+            this.SaveFolder.Location = new System.Drawing.Point(41, 72);
+            this.SaveFolder.Name = "SaveFolder";
+            this.SaveFolder.Size = new System.Drawing.Size(398, 20);
+            this.SaveFolder.TabIndex = 7;
+            this.SaveFolder.Text = "Папка для сохранения результирующих шаблонов";
             // 
             // button1
             // 
@@ -119,11 +119,11 @@
             this.ClientSize = new System.Drawing.Size(639, 431);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.SaveFolder);
             this.Controls.Add(this.SaveFolderButton);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.RandSelectTemplate);
             this.Controls.Add(this.RandSelectTemplateButton);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.OpenFolder);
             this.Controls.Add(this.OpenFolderButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -136,12 +136,12 @@
 
         #endregion
         private System.Windows.Forms.Button OpenFolderButton;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox OpenFolder;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button RandSelectTemplateButton;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox RandSelectTemplate;
         private System.Windows.Forms.Button SaveFolderButton;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox SaveFolder;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox4;
     }

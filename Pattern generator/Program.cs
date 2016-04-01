@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace Pattern_generator
 {
+
     static class Program
     {
         /// <summary>
