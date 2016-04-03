@@ -68,14 +68,20 @@ namespace Pattern_generator
 
             HtmlParser index_html = new HtmlParser(index_path);
             index_html.ParseTags(tags[0]);
-            for (int i = 0; i < 25; i++)
+
+            for (int i = 0; i < 19; i++)
             {
-                textBox4.Text += index_html.tags_attr[i] + Environment.NewLine;
+                index_html.InsertInner(index_html.tags_name_for_inner[i].Replace("INNER", "inner-content clearfix"), i, tags[0]);
+                index_html.InsertInner(index_html.tags_name_for_inner[i].Replace("INNER", "inner-content"), i, tags[0]);
+                index_html.InsertInner(index_html.tags_name_for_inner[i].Replace("INNER", "inner"), i, tags[0]);
             }
-            index_html.InsertInner(index_html.tags_attr);
-            index_html.SaveHtmlDoc(index_save_path);
-            
-            
+            //inner inner-content   inner - content clearfix
+
+
+            index_html.html_doc.Save(index_save_path);
+            //index_html.SaveHtmlDoc(index_save_path);
+
+
             /*var html_doc = new HtmlAgilityPack.HtmlDocument();
             html_doc.OptionWriteEmptyNodes = true;
             html_doc.Load(html);*/
