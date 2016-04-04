@@ -12,3 +12,7 @@ D:\Генератор шаблонов\Project\Pattern generator\Pattern generat
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\HtmlAgilityPack.dll
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\HtmlAgilityPack.pdb
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\HtmlAgilityPack.xml
+D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Fizzler.dll
+D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Fizzler.Systems.HtmlAgilityPack.dll
+D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Fizzler.xml
+D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Fizzler.Systems.HtmlAgilityPack.xml

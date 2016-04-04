@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using Fizzler.Systems.HtmlAgilityPack;
 
 namespace Pattern_generator
 {
@@ -34,10 +35,9 @@ namespace Pattern_generator
         public void ParseTags(string tag)
         {
             nodes = html_doc.DocumentNode.SelectNodes("//"+tag);
-            
             //tags_info.tags_name_for_inner = "";
             //tags_info.xpath_instruction = "";
-            
+
 
             if (nodes != null)
             {
@@ -148,7 +148,7 @@ namespace Pattern_generator
             string final_tabulation;
 
             var parent_tag = html_doc.DocumentNode.SelectSingleNode(xpath_instr);
-            //var pt = html_doc.DocumentNode.SelectSingleNode("//ancestor::div[@id='all']");
+            //var pt = html_doc.DocumentNode.SelectSingleNode("//div/ancestor::[@id='all'] | //div/descendant::[@id='all'] | //div/following::[@id='all']| //div/preceding::[@id='all'] | //div/self::[@id='all']"); 
 
             if (parent_tag.FirstChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
             {
@@ -181,19 +181,30 @@ namespace Pattern_generator
                 }
                 j++;
             }
+            string temp_name = outer_tag.Name;
+            string temp_att_name = outer_tag.Attributes[0].Name;
+            string temp_att_value = outer_tag.Attributes[0].Value;
+
+            outer_tag.RemoveAll();
             outer_tag.AppendChildren(child_to_outer);
-            string temp_name = parent_tag.Attributes[0].Name;
-            string temp_value = parent_tag.Attributes.
+            foreach (var att in parent_tag.Attributes)
+            {
+                outer_tag.SetAttributeValue(att.Name, att.Value);
+            }
+            outer_tag.Name = parent_tag.Name;
+
             parent_tag.RemoveAll();
+            parent_tag.SetAttributeValue(temp_att_name, temp_att_value);
+            parent_tag.Name = temp_name;
             parent_tag.InnerHtml = parent_tag.InnerHtml + final_tabulation;
             parent_tag.PrependChild(outer_tag);
             parent_tag.InnerHtml = initital_tabulation + parent_tag.InnerHtml;
+            //parent_tag.Name = "";
 
-
-            /*outer_tag.InnerHtml = outer_tag.InnerHtml + final_tabulation;
+            /*outer_tag.AppendChild(parent_tag);
+            outer_tag.InnerHtml = outer_tag.InnerHtml + final_tabulation;
             outer_tag.InnerHtml = initital_tabulation + outer_tag.InnerHtml;
             parent_tag.RemoveAll();
-            parent_tag.InnerHtml = outer_tag.InnerHtml;
             parent_tag.SetAttributeValue(outer_tag.Attributes[0].Name, outer_tag.Attributes[0].Value);*/
         } 
 

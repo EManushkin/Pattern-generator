@@ -8,14 +8,19 @@ namespace Random.Org
 {
     public class Random
     {
+        private System.Random localRandom = new System.Random((int)DateTime.Now.Ticks);
+        private bool UseLocalMode;
         WebClient client = null;
         string format = "http://www.random.org/integers/?num={0}&min={1}&max={2}&col=1&base=10&format=plain&rnd=new";
 
         /// <summary>
-        /// Gets or sets a value that, when false, prevents actually calling Random.org  and generates a local pseudo-random value -- useful for testing offline scenarios 
+        /// Use Local Random or Random.Org. When "true" use Local Random, generates a local pseudo-random value -- useful for testing offline scenarios 
         /// </summary>
-        public bool UseLocalMode { get; set; }
-        private System.Random localRandom = new System.Random((int)DateTime.Now.Ticks);
+        public Random(bool UseLocalMode)
+        {
+            this.UseLocalMode = UseLocalMode;
+        }
+
         public int Next(int min, int max)
         {
             if (!UseLocalMode)
@@ -42,7 +47,7 @@ namespace Random.Org
             }
             else
             {
-                return localRandom.Next(min, max);
+                return localRandom.Next(min, max + 1);
             }
         }
     }

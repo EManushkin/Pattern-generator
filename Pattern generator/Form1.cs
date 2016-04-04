@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml;
 using HtmlAgilityPack;
+using Fizzler.Systems.HtmlAgilityPack;
 using Random.Org;
 
 
@@ -20,12 +21,13 @@ namespace Pattern_generator
     {
         public string[] tags = { "div", "article", "aside", "footer", "menu", "nav", "section" };
         //public RandomJSONRPC rnd = new RandomJSONRPC("6d99774c-ee16-48a1-a703-ad4ef5c6f2d6");
-        Random.Org.Random rnd_org = new Random.Org.Random();
-        //rnd_org.UseLocalMode = true; // prevents external web call, useful for testing
+        Random.Org.Random rnd_org = new Random.Org.Random(true);
         public List<string[]> inner_classes = new List<string[]>();
         //inner_classes = ReadCSVFile.OpenFile(@"inner_classes.csv");
         public List<string[]> outer_classes = new List<string[]>();
-        //inner_classes = ReadCSVFile.OpenFile(@"outer_classes.csv");
+        //outer_classes = ReadCSVFile.OpenFile(@"outer_classes.csv");
+        public List<string[]> color_scheme = new List<string[]>();
+        //color_scheme = ReadCSVFile.OpenFile(@"color_scheme.csv");
 
         public Form1()
         {
@@ -92,8 +94,6 @@ namespace Pattern_generator
 
             inner_classes = ReadCSVFile.OpenFile(@"inner_classes.csv");
 
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            rnd_org.UseLocalMode = true; // prevents external web call, useful for testing
 
             int rand_index_inner_classes = rnd_org.Next(0, inner_classes.Count - 1);
 
@@ -105,7 +105,6 @@ namespace Pattern_generator
             int j = 0;
             foreach (var t in index_html.TagsList)
             {
-                //probability_inner1 = (int)rnd.GenerateIntegers(1, 40, 60).GetValue(0);
 
                 probability_inner1 = rnd_org.Next(40, 60);
                 probability_inner2 = probability_inner1 / 2;
@@ -198,6 +197,8 @@ namespace Pattern_generator
             }*/
             //File.WriteAllText(textBox3.Text + "\\" + textBox2.Text + "\\index1.html", output2);
 
+            //probability_inner1 = (int)rnd.GenerateIntegers(1, 40, 60).GetValue(0);
+
 
 
         }
@@ -215,15 +216,13 @@ namespace Pattern_generator
 
             outer_classes = ReadCSVFile.OpenFile(@"outer_classes.csv");
 
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            rnd_org.UseLocalMode = true; // prevents external web call, useful for testing
-
             int rand_index_outer_classes = rnd_org.Next(0, outer_classes.Count - 1);
 
             for (int i = 0; i < tags.Length; i++)
             {
                 index_html.ParseTags(tags[i]);
             }
+
 
             int j = 0;
             foreach (var t in index_html.TagsList)
@@ -235,13 +234,34 @@ namespace Pattern_generator
 
                 if (probability < probability_outer)
                 {
-                    index_html.InsertOuter(index_html.TagsList[j].tags_name_for_outer.Replace("OUTER", "OUTER"), index_html.TagsList[j].xpath_instruction);
+                    index_html.InsertOuter(index_html.TagsList[j].tags_name_for_outer.Replace("OUTER", outer_classes[rand_index_outer_classes][0]), index_html.TagsList[j].xpath_instruction);
                 }
                 j++;
             }
 
             index_html.SaveHtmlDoc(index_save_path);
             textBox1.Text += "Вставка аутеров с вероятностью 40-60% в " + RandSelectTemplate.Text + " прошла успешно!";
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            //HtmlParser style_css = new HtmlParser(style_path);
+            color_scheme = ReadCSVFile.OpenFile(@"color_scheme.csv");
+
+            //style_css.ParseTags("");
+
+            HtmlAgilityPack.HtmlDocument css_doc = new HtmlAgilityPack.HtmlDocument();
+            css_doc.Load(style_path);
+
+            var temp = css_doc.DocumentNode.QuerySelectorAll("background");
+
+            textBox2.Text += "Load";
+
         }
     }
 }
