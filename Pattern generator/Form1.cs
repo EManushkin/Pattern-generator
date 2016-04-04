@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml;
 using HtmlAgilityPack;
+using Random.Org;
 
 
 namespace Pattern_generator
@@ -18,6 +19,13 @@ namespace Pattern_generator
     public partial class Form1 : Form
     {
         public string[] tags = { "div", "article", "aside", "footer", "menu", "nav", "section" };
+        //public RandomJSONRPC rnd = new RandomJSONRPC("6d99774c-ee16-48a1-a703-ad4ef5c6f2d6");
+        Random.Org.Random rnd_org = new Random.Org.Random();
+        //rnd_org.UseLocalMode = true; // prevents external web call, useful for testing
+        public List<string[]> inner_classes = new List<string[]>();
+        //inner_classes = ReadCSVFile.OpenFile(@"inner_classes.csv");
+        public List<string[]> outer_classes = new List<string[]>();
+        //inner_classes = ReadCSVFile.OpenFile(@"outer_classes.csv");
 
         public Form1()
         {
@@ -32,8 +40,8 @@ namespace Pattern_generator
 
             /*if (dialog.ShowDialog() == DialogResult.OK)
             {
-                
-                textBox1.Text = dialog.SelectedPath;
+
+                OpenFolder.Text = dialog.SelectedPath;
                 RandSelectTemplateButton.Enabled = true;
             }*/
         }
@@ -44,8 +52,17 @@ namespace Pattern_generator
             {
                 DirectoryInfo drInfo = new DirectoryInfo(OpenFolder.Text);
                 DirectoryInfo[] templates = drInfo.GetDirectories();
-                RandomJSONRPC rnd = new RandomJSONRPC("6d99774c-ee16-48a1-a703-ad4ef5c6f2d6");
-                RandSelectTemplate.Text = templates[(int)rnd.GenerateIntegers(1, 0, templates.Length - 1).GetValue(0)].ToString();
+
+                if (templates.Length > 1)
+                {
+                    RandSelectTemplate.Text = templates[rnd_org.Next(0, templates.Length - 1)].ToString();
+                    //RandSelectTemplate.Text = templates[(int)rnd.GenerateIntegers(1, 0, templates.Length - 1).GetValue(0)].ToString();
+                }
+                else
+                {
+                    RandSelectTemplate.Text = templates[0].ToString();
+                }
+                //RandSelectTemplate.Text = rnd_org.Next(1, 1000).ToString();
             }
         }
 
@@ -55,7 +72,7 @@ namespace Pattern_generator
             SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
             /*if (dialog.ShowDialog() == DialogResult.OK)
             {
-                textBox3.Text = dialog.SelectedPath;
+                SaveFolder.Text = dialog.SelectedPath;
             }*/
 
         }
@@ -66,25 +83,57 @@ namespace Pattern_generator
             Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
             string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
 
+            int probability;
+            int probability_inner1;
+            int probability_inner2;
+            int probability_inner3;
+
             HtmlParser index_html = new HtmlParser(index_path);
-            index_html.ParseTags(tags[0]);
 
-            for (int i = 0; i < 19; i++)
+            inner_classes = ReadCSVFile.OpenFile(@"inner_classes.csv");
+
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            rnd_org.UseLocalMode = true; // prevents external web call, useful for testing
+
+            int rand_index_inner_classes = rnd_org.Next(0, inner_classes.Count - 1);
+
+            for (int i = 0; i < tags.Length; i++)
             {
-                index_html.InsertInner(index_html.tags_name_for_inner[i].Replace("INNER", "inner-content clearfix"), i, tags[0]);
-                index_html.InsertInner(index_html.tags_name_for_inner[i].Replace("INNER", "inner-content"), i, tags[0]);
-                index_html.InsertInner(index_html.tags_name_for_inner[i].Replace("INNER", "inner"), i, tags[0]);
+                index_html.ParseTags(tags[i]);
             }
-            //inner inner-content   inner - content clearfix
 
+            int j = 0;
+            foreach (var t in index_html.TagsList)
+            {
+                //probability_inner1 = (int)rnd.GenerateIntegers(1, 40, 60).GetValue(0);
 
-            index_html.html_doc.Save(index_save_path);
+                probability_inner1 = rnd_org.Next(40, 60);
+                probability_inner2 = probability_inner1 / 2;
+                probability_inner3 = probability_inner2 / 2;
+
+                probability = 1; //для вставки всех иннеров!!!!!!!!
+                //probability = rnd_org.Next(1, 100);
+                if (probability < probability_inner3)
+                {
+                    index_html.InsertInner(index_html.TagsList[j].tags_name_for_inner.Replace("INNER", inner_classes[rand_index_inner_classes][2]), index_html.TagsList[j].xpath_instruction);
+                }
+                if (probability < probability_inner2)
+                {
+                    index_html.InsertInner(index_html.TagsList[j].tags_name_for_inner.Replace("INNER", inner_classes[rand_index_inner_classes][1]), index_html.TagsList[j].xpath_instruction);
+                }
+
+                if (probability < probability_inner1)
+                {
+                    index_html.InsertInner(index_html.TagsList[j].tags_name_for_inner.Replace("INNER", inner_classes[rand_index_inner_classes][0]), index_html.TagsList[j].xpath_instruction);
+                }
+                j++;
+            }
+
+            index_html.SaveHtmlDoc(index_save_path);
+            textBox4.Text += "Вставка иннеров с вероятностью 40-60% в " + RandSelectTemplate.Text + " прошла успешно!";
             //index_html.SaveHtmlDoc(index_save_path);
 
 
-            /*var html_doc = new HtmlAgilityPack.HtmlDocument();
-            html_doc.OptionWriteEmptyNodes = true;
-            html_doc.Load(html);*/
 
             //HtmlNodeCollection nodes = html_doc.DocumentNode.SelectNodes("//@id");
             //HtmlNodeCollection nodes = html_doc.DocumentNode.SelectNodes("//div[@class]");
@@ -149,8 +198,50 @@ namespace Pattern_generator
             }*/
             //File.WriteAllText(textBox3.Text + "\\" + textBox2.Text + "\\index1.html", output2);
 
-            textBox4.Text += "done!";
 
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+            Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
+            string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+
+            int probability;
+            int probability_outer;
+
+            HtmlParser index_html = new HtmlParser(index_path);
+
+            outer_classes = ReadCSVFile.OpenFile(@"outer_classes.csv");
+
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            rnd_org.UseLocalMode = true; // prevents external web call, useful for testing
+
+            int rand_index_outer_classes = rnd_org.Next(0, outer_classes.Count - 1);
+
+            for (int i = 0; i < tags.Length; i++)
+            {
+                index_html.ParseTags(tags[i]);
+            }
+
+            int j = 0;
+            foreach (var t in index_html.TagsList)
+            {
+                
+                probability_outer = rnd_org.Next(40, 60);
+                probability = 1; //для вставки всех outer!!!!!!!!
+                //probability = rnd_org.Next(1, 100);
+
+                if (probability < probability_outer)
+                {
+                    index_html.InsertOuter(index_html.TagsList[j].tags_name_for_outer.Replace("OUTER", "OUTER"), index_html.TagsList[j].xpath_instruction);
+                }
+                j++;
+            }
+
+            index_html.SaveHtmlDoc(index_save_path);
+            textBox1.Text += "Вставка аутеров с вероятностью 40-60% в " + RandSelectTemplate.Text + " прошла успешно!";
         }
     }
 }

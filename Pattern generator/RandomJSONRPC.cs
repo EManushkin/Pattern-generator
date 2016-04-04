@@ -479,7 +479,7 @@ namespace Pattern_generator
                 new JProperty("jsonrpc", "2.0"),
                 new JProperty("method", method),
                 new JProperty("params", mJSONParams),
-                new JProperty("id", new Random().Next()));
+                new JProperty("id", 2));//new JProperty("id", new Random().Next()));
             return mJSONRequest;
         }
 
