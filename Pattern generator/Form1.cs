@@ -21,7 +21,7 @@ namespace Pattern_generator
     {
         public string[] tags = { "div", "article", "aside", "footer", "menu", "nav", "section" };
         //public RandomJSONRPC rnd = new RandomJSONRPC("6d99774c-ee16-48a1-a703-ad4ef5c6f2d6");
-        Random.Org.Random rnd_org = new Random.Org.Random(true);
+        //Random.Org.Random rnd_org = new Random.Org.Random(true);
         public List<string[]> inner_classes = new List<string[]>();
         //inner_classes = ReadCSVFile.OpenFile(@"inner_classes.csv");
         public List<string[]> outer_classes = new List<string[]>();
@@ -30,8 +30,22 @@ namespace Pattern_generator
         //color_scheme = ReadCSVFile.OpenFile(@"color_scheme.csv");
 
         public Form1()
-        {
+        {         
             InitializeComponent();
+
+            this.menuRandom.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            this.menuInnerOuter.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            this.menuВыборЦветовыхСхем.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            this.menuРандомизацияЧастейCssКода.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            this.menuРандомизацияВертикальныхОтступов.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            this.menuРандомныйВыборНабораШрифтов.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            this.menuПерестановкаТегов.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            this.menuПерестановкаНазванийКлассов.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            this.menuПростановкаКомментариевCSS.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            this.menuДобавлениеНовыхКлассов.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            this.menuДобавлениеАтрибутовStyle.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            this.УстановкаЧислаВложенности.Text = "3";
+
         }
 
         private void OpenFolderButton_Click(object sender, EventArgs e)
@@ -50,6 +64,8 @@ namespace Pattern_generator
 
         private void RandSelectTemplateButton_Click(object sender, EventArgs e)
         {
+            Random.Org.Random rnd_org = new Random.Org.Random(menuLocalRandom.Checked);
+
             if (OpenFolder.Text != "Выбор папки c набором мастер-шаблонов")
             {
                 DirectoryInfo drInfo = new DirectoryInfo(OpenFolder.Text);
@@ -81,6 +97,8 @@ namespace Pattern_generator
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Random.Org.Random rnd_org = new Random.Org.Random(menuLocalRandom.Checked);
+
             string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
             Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
             string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
@@ -205,6 +223,8 @@ namespace Pattern_generator
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Random.Org.Random rnd_org = new Random.Org.Random(menuLocalRandom.Checked);
+
             string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
             Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
             string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
@@ -263,5 +283,46 @@ namespace Pattern_generator
             textBox2.Text += "Load";
 
         }
+
+
+
+
+
+        /*private void menuLocalRandom_Click(object sender, EventArgs e)
+        {
+            menuLocalRandom.CheckState = CheckState.Checked;
+            menuRandomOrg.CheckState = CheckState.Unchecked;
+            menuLocalRandom.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+        }
+
+        private void menuRandomOrg_Click(object sender, EventArgs e)
+        {
+            menuRandomOrg.CheckState = CheckState.Checked;
+            menuLocalRandom.CheckState = CheckState.Unchecked;
+        }
+
+        private void включитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            включитьToolStripMenuItem.CheckState = CheckState.Checked;
+            отключитьToolStripMenuItem.CheckState = CheckState.Unchecked;
+
+        }
+
+        private void отключитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            отключитьToolStripMenuItem.CheckState = CheckState.Checked;
+            включитьToolStripMenuItem.CheckState = CheckState.Unchecked;
+        }*/
+
+        private void выходToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBoxButtons msb = MessageBoxButtons.YesNo;
+            String message = "Вы действительно хотите выйти?";
+            String caption = "Выход";
+            if (MessageBox.Show(message, caption, msb) == DialogResult.Yes)
+                this.Close();
+        }
+
+
     }
 }
