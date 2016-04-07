@@ -34,7 +34,7 @@ namespace Pattern_generator
         
         public void ParseTags(string tag)
         {
-            nodes = html_doc.DocumentNode.SelectNodes("//"+tag);
+            nodes = html_doc.DocumentNode.SelectNodes("//" + tag + "[not(contains(@class, '[FIXED]')) and not(contains(@id, '[FIXED]'))]");
             //tags_info.tags_name_for_inner = "";
             //tags_info.xpath_instruction = "";
 
@@ -141,6 +141,88 @@ namespace Pattern_generator
             parent_tag.InnerHtml = initital_tabulation + parent_tag.InnerHtml;
         }
 
+        public void InsertInnerWithProbability(int nesting_level, int probability_min, int probability_max)
+        {
+            Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
+
+            int probability;
+            int probability_inner1;
+            int probability_inner2;
+            int probability_inner3;
+            int j = 0;
+
+            int rand_index_inner_classes = rnd_org.Next(0, Form1.inner_classes.Count - 1);
+
+            switch (nesting_level)
+            {
+                case 3:
+                    {
+                        foreach (var t in TagsList)
+                        {
+                            probability_inner1 = rnd_org.Next(probability_min, probability_max);
+                            probability_inner2 = probability_inner1 / 2;
+                            probability_inner3 = probability_inner2 / 2;
+                            probability = rnd_org.Next(1, 100);
+
+                            if (probability < probability_inner3)
+                            {
+                                InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][2]), TagsList[j].xpath_instruction);
+                            }
+                            if (probability < probability_inner2)
+                            {
+                                InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][1]), TagsList[j].xpath_instruction);
+                            }
+
+                            if (probability < probability_inner1)
+                            {
+                                InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][0]), TagsList[j].xpath_instruction);
+                            }
+                            j++;
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        foreach (var t in TagsList)
+                        {
+                            probability_inner1 = rnd_org.Next(probability_min, probability_max);
+                            probability_inner2 = probability_inner1 / 2;
+                            probability = rnd_org.Next(1, 100);
+
+                            if (probability < probability_inner2)
+                            {
+                                InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][1]), TagsList[j].xpath_instruction);
+                            }
+
+                            if (probability < probability_inner1)
+                            {
+                                InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][0]), TagsList[j].xpath_instruction);
+                            }
+                            j++;
+                        }
+                        break;
+                    }
+
+                case 1:
+                    {
+                        foreach (var t in TagsList)
+                        {
+
+                            probability_inner1 = rnd_org.Next(probability_min, probability_max);
+                            probability = rnd_org.Next(1, 100);
+
+                            if (probability < probability_inner1)
+                            {
+                                InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][0]), TagsList[j].xpath_instruction);
+                            }
+                            j++;
+                        }
+                        break;
+                    }
+            }
+
+        }
+
 
         public void InsertOuter(string name_for_outer, string xpath_instr)
         {
@@ -206,7 +288,72 @@ namespace Pattern_generator
             outer_tag.InnerHtml = initital_tabulation + outer_tag.InnerHtml;
             parent_tag.RemoveAll();
             parent_tag.SetAttributeValue(outer_tag.Attributes[0].Name, outer_tag.Attributes[0].Value);*/
-        } 
+        }
+
+        public void InsertOuterWithProbability(int probability_min, int probability_max)
+        {
+            Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
+
+            int probability;
+            int probability_outer;
+            int j = 0;
+
+            int rand_index_outer_classes = rnd_org.Next(0, Form1.outer_classes.Count - 1);
+
+            foreach (var t in TagsList)
+            {
+                probability_outer = rnd_org.Next(probability_min, probability_max);
+                probability = rnd_org.Next(1, 100);
+
+                if (probability < probability_outer)
+                {
+                    InsertOuter(TagsList[j].tags_name_for_outer.Replace("OUTER", Form1.outer_classes[rand_index_outer_classes][0]), TagsList[j].xpath_instruction);
+                }
+                j++;
+            }
+        }
+
+        public void MixTagsHead()
+        {
+            Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
+
+            var nodes_head = html_doc.DocumentNode.SelectNodes("//head");
+            var head_child = nodes_head["head"].ChildNodes;
+            var temp_head = HtmlNode.CreateNode("<>");
+            temp_head.AppendChildren(head_child);
+            int[] temp = rnd_org.Sequence(0, temp_head.ChildNodes.Where(x => x.Name != "#text").Count() - 1);
+            int j = 0;
+
+            for (int i = 0; i < nodes_head["head"].ChildNodes.Count; i++)
+            {
+                if (nodes_head["head"].ChildNodes[i].Name != "#text")
+                {
+                    nodes_head["head"].ChildNodes[i] = temp_head.ChildNodes.Where(x => x.Name != "#text").ToArray()[temp[j]];
+                    j++;
+                }
+            }
+
+        }
+
+        public void MixNameClass()
+        {
+            Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
+
+            var nodes_many_class = html_doc.DocumentNode.SelectNodes("//*[contains(@class, ' ') and not(contains(@class, '[FIXED]'))]");
+
+            foreach (var m in nodes_many_class)
+            {
+                string [] class_name = m.Attributes["class"].Value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                int[] temp = rnd_org.Sequence(0, class_name.Length - 1);
+                m.Attributes["class"].Value = "";
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    m.Attributes["class"].Value += class_name[temp[i]] + " ";
+                }
+                m.Attributes["class"].Value = m.Attributes["class"].Value.Remove(m.Attributes["class"].Value.Length - 1);
+            }
+
+        }
 
         public void SaveHtmlDoc(string html_path)
         {

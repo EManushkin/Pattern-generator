@@ -22,9 +22,9 @@ namespace Pattern_generator
         public string[] tags = { "div", "article", "aside", "footer", "menu", "nav", "section" };
         //public RandomJSONRPC rnd = new RandomJSONRPC("6d99774c-ee16-48a1-a703-ad4ef5c6f2d6");
         //Random.Org.Random rnd_org = new Random.Org.Random(true);
-        public List<string[]> inner_classes = new List<string[]>();
+        public static List<string[]> inner_classes = new List<string[]>();
         //inner_classes = ReadCSVFile.OpenFile(@"inner_classes.csv");
-        public List<string[]> outer_classes = new List<string[]>();
+        public static List<string[]> outer_classes = new List<string[]>();
         //outer_classes = ReadCSVFile.OpenFile(@"outer_classes.csv");
         public List<string[]> color_scheme = new List<string[]>();
         //color_scheme = ReadCSVFile.OpenFile(@"color_scheme.csv");
@@ -46,6 +46,9 @@ namespace Pattern_generator
             this.menuДобавлениеАтрибутовStyle.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
             this.УстановкаЧислаВложенности.Text = "3";
 
+            inner_classes = ReadCSVFile.OpenFile(@"inner_classes.csv");
+            outer_classes = ReadCSVFile.OpenFile(@"outer_classes.csv");
+
         }
 
         private void OpenFolderButton_Click(object sender, EventArgs e)
@@ -62,6 +65,18 @@ namespace Pattern_generator
             }*/
         }
 
+        private void SaveFolderButton_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
+            /*if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                SaveFolder.Text = dialog.SelectedPath;
+
+            }*/
+
+        }
+
         private void RandSelectTemplateButton_Click(object sender, EventArgs e)
         {
             Random.Org.Random rnd_org = new Random.Org.Random(menuLocalRandom.Checked);
@@ -74,81 +89,42 @@ namespace Pattern_generator
                 if (templates.Length > 1)
                 {
                     RandSelectTemplate.Text = templates[rnd_org.Next(0, templates.Length - 1)].ToString();
+                    Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
+
                     //RandSelectTemplate.Text = templates[(int)rnd.GenerateIntegers(1, 0, templates.Length - 1).GetValue(0)].ToString();
                 }
                 else
                 {
                     RandSelectTemplate.Text = templates[0].ToString();
+                    Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
                 }
                 //RandSelectTemplate.Text = rnd_org.Next(1, 1000).ToString();
             }
         }
 
-        private void SaveFolderButton_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
-            SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
-            /*if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                SaveFolder.Text = dialog.SelectedPath;
-            }*/
 
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            textBox4.Text = "";
+
             Random.Org.Random rnd_org = new Random.Org.Random(menuLocalRandom.Checked);
 
             string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
-            Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
             string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
 
-            int probability;
-            int probability_inner1;
-            int probability_inner2;
-            int probability_inner3;
-
             HtmlParser index_html = new HtmlParser(index_path);
-
-            inner_classes = ReadCSVFile.OpenFile(@"inner_classes.csv");
-
-
-            int rand_index_inner_classes = rnd_org.Next(0, inner_classes.Count - 1);
-
             for (int i = 0; i < tags.Length; i++)
             {
                 index_html.ParseTags(tags[i]);
             }
-
-            int j = 0;
-            foreach (var t in index_html.TagsList)
-            {
-
-                probability_inner1 = rnd_org.Next(40, 60);
-                probability_inner2 = probability_inner1 / 2;
-                probability_inner3 = probability_inner2 / 2;
-
-                probability = 1; //для вставки всех иннеров!!!!!!!!
-                //probability = rnd_org.Next(1, 100);
-                if (probability < probability_inner3)
-                {
-                    index_html.InsertInner(index_html.TagsList[j].tags_name_for_inner.Replace("INNER", inner_classes[rand_index_inner_classes][2]), index_html.TagsList[j].xpath_instruction);
-                }
-                if (probability < probability_inner2)
-                {
-                    index_html.InsertInner(index_html.TagsList[j].tags_name_for_inner.Replace("INNER", inner_classes[rand_index_inner_classes][1]), index_html.TagsList[j].xpath_instruction);
-                }
-
-                if (probability < probability_inner1)
-                {
-                    index_html.InsertInner(index_html.TagsList[j].tags_name_for_inner.Replace("INNER", inner_classes[rand_index_inner_classes][0]), index_html.TagsList[j].xpath_instruction);
-                }
-                j++;
-            }
-
+            index_html.InsertInnerWithProbability(int.Parse(this.УстановкаЧислаВложенности.Text), int.Parse(this.вероятностьInnerMin.Text), int.Parse(this.вероятностьInnerMax.Text));
+            index_html.InsertOuterWithProbability(int.Parse(this.вероятностьOuterMin.Text), int.Parse(this.вероятностьOuterMax.Text));
             index_html.SaveHtmlDoc(index_save_path);
-            textBox4.Text += "Вставка иннеров с вероятностью 40-60% в " + RandSelectTemplate.Text + " прошла успешно!";
-            //index_html.SaveHtmlDoc(index_save_path);
+
+
+            textBox4.Text += "Вставка иннеров и аутеров в " + RandSelectTemplate.Text + " прошла успешно!";
+
 
 
 
@@ -221,52 +197,11 @@ namespace Pattern_generator
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Random.Org.Random rnd_org = new Random.Org.Random(menuLocalRandom.Checked);
-
-            string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
-            Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
-            string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
-
-            int probability;
-            int probability_outer;
-
-            HtmlParser index_html = new HtmlParser(index_path);
-
-            outer_classes = ReadCSVFile.OpenFile(@"outer_classes.csv");
-
-            int rand_index_outer_classes = rnd_org.Next(0, outer_classes.Count - 1);
-
-            for (int i = 0; i < tags.Length; i++)
-            {
-                index_html.ParseTags(tags[i]);
-            }
-
-
-            int j = 0;
-            foreach (var t in index_html.TagsList)
-            {
-                
-                probability_outer = rnd_org.Next(40, 60);
-                probability = 1; //для вставки всех outer!!!!!!!!
-                //probability = rnd_org.Next(1, 100);
-
-                if (probability < probability_outer)
-                {
-                    index_html.InsertOuter(index_html.TagsList[j].tags_name_for_outer.Replace("OUTER", outer_classes[rand_index_outer_classes][0]), index_html.TagsList[j].xpath_instruction);
-                }
-                j++;
-            }
-
-            index_html.SaveHtmlDoc(index_save_path);
-            textBox1.Text += "Вставка аутеров с вероятностью 40-60% в " + RandSelectTemplate.Text + " прошла успешно!";
-        }
 
         private void button3_Click(object sender, EventArgs e)
         {
 
-            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            /*string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
             Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
             string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
 
@@ -280,49 +215,32 @@ namespace Pattern_generator
 
             var temp = css_doc.DocumentNode.QuerySelectorAll("background");
 
-            textBox2.Text += "Load";
+            textBox2.Text += "Load";*/
+
+            string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+            string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+
+            HtmlParser index_html = new HtmlParser(index_path);
+
+            index_html.MixTagsHead();
+            index_html.SaveHtmlDoc(index_save_path);
+
+
+            textBox2.Text += "Перемешал теги!";
 
         }
 
-
-
-
-
-        /*private void menuLocalRandom_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            menuLocalRandom.CheckState = CheckState.Checked;
-            menuRandomOrg.CheckState = CheckState.Unchecked;
-            menuLocalRandom.DropDown.Closing += new ToolStripDropDownClosingEventHandler(DropDown_Closing);
+            string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+            string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+
+            HtmlParser index_html = new HtmlParser(index_path);
+
+            index_html.MixNameClass();
+            index_html.SaveHtmlDoc(index_save_path);
+
+            textBox2.Text += "Перемешал классы!";
         }
-
-        private void menuRandomOrg_Click(object sender, EventArgs e)
-        {
-            menuRandomOrg.CheckState = CheckState.Checked;
-            menuLocalRandom.CheckState = CheckState.Unchecked;
-        }
-
-        private void включитьToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            включитьToolStripMenuItem.CheckState = CheckState.Checked;
-            отключитьToolStripMenuItem.CheckState = CheckState.Unchecked;
-
-        }
-
-        private void отключитьToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            отключитьToolStripMenuItem.CheckState = CheckState.Checked;
-            включитьToolStripMenuItem.CheckState = CheckState.Unchecked;
-        }*/
-
-        private void выходToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBoxButtons msb = MessageBoxButtons.YesNo;
-            String message = "Вы действительно хотите выйти?";
-            String caption = "Выход";
-            if (MessageBox.Show(message, caption, msb) == DialogResult.Yes)
-                this.Close();
-        }
-
-
     }
 }

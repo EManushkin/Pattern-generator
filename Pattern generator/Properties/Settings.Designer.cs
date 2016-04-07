@@ -22,5 +22,29 @@ namespace Pattern_generator.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LocalRandom {
+            get {
+                return ((bool)(this["LocalRandom"]));
+            }
+            set {
+                this["LocalRandom"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RandomOrg {
+            get {
+                return ((bool)(this["RandomOrg"]));
+            }
+            set {
+                this["RandomOrg"] = value;
+            }
+        }
     }
 }
