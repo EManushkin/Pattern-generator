@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-using Fizzler.Systems.HtmlAgilityPack;
 
 namespace Pattern_generator
 {
@@ -18,9 +17,6 @@ namespace Pattern_generator
             public string tags_name_for_inner;
             public string tags_name_for_outer;
             public string xpath_instruction;
-            //public int probability_inner1;
-            //public int probability_inner2;
-            //public int probability_inner3;
         }
         public TagsInformation tags_info;
         public List<TagsInformation> TagsList = new List<TagsInformation>();
@@ -32,54 +28,91 @@ namespace Pattern_generator
             html_doc.Load(html_path);
         }
         
-        public void ParseTags(string tag)
+        public void ParseTags(string[] tag)
         {
-            nodes = html_doc.DocumentNode.SelectNodes("//" + tag + "[not(contains(@class, '[FIXED]')) and not(contains(@id, '[FIXED]'))]");
-            //tags_info.tags_name_for_inner = "";
-            //tags_info.xpath_instruction = "";
-
-
-            if (nodes != null)
+            TagsList.Clear();
+            for (int i = 0; i < tag.Length; i++)
             {
-                foreach (var n in nodes)
+                nodes = html_doc.DocumentNode.SelectNodes("//" + tag[i] + "[not(contains(@class, '[FIXED]')) and not(contains(@id, '[FIXED]'))]");
+                //nodes = html_doc.DocumentNode.SelectNodes("/html//div[2][@class='both']");
+                //nodes = html_doc.DocumentNode.SelectNodes("//ancestor::div[2][@class='both'] | //descendant::div[2][@class='both'] | //following::div[2][@class='both'] | //preceding::div[2][@class='both'] | //self::div[2][@class='both']");
+
+                if (nodes != null)
                 {
+                    foreach (var n in nodes)
+                    {
 
-                    if ((n.Attributes["id"] == null) && (n.Attributes["class"] == null) && (tag != "div"))
-                    {
-                        tags_info.tags_name_for_inner = "<div class=\"" + tag + "-INNER\">";
-                        tags_info.tags_name_for_outer = "<div class=\"" + tag + "-OUTER\">";
-                        tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag));
-                        TagsList.Add(tags_info);
-
-                    }
-                    if ((n.Attributes["id"] != null) && (n.Attributes["class"] == null))
-                    {
-                        tags_info.tags_name_for_inner = "<div class=\"" + n.Attributes["id"].Value + "-INNER\">";
-                        tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["id"].Value + "-OUTER\">";
-                        tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag)) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']";
-                        TagsList.Add(tags_info);
-                    }
-                    if ((n.Attributes["id"] != null) && (n.Attributes["class"] != null))
-                    {
-                        tags_info.tags_name_for_inner = "<div class=\"" + n.Attributes["id"].Value + "-INNER\">";
-                        tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["id"].Value + "-OUTER\">";
-                        tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag)) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']";
-                        TagsList.Add(tags_info);
-                    }
-                    if ((n.Attributes["id"] == null) && (n.Attributes["class"] != null))
-                    {
-                        if (n.Attributes["class"].Value.IndexOf(' ') > 0)
+                        if ((n.Attributes["id"] == null) && (n.Attributes["class"] == null))
                         {
-                            tags_info.tags_name_for_inner = "<div class=\"" + n.Attributes["class"].Value.Remove(n.Attributes["class"].Value.IndexOf(' ')) + "-INNER\">";
-                            tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["class"].Value.Remove(n.Attributes["class"].Value.IndexOf(' ')) + "-OUTER\">";
+                            if (tag[i] != "div")
+                            {
+                                tags_info.tags_name_for_inner = "<div class=\"" + tag[i] + "-INNER\">";
+                                tags_info.tags_name_for_outer = "<div class=\"" + tag[i] + "-OUTER\">";
+                                tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i]));
+                                /*tags_info.xpath_instruction = "//ancestor::" + n.XPath +
+                                                           " | //descendant::" + n.XPath +
+                                                           " | //following::" + n.XPath +
+                                                           " | //preceding::" + n.XPath +
+                                                           " | //self::" + n.XPath;*/
+                                TagsList.Add(tags_info);
+                            }
+                            else
+                            {
+                                tags_info.tags_name_for_inner = "";
+                                tags_info.tags_name_for_outer = "";
+                                tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i]));
+                                /*tags_info.xpath_instruction = "//ancestor::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) +
+                                                           " | //descendant::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) +
+                                                           " | //following::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) +
+                                                           " | //preceding::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) +
+                                                           " | //self::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i]));
+                                TagsList.Add(tags_info);*/
+                            }
                         }
-                        else
+                        if ((n.Attributes["id"] != null) && (n.Attributes["class"] == null))
                         {
-                            tags_info.tags_name_for_inner = "<div class=\"" + n.Attributes["class"].Value + "-INNER\">";
-                            tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["class"].Value + "-OUTER\">";
+                            tags_info.tags_name_for_inner = "<div class=\"" + n.Attributes["id"].Value + "-INNER\">";
+                            tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["id"].Value + "-OUTER\">";
+                            tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']";
+                            /*tags_info.xpath_instruction = "//ancestor::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']" +
+                                                       " | //descendant::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']" +
+                                                       " | //following::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']" +
+                                                       " | //preceding::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']" +
+                                                       " | //self::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']";
+                            */TagsList.Add(tags_info);
                         }
-                        tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag)) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']";
-                        TagsList.Add(tags_info);
+                        if ((n.Attributes["id"] != null) && (n.Attributes["class"] != null))
+                        {
+                            tags_info.tags_name_for_inner = "<div class=\"" + n.Attributes["id"].Value + "-INNER\">";
+                            tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["id"].Value + "-OUTER\">";
+                            tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']";
+                            /*tags_info.xpath_instruction = "//ancestor::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
+                                                       " | //descendant::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
+                                                       " | //following::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
+                                                       " | //preceding::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
+                                                       " | //self::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']";
+                            */TagsList.Add(tags_info);
+                        }
+                        if ((n.Attributes["id"] == null) && (n.Attributes["class"] != null))
+                        {
+                            if (n.Attributes["class"].Value.IndexOf(' ') > 0)
+                            {
+                                tags_info.tags_name_for_inner = "<div class=\"" + n.Attributes["class"].Value.Remove(n.Attributes["class"].Value.IndexOf(' ')) + "-INNER\">";
+                                tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["class"].Value.Remove(n.Attributes["class"].Value.IndexOf(' ')) + "-OUTER\">";
+                            }
+                            else
+                            {
+                                tags_info.tags_name_for_inner = "<div class=\"" + n.Attributes["class"].Value + "-INNER\">";
+                                tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["class"].Value + "-OUTER\">";
+                            }
+                            tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']";
+                            /*tags_info.xpath_instruction = "//ancestor::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
+                                                       " | //descendant::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
+                                                       " | //following::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
+                                                       " | //preceding::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
+                                                       " | //self::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']";
+                            */TagsList.Add(tags_info);
+                        }
                     }
                 }
             }
@@ -93,52 +126,55 @@ namespace Pattern_generator
             string initital_tabulation;
             string final_tabulation;
 
-
-
-            //var parent_tag = html_doc.DocumentNode.SelectSingleNode("//div[1][@class='content_block']");
-            var parent_tag = html_doc.DocumentNode.SelectSingleNode(xpath_instr);
-            //var parent_tag = html_doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]//[@id='page']");
-
-            //var temp = html_doc.DocumentNode.SelectNodes("//div[@class='content_block']");
-            //var parent_tag = nodes[i];
-            //var parent_tag = html_doc.DocumentNode.SelectSingleNode(instr_parent_tag);
-            if (parent_tag.FirstChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
+            if (name_for_inner != "")
             {
-                initital_tabulation = parent_tag.FirstChild.InnerText;
-            }
-            else
-            {
-                initital_tabulation = parent_tag.ParentNode.FirstChild.InnerText + "\t";
-            }
-            if (parent_tag.LastChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
-            {
-                final_tabulation = parent_tag.LastChild.InnerText;
-            }
-            else
-            {
-                final_tabulation = parent_tag.ParentNode.LastChild.InnerText + "\t";
-            }
+                //var parent_tag = html_doc.DocumentNode.SelectSingleNode("//div[1][@class='content_block']");
+                var parent_tag = html_doc.DocumentNode.SelectSingleNode(xpath_instr);
+                //var parent_tag = html_doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]//[@id='page']");
 
-            var inner_tag = HtmlNode.CreateNode(name_for_inner);
-            var child_to_inner = parent_tag.ChildNodes;
-
-            int j = 0;
-            foreach (var ch in child_to_inner)
-            {
-                int pos = child_to_inner[j].InnerHtml.IndexOf("\r\n");
-                while (pos >= 0)
+                //var temp = html_doc.DocumentNode.SelectNodes("//div[@class='content_block']");
+                //var parent_tag = nodes[i];
+                //var parent_tag = html_doc.DocumentNode.SelectSingleNode(instr_parent_tag);
+                if (parent_tag.FirstChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
                 {
-                    child_to_inner[j].InnerHtml = child_to_inner[j].InnerHtml.Insert(pos + 2, "\t");
-                    pos = child_to_inner[j].InnerHtml.IndexOf("\r\n", pos + 1);
+                    initital_tabulation = parent_tag.FirstChild.InnerText;
                 }
-                j++;
+                else
+                {
+                    initital_tabulation = parent_tag.ParentNode.FirstChild.InnerText + "\t";
+                }
+                if (parent_tag.LastChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
+                {
+                    final_tabulation = parent_tag.LastChild.InnerText;
+                }
+                else
+                {
+                    final_tabulation = parent_tag.ParentNode.LastChild.InnerText + "\t";
+                }
+
+                var inner_tag = HtmlNode.CreateNode(name_for_inner);
+                var child_to_inner = parent_tag.ChildNodes;
+
+                int j = 0;
+                foreach (var ch in child_to_inner)
+                {
+                    int pos = child_to_inner[j].InnerHtml.IndexOf("\r\n");
+                    while (pos >= 0)
+                    {
+                        child_to_inner[j].InnerHtml = child_to_inner[j].InnerHtml.Insert(pos + 2, "\t");
+                        pos = child_to_inner[j].InnerHtml.IndexOf("\r\n", pos + 1);
+                    }
+                    j++;
+                }
+
+                inner_tag.AppendChildren(child_to_inner);
+                parent_tag.RemoveAllChildren();
+                parent_tag.InnerHtml = parent_tag.InnerHtml + final_tabulation;
+                parent_tag.PrependChild(inner_tag);
+                parent_tag.InnerHtml = initital_tabulation + parent_tag.InnerHtml;
             }
 
-            inner_tag.AppendChildren(child_to_inner);
-            parent_tag.RemoveAllChildren();
-            parent_tag.InnerHtml = parent_tag.InnerHtml + final_tabulation;
-            parent_tag.PrependChild(inner_tag);
-            parent_tag.InnerHtml = initital_tabulation + parent_tag.InnerHtml;
+            
         }
 
         public void InsertInnerWithProbability(int nesting_level, int probability_min, int probability_max)
@@ -353,6 +389,41 @@ namespace Pattern_generator
                 m.Attributes["class"].Value = m.Attributes["class"].Value.Remove(m.Attributes["class"].Value.Length - 1);
             }
 
+        }
+
+        public void AddNewClass(string[] tags, int class_names_min, int class_names_max, int tag_min, int tag_max, int css_properties_min, int css_properties_max)
+        {
+            //Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
+
+
+            int count_class_names = Form1.rnd_org.Next(class_names_min, class_names_max);
+            int[] rand_mix_class = Form1.rnd_org.Sequence(0, Form1.random_class_names.Count - 1);
+
+            for (int i = 0; i < count_class_names; i++)
+            {
+                int count_css_properties = Form1.rnd_org.Next(css_properties_min, css_properties_max);
+                int[] rand_mix_css = Form1.rnd_org.Sequence(0, Form1.safe_css_properties.Count - 1);
+                for (int j = 0; j < count_css_properties; j++)
+                {
+                    //вставка в css
+                    //Form1.safe_css_properties[rand_mix_css[j]]
+                }
+                ParseTags(tags);
+                int count_tag = Form1.rnd_org.Next(tag_min, tag_max);
+                int[] rand_mix_all_tags = Form1.rnd_org.Sequence(0, TagsList.Count - 1);
+                for (int k = 0; k < count_tag; k++)
+                {
+                    var tag_for_add_class = html_doc.DocumentNode.SelectSingleNode(TagsList[rand_mix_all_tags[k]].xpath_instruction);
+                    if (tag_for_add_class.Attributes["class"] != null)
+                    {
+                        tag_for_add_class.Attributes["class"].Value += " " + Form1.random_class_names[rand_mix_class[i]][0];
+                    }
+                    else
+                    {
+                        tag_for_add_class.Attributes.Add("class", Form1.random_class_names[rand_mix_class[i]][0]);
+                    }
+                }
+            }
         }
 
         public void SaveHtmlDoc(string html_path)

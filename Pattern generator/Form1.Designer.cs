@@ -118,6 +118,7 @@ namespace Pattern_generator
             this.количествоСвойствCSSMin = new System.Windows.Forms.ToolStripTextBox();
             this.количествоСвойствCSSMax = new System.Windows.Forms.ToolStripTextBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -546,7 +547,7 @@ namespace Pattern_generator
             // включитьРандомныйВыборШрифтов
             // 
             this.включитьРандомныйВыборШрифтов.Name = "включитьРандомныйВыборШрифтов";
-            this.включитьРандомныйВыборШрифтов.Size = new System.Drawing.Size(152, 22);
+            this.включитьРандомныйВыборШрифтов.Size = new System.Drawing.Size(136, 22);
             this.включитьРандомныйВыборШрифтов.Text = "Включить";
             this.включитьРандомныйВыборШрифтов.Click += new System.EventHandler(this.включитьРандомныйВыборШрифтов_Click);
             // 
@@ -555,7 +556,7 @@ namespace Pattern_generator
             this.отключитьРандомныйВыборШрифтов.Checked = true;
             this.отключитьРандомныйВыборШрифтов.CheckState = System.Windows.Forms.CheckState.Checked;
             this.отключитьРандомныйВыборШрифтов.Name = "отключитьРандомныйВыборШрифтов";
-            this.отключитьРандомныйВыборШрифтов.Size = new System.Drawing.Size(152, 22);
+            this.отключитьРандомныйВыборШрифтов.Size = new System.Drawing.Size(136, 22);
             this.отключитьРандомныйВыборШрифтов.Text = "Отключить";
             this.отключитьРандомныйВыборШрифтов.Click += new System.EventHandler(this.отключитьРандомныйВыборШрифтов_Click);
             // 
@@ -573,14 +574,14 @@ namespace Pattern_generator
             this.включитьПеретасовкаТегов.Checked = true;
             this.включитьПеретасовкаТегов.CheckState = System.Windows.Forms.CheckState.Checked;
             this.включитьПеретасовкаТегов.Name = "включитьПеретасовкаТегов";
-            this.включитьПеретасовкаТегов.Size = new System.Drawing.Size(152, 22);
+            this.включитьПеретасовкаТегов.Size = new System.Drawing.Size(136, 22);
             this.включитьПеретасовкаТегов.Text = "Включить";
             this.включитьПеретасовкаТегов.Click += new System.EventHandler(this.включитьПеретасовкаТегов_Click);
             // 
             // отключитьПеретасовкаТегов
             // 
             this.отключитьПеретасовкаТегов.Name = "отключитьПеретасовкаТегов";
-            this.отключитьПеретасовкаТегов.Size = new System.Drawing.Size(152, 22);
+            this.отключитьПеретасовкаТегов.Size = new System.Drawing.Size(136, 22);
             this.отключитьПеретасовкаТегов.Text = "Отключить";
             this.отключитьПеретасовкаТегов.Click += new System.EventHandler(this.отключитьПеретасовкаТегов_Click);
             // 
@@ -598,14 +599,14 @@ namespace Pattern_generator
             this.включитьПерестановкаНазванийКлассов.Checked = true;
             this.включитьПерестановкаНазванийКлассов.CheckState = System.Windows.Forms.CheckState.Checked;
             this.включитьПерестановкаНазванийКлассов.Name = "включитьПерестановкаНазванийКлассов";
-            this.включитьПерестановкаНазванийКлассов.Size = new System.Drawing.Size(152, 22);
+            this.включитьПерестановкаНазванийКлассов.Size = new System.Drawing.Size(136, 22);
             this.включитьПерестановкаНазванийКлассов.Text = "Включить";
             this.включитьПерестановкаНазванийКлассов.Click += new System.EventHandler(this.включитьПерестановкаНазванийКлассов_Click);
             // 
             // отключитьПерестановкаНазванийКлассов
             // 
             this.отключитьПерестановкаНазванийКлассов.Name = "отключитьПерестановкаНазванийКлассов";
-            this.отключитьПерестановкаНазванийКлассов.Size = new System.Drawing.Size(152, 22);
+            this.отключитьПерестановкаНазванийКлассов.Size = new System.Drawing.Size(136, 22);
             this.отключитьПерестановкаНазванийКлассов.Text = "Отключить";
             this.отключитьПерестановкаНазванийКлассов.Click += new System.EventHandler(this.отключитьПерестановкаНазванийКлассов_Click);
             // 
@@ -752,7 +753,7 @@ namespace Pattern_generator
             // 
             this.количествоСвойствMax.Name = "количествоСвойствMax";
             this.количествоСвойствMax.Size = new System.Drawing.Size(100, 23);
-            this.количествоСвойствMax.Text = "5";
+            this.количествоСвойствMax.Text = "8";
             this.количествоСвойствMax.ToolTipText = "Максимальное количество безопасных свойств css";
             // 
             // menuДобавлениеАтрибутовStyle
@@ -830,7 +831,7 @@ namespace Pattern_generator
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(12, 282);
+            this.button2.Location = new System.Drawing.Point(12, 270);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(159, 38);
             this.button2.TabIndex = 15;
@@ -838,11 +839,22 @@ namespace Pattern_generator
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(12, 314);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(159, 38);
+            this.button4.TabIndex = 16;
+            this.button4.Text = "Test 3";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 356);
+            this.ClientSize = new System.Drawing.Size(456, 382);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button3);
@@ -1113,6 +1125,7 @@ namespace Pattern_generator
         public ToolStripMenuItem настройкиToolStripMenuItem;
         public MenuStrip menuStrip1;
         private Button button2;
+        private Button button4;
     }
 }
 

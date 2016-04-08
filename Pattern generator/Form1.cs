@@ -21,13 +21,15 @@ namespace Pattern_generator
     {
         public string[] tags = { "div", "article", "aside", "footer", "menu", "nav", "section" };
         //public RandomJSONRPC rnd = new RandomJSONRPC("6d99774c-ee16-48a1-a703-ad4ef5c6f2d6");
-        //Random.Org.Random rnd_org = new Random.Org.Random(true);
         public static List<string[]> inner_classes = new List<string[]>();
-        //inner_classes = ReadCSVFile.OpenFile(@"inner_classes.csv");
         public static List<string[]> outer_classes = new List<string[]>();
-        //outer_classes = ReadCSVFile.OpenFile(@"outer_classes.csv");
-        public List<string[]> color_scheme = new List<string[]>();
-        //color_scheme = ReadCSVFile.OpenFile(@"color_scheme.csv");
+        public static List<string[]> color_scheme = new List<string[]>();
+        public static List<string[]> random_class_names = new List<string[]>();
+        public static List<string[]> fonts = new List<string[]>();
+        public static List<string[]> safe_css_properties = new List<string[]>();
+
+        public static Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
+
 
         public Form1()
         {         
@@ -48,6 +50,10 @@ namespace Pattern_generator
 
             inner_classes = ReadCSVFile.OpenFile(@"inner_classes.csv");
             outer_classes = ReadCSVFile.OpenFile(@"outer_classes.csv");
+            color_scheme = ReadCSVFile.OpenFile(@"color_scheme.csv");
+            random_class_names = ReadCSVFile.OpenFile(@"random_class_names1.csv");
+            fonts = ReadCSVFile.OpenFile(@"fonts.csv");
+            safe_css_properties = ReadCSVFile.OpenFile(@"safe_css_properties.csv");
 
         }
 
@@ -114,10 +120,8 @@ namespace Pattern_generator
             string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
 
             HtmlParser index_html = new HtmlParser(index_path);
-            for (int i = 0; i < tags.Length; i++)
-            {
-                index_html.ParseTags(tags[i]);
-            }
+
+            index_html.ParseTags(tags);
             index_html.InsertInnerWithProbability(int.Parse(this.УстановкаЧислаВложенности.Text), int.Parse(this.вероятностьInnerMin.Text), int.Parse(this.вероятностьInnerMax.Text));
             index_html.InsertOuterWithProbability(int.Parse(this.вероятностьOuterMin.Text), int.Parse(this.вероятностьOuterMax.Text));
             index_html.SaveHtmlDoc(index_save_path);
@@ -241,6 +245,19 @@ namespace Pattern_generator
             index_html.SaveHtmlDoc(index_save_path);
 
             textBox2.Text += "Перемешал классы!";
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+            string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+
+            HtmlParser index_html = new HtmlParser(index_path);
+
+            index_html.AddNewClass(tags, 1, 3, 1, 5, 1, 2);
+            index_html.SaveHtmlDoc(index_save_path);
+
+            textBox2.Text += "Добавил классы!";
         }
     }
 }
