@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml;
 using HtmlAgilityPack;
-using Fizzler.Systems.HtmlAgilityPack;
 using Random.Org;
 
 
@@ -51,7 +50,7 @@ namespace Pattern_generator
             inner_classes = ReadCSVFile.OpenFile(@"inner_classes.csv");
             outer_classes = ReadCSVFile.OpenFile(@"outer_classes.csv");
             color_scheme = ReadCSVFile.OpenFile(@"color_scheme.csv");
-            random_class_names = ReadCSVFile.OpenFile(@"random_class_names1.csv");
+            random_class_names = ReadCSVFile.OpenFile(@"random_class_names.csv");
             fonts = ReadCSVFile.OpenFile(@"fonts.csv");
             safe_css_properties = ReadCSVFile.OpenFile(@"safe_css_properties.csv");
 
@@ -60,26 +59,26 @@ namespace Pattern_generator
         private void OpenFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            OpenFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl";
+            //OpenFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl";
             RandSelectTemplateButton.Enabled = true;
 
-            /*if (dialog.ShowDialog() == DialogResult.OK)
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
 
                 OpenFolder.Text = dialog.SelectedPath;
                 RandSelectTemplateButton.Enabled = true;
-            }*/
+            }
         }
 
         private void SaveFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
-            /*if (dialog.ShowDialog() == DialogResult.OK)
+            //SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
                 SaveFolder.Text = dialog.SelectedPath;
 
-            }*/
+            }
 
         }
 
@@ -112,8 +111,6 @@ namespace Pattern_generator
 
         private void button1_Click(object sender, EventArgs e)
         {
-            textBox4.Text = "";
-
             Random.Org.Random rnd_org = new Random.Org.Random(menuLocalRandom.Checked);
 
             string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
@@ -127,7 +124,7 @@ namespace Pattern_generator
             index_html.SaveHtmlDoc(index_save_path);
 
 
-            textBox4.Text += "Вставка иннеров и аутеров в " + RandSelectTemplate.Text + " прошла успешно!";
+            textBox4.Text += "Вставка иннеров и аутеров в " + RandSelectTemplate.Text + " прошла успешно." + Environment.NewLine;
 
 
 
@@ -229,8 +226,7 @@ namespace Pattern_generator
             index_html.MixTagsHead();
             index_html.SaveHtmlDoc(index_save_path);
 
-
-            textBox2.Text += "Перемешал теги!";
+            textBox4.Text += "Перестановка тегов в секции <head> " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
 
         }
 
@@ -244,7 +240,7 @@ namespace Pattern_generator
             index_html.MixNameClass();
             index_html.SaveHtmlDoc(index_save_path);
 
-            textBox2.Text += "Перемешал классы!";
+            textBox4.Text += "Перестановка названий классов в тегах " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -254,10 +250,69 @@ namespace Pattern_generator
 
             HtmlParser index_html = new HtmlParser(index_path);
 
-            index_html.AddNewClass(tags, 1, 3, 1, 5, 1, 2);
+            index_html.AddNewClass(tags, int.Parse(this.количествоНазванийMin.Text), int.Parse(this.количествоНазванийMax.Text), int.Parse(this.количествоТеговMin.Text), int.Parse(this.количествоТеговMax.Text), int.Parse(this.количествоСвойствMin.Text), int.Parse(this.количествоСвойствMax.Text));
             index_html.SaveHtmlDoc(index_save_path);
 
-            textBox2.Text += "Добавил классы!";
+            textBox4.Text += "Рандомное добавление новых классов в теги " + RandSelectTemplate.Text + " произведено." + Environment.NewLine;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+            string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+
+            HtmlParser index_html = new HtmlParser(index_path);
+
+            index_html.AddAttributeStyle(tags, int.Parse(this.количествоАтрибутовMin.Text), int.Parse(this.количествоАтрибутовMax.Text), int.Parse(this.количествоСвойствCSSMin.Text), int.Parse(this.количествоСвойствCSSMax.Text));
+            index_html.SaveHtmlDoc(index_save_path);
+            textBox4.Text += "Рандомное добавление атрибутов style в теги " + RandSelectTemplate.Text + " произведено." + Environment.NewLine;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            textBox4.Text = "";
+
+            string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+            string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+
+            HtmlParser index_html = new HtmlParser(index_path);
+
+            if (this.включитьДобавлениеКлассов.Checked == true)
+            {
+                index_html.AddNewClass(tags, int.Parse(this.количествоНазванийMin.Text), int.Parse(this.количествоНазванийMax.Text), int.Parse(this.количествоТеговMin.Text), int.Parse(this.количествоТеговMax.Text), int.Parse(this.количествоСвойствMin.Text), int.Parse(this.количествоСвойствMax.Text));
+                textBox4.Text += "Рандомное добавление новых классов в теги " + RandSelectTemplate.Text + " произведено." + Environment.NewLine;
+            }
+
+            if (this.включитьInnerOuter.Checked == true)
+            {
+                index_html.ParseTags(tags);
+                index_html.InsertInnerWithProbability(int.Parse(this.УстановкаЧислаВложенности.Text), int.Parse(this.вероятностьInnerMin.Text), int.Parse(this.вероятностьInnerMax.Text));
+                index_html.InsertOuterWithProbability(int.Parse(this.вероятностьOuterMin.Text), int.Parse(this.вероятностьOuterMax.Text));
+                textBox4.Text += "Вставка иннеров и аутеров в " + RandSelectTemplate.Text + " прошла успешно." + Environment.NewLine;
+            }
+
+            if (this.включитьПерестановкаНазванийКлассов.Checked == true)
+            {
+                index_html.ParseTags(tags);
+                index_html.MixNameClass();
+                textBox4.Text += "Перестановка названий классов в тегах " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
+            }
+
+            if (this.включитьПеретасовкаТегов.Checked == true)
+            {
+                index_html.MixTagsHead();
+                textBox4.Text += "Перестановка тегов в секции <head> " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
+            }
+
+            if (this.включитьДобавлениеStyle.Checked == true)
+            {
+                index_html.AddAttributeStyle(tags, int.Parse(this.количествоАтрибутовMin.Text), int.Parse(this.количествоАтрибутовMax.Text), int.Parse(this.количествоСвойствCSSMin.Text), int.Parse(this.количествоСвойствCSSMax.Text));
+                textBox4.Text += "Рандомное добавление атрибутов style в теги " + RandSelectTemplate.Text + " произведено." + Environment.NewLine;
+            }
+
+            index_html.SaveHtmlDoc(index_save_path);
+            textBox4.Text += "Все изменения в " + RandSelectTemplate.Text + " сохранены!" + Environment.NewLine;
+
         }
     }
 }

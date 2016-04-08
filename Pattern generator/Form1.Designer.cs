@@ -41,7 +41,6 @@ namespace Pattern_generator
             this.SaveFolder = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -119,6 +118,8 @@ namespace Pattern_generator
             this.количествоСвойствCSSMax = new System.Windows.Forms.ToolStripTextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -178,7 +179,7 @@ namespace Pattern_generator
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 171);
+            this.button1.Location = new System.Drawing.Point(12, 213);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(159, 38);
             this.button1.TabIndex = 8;
@@ -188,27 +189,19 @@ namespace Pattern_generator
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(177, 171);
+            this.textBox4.Location = new System.Drawing.Point(177, 213);
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(262, 39);
+            this.textBox4.Size = new System.Drawing.Size(262, 214);
             this.textBox4.TabIndex = 9;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(177, 226);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(262, 39);
-            this.textBox2.TabIndex = 13;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(12, 226);
+            this.button3.Location = new System.Drawing.Point(12, 257);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(159, 38);
             this.button3.TabIndex = 12;
-            this.button3.Text = "Test 1";
+            this.button3.Text = "Перестановка тегов в секции <head>";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -234,7 +227,7 @@ namespace Pattern_generator
             // выходToolStripMenuItem
             // 
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.выходToolStripMenuItem.Text = "Выход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
             // 
@@ -673,6 +666,8 @@ namespace Pattern_generator
             // 
             // включитьДобавлениеКлассов
             // 
+            this.включитьДобавлениеКлассов.Checked = true;
+            this.включитьДобавлениеКлассов.CheckState = System.Windows.Forms.CheckState.Checked;
             this.включитьДобавлениеКлассов.Name = "включитьДобавлениеКлассов";
             this.включитьДобавлениеКлассов.Size = new System.Drawing.Size(328, 22);
             this.включитьДобавлениеКлассов.Text = "Включить";
@@ -680,8 +675,6 @@ namespace Pattern_generator
             // 
             // отключитьДобавлениеКлассов
             // 
-            this.отключитьДобавлениеКлассов.Checked = true;
-            this.отключитьДобавлениеКлассов.CheckState = System.Windows.Forms.CheckState.Checked;
             this.отключитьДобавлениеКлассов.Name = "отключитьДобавлениеКлассов";
             this.отключитьДобавлениеКлассов.Size = new System.Drawing.Size(328, 22);
             this.отключитьДобавлениеКлассов.Text = "Отключить";
@@ -769,6 +762,8 @@ namespace Pattern_generator
             // 
             // включитьДобавлениеStyle
             // 
+            this.включитьДобавлениеStyle.Checked = true;
+            this.включитьДобавлениеStyle.CheckState = System.Windows.Forms.CheckState.Checked;
             this.включитьДобавлениеStyle.Name = "включитьДобавлениеStyle";
             this.включитьДобавлениеStyle.Size = new System.Drawing.Size(272, 22);
             this.включитьДобавлениеStyle.Text = "Включить";
@@ -776,8 +771,6 @@ namespace Pattern_generator
             // 
             // отключитьДобавлениеStyle
             // 
-            this.отключитьДобавлениеStyle.Checked = true;
-            this.отключитьДобавлениеStyle.CheckState = System.Windows.Forms.CheckState.Checked;
             this.отключитьДобавлениеStyle.Name = "отключитьДобавлениеStyle";
             this.отключитьДобавлениеStyle.Size = new System.Drawing.Size(272, 22);
             this.отключитьДобавлениеStyle.Text = "Отключить";
@@ -831,32 +824,53 @@ namespace Pattern_generator
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(12, 270);
+            this.button2.Location = new System.Drawing.Point(12, 301);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(159, 38);
             this.button2.TabIndex = 15;
-            this.button2.Text = "Test 2";
+            this.button2.Text = "Перестановка названий классов в тегах";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(12, 314);
+            this.button4.Location = new System.Drawing.Point(12, 345);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(159, 38);
             this.button4.TabIndex = 16;
-            this.button4.Text = "Test 3";
+            this.button4.Text = "Рандомное добавление новых классов в теги";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(12, 389);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(159, 38);
+            this.button5.TabIndex = 17;
+            this.button5.Text = "Рандомное добавление атрибутов style в теги";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(177, 154);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(262, 38);
+            this.button6.TabIndex = 18;
+            this.button6.Text = "Работа с файлом \"index.html\"";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 382);
+            this.ClientSize = new System.Drawing.Size(456, 447);
+            this.Controls.Add(this.button6);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.button1);
@@ -1048,7 +1062,6 @@ namespace Pattern_generator
         private System.Windows.Forms.TextBox SaveFolder;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
@@ -1126,6 +1139,8 @@ namespace Pattern_generator
         public MenuStrip menuStrip1;
         private Button button2;
         private Button button4;
+        private Button button5;
+        private Button button6;
     }
 }
 

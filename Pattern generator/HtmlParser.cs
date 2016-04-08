@@ -426,6 +426,28 @@ namespace Pattern_generator
             }
         }
 
+        public void AddAttributeStyle(string[] tags, int attr_style_min, int attr_style_max, int css_properties_min, int css_properties_max)
+        {
+            var nodes_without_style = html_doc.DocumentNode.SelectNodes("//*[not(@style) and not(contains(@class, '[FIXED]'))]");
+            //var nodes_without_style = html_doc.DocumentNode.SelectNodes("//*[not(@style) and @*[not(contains(., '[FIXED]'))]]");
+
+            int count_attr_style = Form1.rnd_org.Next(attr_style_min, attr_style_max);
+            int count_css_properties = Form1.rnd_org.Next(css_properties_min, css_properties_max);
+            int[] rand_css_properties = Form1.rnd_org.Sequence(0, Form1.safe_css_properties.Count - 1);
+            string css_properties = "";
+            for (int i = 0; i < count_css_properties; i++)
+            {
+                css_properties += Form1.safe_css_properties[rand_css_properties[i]][0] + "; ";
+            }
+            css_properties = css_properties.Remove(css_properties.Length - 1);
+
+            int[] rand_nodes = Form1.rnd_org.Sequence(0, nodes_without_style.Count() - 1);
+            for (int j = 0; j < count_css_properties; j++)
+            {
+                nodes_without_style[rand_nodes[j]].Attributes.Add("style", css_properties);
+            }
+        }
+
         public void SaveHtmlDoc(string html_path)
         {
             html_doc.Save(html_path);

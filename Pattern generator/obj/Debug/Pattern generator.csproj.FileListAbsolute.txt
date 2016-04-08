@@ -6,13 +6,7 @@ D:\Генератор шаблонов\Project\Pattern generator\Pattern generat
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\obj\Debug\Pattern generator.csproj.GenerateResource.Cache
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\obj\Debug\Pattern generator.exe
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\obj\Debug\Pattern generator.pdb
-D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Newtonsoft.Json.dll
-D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Newtonsoft.Json.xml
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\obj\Debug\Pattern generator.csprojResolveAssemblyReference.cache
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\HtmlAgilityPack.dll
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\HtmlAgilityPack.pdb
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\HtmlAgilityPack.xml
-D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Fizzler.dll
-D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Fizzler.Systems.HtmlAgilityPack.dll
-D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Fizzler.xml
-D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\bin\Debug\Fizzler.Systems.HtmlAgilityPack.xml
