@@ -120,13 +120,19 @@ namespace Pattern_generator
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // OpenFolderButton
             // 
             this.OpenFolderButton.BackgroundImage = global::Pattern_generator.Properties.Resources.folder;
-            this.OpenFolderButton.Location = new System.Drawing.Point(12, 23);
+            this.OpenFolderButton.Location = new System.Drawing.Point(29, 27);
             this.OpenFolderButton.Name = "OpenFolderButton";
             this.OpenFolderButton.Size = new System.Drawing.Size(23, 35);
             this.OpenFolderButton.TabIndex = 1;
@@ -135,16 +141,16 @@ namespace Pattern_generator
             // 
             // OpenFolder
             // 
-            this.OpenFolder.Location = new System.Drawing.Point(41, 31);
+            this.OpenFolder.Location = new System.Drawing.Point(58, 35);
             this.OpenFolder.Name = "OpenFolder";
-            this.OpenFolder.Size = new System.Drawing.Size(398, 20);
+            this.OpenFolder.Size = new System.Drawing.Size(332, 20);
             this.OpenFolder.TabIndex = 3;
             this.OpenFolder.Text = "Выбор папки tpl c набором мастер-шаблонов";
             // 
             // RandSelectTemplateButton
             // 
             this.RandSelectTemplateButton.Enabled = false;
-            this.RandSelectTemplateButton.Location = new System.Drawing.Point(12, 112);
+            this.RandSelectTemplateButton.Location = new System.Drawing.Point(29, 116);
             this.RandSelectTemplateButton.Name = "RandSelectTemplateButton";
             this.RandSelectTemplateButton.Size = new System.Drawing.Size(159, 29);
             this.RandSelectTemplateButton.TabIndex = 4;
@@ -154,15 +160,15 @@ namespace Pattern_generator
             // 
             // RandSelectTemplate
             // 
-            this.RandSelectTemplate.Location = new System.Drawing.Point(177, 117);
+            this.RandSelectTemplate.Location = new System.Drawing.Point(194, 121);
             this.RandSelectTemplate.Name = "RandSelectTemplate";
-            this.RandSelectTemplate.Size = new System.Drawing.Size(262, 20);
+            this.RandSelectTemplate.Size = new System.Drawing.Size(196, 20);
             this.RandSelectTemplate.TabIndex = 5;
             // 
             // SaveFolderButton
             // 
             this.SaveFolderButton.BackgroundImage = global::Pattern_generator.Properties.Resources.folder;
-            this.SaveFolderButton.Location = new System.Drawing.Point(12, 64);
+            this.SaveFolderButton.Location = new System.Drawing.Point(29, 68);
             this.SaveFolderButton.Name = "SaveFolderButton";
             this.SaveFolderButton.Size = new System.Drawing.Size(23, 35);
             this.SaveFolderButton.TabIndex = 6;
@@ -171,17 +177,17 @@ namespace Pattern_generator
             // 
             // SaveFolder
             // 
-            this.SaveFolder.Location = new System.Drawing.Point(41, 72);
+            this.SaveFolder.Location = new System.Drawing.Point(58, 76);
             this.SaveFolder.Name = "SaveFolder";
-            this.SaveFolder.Size = new System.Drawing.Size(398, 20);
+            this.SaveFolder.Size = new System.Drawing.Size(332, 20);
             this.SaveFolder.TabIndex = 7;
             this.SaveFolder.Text = "Папка для сохранения результирующих шаблонов";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 213);
+            this.button1.Location = new System.Drawing.Point(29, 259);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(159, 38);
+            this.button1.Size = new System.Drawing.Size(163, 38);
             this.button1.TabIndex = 8;
             this.button1.Text = "Вставка inner/outer";
             this.button1.UseVisualStyleBackColor = true;
@@ -189,17 +195,17 @@ namespace Pattern_generator
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(177, 213);
+            this.textBox4.Location = new System.Drawing.Point(406, 35);
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(262, 214);
+            this.textBox4.Size = new System.Drawing.Size(413, 438);
             this.textBox4.TabIndex = 9;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(12, 257);
+            this.button3.Location = new System.Drawing.Point(29, 303);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(159, 38);
+            this.button3.Size = new System.Drawing.Size(163, 38);
             this.button3.TabIndex = 12;
             this.button3.Text = "Перестановка тегов в секции <head>";
             this.button3.UseVisualStyleBackColor = true;
@@ -212,7 +218,7 @@ namespace Pattern_generator
             this.настройкиToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(456, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(851, 24);
             this.menuStrip1.TabIndex = 14;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -227,7 +233,7 @@ namespace Pattern_generator
             // выходToolStripMenuItem
             // 
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
             this.выходToolStripMenuItem.Text = "Выход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
             // 
@@ -424,6 +430,8 @@ namespace Pattern_generator
             // 
             // включитьВыборЦветовыхСхем
             // 
+            this.включитьВыборЦветовыхСхем.Checked = true;
+            this.включитьВыборЦветовыхСхем.CheckState = System.Windows.Forms.CheckState.Checked;
             this.включитьВыборЦветовыхСхем.Name = "включитьВыборЦветовыхСхем";
             this.включитьВыборЦветовыхСхем.Size = new System.Drawing.Size(136, 22);
             this.включитьВыборЦветовыхСхем.Text = "Включить";
@@ -431,8 +439,6 @@ namespace Pattern_generator
             // 
             // отключитьВыборЦветовыхСхем
             // 
-            this.отключитьВыборЦветовыхСхем.Checked = true;
-            this.отключитьВыборЦветовыхСхем.CheckState = System.Windows.Forms.CheckState.Checked;
             this.отключитьВыборЦветовыхСхем.Name = "отключитьВыборЦветовыхСхем";
             this.отключитьВыборЦветовыхСхем.Size = new System.Drawing.Size(136, 22);
             this.отключитьВыборЦветовыхСхем.Text = "Отключить";
@@ -824,9 +830,9 @@ namespace Pattern_generator
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(12, 301);
+            this.button2.Location = new System.Drawing.Point(29, 347);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(159, 38);
+            this.button2.Size = new System.Drawing.Size(163, 38);
             this.button2.TabIndex = 15;
             this.button2.Text = "Перестановка названий классов в тегах";
             this.button2.UseVisualStyleBackColor = true;
@@ -834,9 +840,9 @@ namespace Pattern_generator
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(12, 345);
+            this.button4.Location = new System.Drawing.Point(29, 391);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(159, 38);
+            this.button4.Size = new System.Drawing.Size(163, 38);
             this.button4.TabIndex = 16;
             this.button4.Text = "Рандомное добавление новых классов в теги";
             this.button4.UseVisualStyleBackColor = true;
@@ -844,9 +850,9 @@ namespace Pattern_generator
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(12, 389);
+            this.button5.Location = new System.Drawing.Point(29, 435);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(159, 38);
+            this.button5.Size = new System.Drawing.Size(163, 38);
             this.button5.TabIndex = 17;
             this.button5.Text = "Рандомное добавление атрибутов style в теги";
             this.button5.UseVisualStyleBackColor = true;
@@ -854,19 +860,83 @@ namespace Pattern_generator
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(177, 154);
+            this.button6.BackColor = System.Drawing.Color.Green;
+            this.button6.Font = new System.Drawing.Font("Viner Hand ITC", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button6.Location = new System.Drawing.Point(29, 158);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(262, 38);
+            this.button6.Size = new System.Drawing.Size(361, 38);
             this.button6.TabIndex = 18;
             this.button6.Text = "Работа с файлом \"index.html\"";
-            this.button6.UseVisualStyleBackColor = true;
+            this.button6.UseVisualStyleBackColor = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(29, 207);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(361, 38);
+            this.button7.TabIndex = 19;
+            this.button7.Text = "Работа с файлом \"style.css\"";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(227, 435);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(163, 38);
+            this.button8.TabIndex = 24;
+            this.button8.UseVisualStyleBackColor = true;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(227, 391);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(163, 38);
+            this.button9.TabIndex = 23;
+            this.button9.UseVisualStyleBackColor = true;
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(227, 347);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(163, 38);
+            this.button10.TabIndex = 22;
+            this.button10.Text = "Рандомизация вертикальных отступов";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(227, 303);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(163, 38);
+            this.button11.TabIndex = 21;
+            this.button11.Text = "Выбор набора шрифтов";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(227, 259);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(163, 38);
+            this.button12.TabIndex = 20;
+            this.button12.Text = "Выбор цветовых схем / Выбор контрастного цвета текста";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 447);
+            this.ClientSize = new System.Drawing.Size(851, 496);
+            this.Controls.Add(this.button8);
+            this.Controls.Add(this.button9);
+            this.Controls.Add(this.button10);
+            this.Controls.Add(this.button11);
+            this.Controls.Add(this.button12);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -1141,6 +1211,12 @@ namespace Pattern_generator
         private Button button4;
         private Button button5;
         private Button button6;
+        private Button button7;
+        private Button button8;
+        private Button button9;
+        private Button button10;
+        private Button button11;
+        private Button button12;
     }
 }
 

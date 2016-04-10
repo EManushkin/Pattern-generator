@@ -59,26 +59,26 @@ namespace Pattern_generator
         private void OpenFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            //OpenFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl";
+            OpenFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl";
             RandSelectTemplateButton.Enabled = true;
 
-            if (dialog.ShowDialog() == DialogResult.OK)
+            /*if (dialog.ShowDialog() == DialogResult.OK)
             {
 
                 OpenFolder.Text = dialog.SelectedPath;
                 RandSelectTemplateButton.Enabled = true;
-            }
+            }*/
         }
 
         private void SaveFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            //SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
+            /*if (dialog.ShowDialog() == DialogResult.OK)
             {
                 SaveFolder.Text = dialog.SelectedPath;
 
-            }
+            }*/
 
         }
 
@@ -201,23 +201,6 @@ namespace Pattern_generator
 
         private void button3_Click(object sender, EventArgs e)
         {
-
-            /*string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
-            Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
-            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
-
-            //HtmlParser style_css = new HtmlParser(style_path);
-            color_scheme = ReadCSVFile.OpenFile(@"color_scheme.csv");
-
-            //style_css.ParseTags("");
-
-            HtmlAgilityPack.HtmlDocument css_doc = new HtmlAgilityPack.HtmlDocument();
-            css_doc.Load(style_path);
-
-            var temp = css_doc.DocumentNode.QuerySelectorAll("background");
-
-            textBox2.Text += "Load";*/
-
             string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
             string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
 
@@ -275,7 +258,11 @@ namespace Pattern_generator
             string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
             string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
 
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
             HtmlParser index_html = new HtmlParser(index_path);
+            CssParser style_css = new CssParser(style_path);
 
             if (this.включитьДобавлениеКлассов.Checked == true)
             {
@@ -310,8 +297,79 @@ namespace Pattern_generator
                 textBox4.Text += "Рандомное добавление атрибутов style в теги " + RandSelectTemplate.Text + " произведено." + Environment.NewLine;
             }
 
+            if (this.включитьВыборЦветовыхСхем.Checked == true)
+            {
+                style_css.ChoiceColorScheme();
+                textBox4.Text += "Выбор цветовых схем " + RandSelectTemplate.Text + " произведен." + Environment.NewLine;
+            }
+
+
+            style_css.ContrastTextColor();
+
             index_html.SaveHtmlDoc(index_save_path);
+            style_css.SaveCsslDoc(style_save_path);
             textBox4.Text += "Все изменения в " + RandSelectTemplate.Text + " сохранены!" + Environment.NewLine;
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            CssParser style_css = new CssParser(style_path);
+
+
+            style_css.ContrastTextColor();
+
+
+            style_css.SaveCsslDoc(style_save_path);
+
+
+
+            textBox4.Text = "Start with CSS";
+
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            CssParser style_css = new CssParser(style_path);
+
+            style_css.ChoiceColorScheme();
+            style_css.ContrastTextColor();
+
+            style_css.SaveCsslDoc(style_save_path);
+            textBox4.Text += "Выбор цветовых схем " + RandSelectTemplate.Text + " произведен." + Environment.NewLine;
+            textBox4.Text += "Определен контрастный цвет текста для заданного фона." + Environment.NewLine;
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            CssParser style_css = new CssParser(style_path);
+
+            style_css.SelectFontSet();
+            style_css.SaveCsslDoc(style_save_path);
+            textBox4.Text += "Выбор набора шрифтов для всего шаблона " + RandSelectTemplate.Text + " произведен." + Environment.NewLine;
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            CssParser style_css = new CssParser(style_path);
+
+            style_css.RandVerticalMarginPadding(40, 60, 30);
+            style_css.SaveCsslDoc(style_save_path);
+            textBox4.Text += "Рандомизация вертикальных внешних и внутренних отступов " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
+
+            
 
         }
     }

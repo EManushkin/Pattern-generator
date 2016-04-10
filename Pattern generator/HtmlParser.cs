@@ -12,14 +12,14 @@ namespace Pattern_generator
     {
         private HtmlAgilityPack.HtmlDocument html_doc;
         private HtmlNodeCollection nodes;
-        public struct TagsInformation
+        private struct TagsInformation
         {
             public string tags_name_for_inner;
             public string tags_name_for_outer;
             public string xpath_instruction;
         }
-        public TagsInformation tags_info;
-        public List<TagsInformation> TagsList = new List<TagsInformation>();
+        private TagsInformation tags_info;
+        private List<TagsInformation> TagsList = new List<TagsInformation>();
 
         public HtmlParser(string html_path)
         {
