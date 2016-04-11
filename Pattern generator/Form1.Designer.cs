@@ -79,7 +79,7 @@ namespace Pattern_generator
             this.вероятностьИзмененияОтступовMin = new System.Windows.Forms.ToolStripTextBox();
             this.вероятностьИзмененияОтступовMax = new System.Windows.Forms.ToolStripTextBox();
             this.максимальныйПроцентИзменения = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
+            this.процентИзмененияMax = new System.Windows.Forms.ToolStripTextBox();
             this.menuРандомныйВыборНабораШрифтов = new System.Windows.Forms.ToolStripMenuItem();
             this.включитьРандомныйВыборШрифтов = new System.Windows.Forms.ToolStripMenuItem();
             this.отключитьРандомныйВыборШрифтов = new System.Windows.Forms.ToolStripMenuItem();
@@ -433,14 +433,14 @@ namespace Pattern_generator
             this.включитьВыборЦветовыхСхем.Checked = true;
             this.включитьВыборЦветовыхСхем.CheckState = System.Windows.Forms.CheckState.Checked;
             this.включитьВыборЦветовыхСхем.Name = "включитьВыборЦветовыхСхем";
-            this.включитьВыборЦветовыхСхем.Size = new System.Drawing.Size(136, 22);
+            this.включитьВыборЦветовыхСхем.Size = new System.Drawing.Size(152, 22);
             this.включитьВыборЦветовыхСхем.Text = "Включить";
             this.включитьВыборЦветовыхСхем.Click += new System.EventHandler(this.включитьВыборЦветовыхСхем_Click);
             // 
             // отключитьВыборЦветовыхСхем
             // 
             this.отключитьВыборЦветовыхСхем.Name = "отключитьВыборЦветовыхСхем";
-            this.отключитьВыборЦветовыхСхем.Size = new System.Drawing.Size(136, 22);
+            this.отключитьВыборЦветовыхСхем.Size = new System.Drawing.Size(152, 22);
             this.отключитьВыборЦветовыхСхем.Text = "Отключить";
             this.отключитьВыборЦветовыхСхем.Click += new System.EventHandler(this.отключитьВыборЦветовыхСхем_Click);
             // 
@@ -482,6 +482,8 @@ namespace Pattern_generator
             // 
             // включитьРандомизацияВертОтступов
             // 
+            this.включитьРандомизацияВертОтступов.Checked = true;
+            this.включитьРандомизацияВертОтступов.CheckState = System.Windows.Forms.CheckState.Checked;
             this.включитьРандомизацияВертОтступов.Name = "включитьРандомизацияВертОтступов";
             this.включитьРандомизацияВертОтступов.Size = new System.Drawing.Size(274, 22);
             this.включитьРандомизацияВертОтступов.Text = "Включить";
@@ -489,8 +491,6 @@ namespace Pattern_generator
             // 
             // отключитьРандомизацияВертОтступов
             // 
-            this.отключитьРандомизацияВертОтступов.Checked = true;
-            this.отключитьРандомизацияВертОтступов.CheckState = System.Windows.Forms.CheckState.Checked;
             this.отключитьРандомизацияВертОтступов.Name = "отключитьРандомизацияВертОтступов";
             this.отключитьРандомизацияВертОтступов.Size = new System.Drawing.Size(274, 22);
             this.отключитьРандомизацияВертОтступов.Text = "Отключить";
@@ -522,17 +522,17 @@ namespace Pattern_generator
             // максимальныйПроцентИзменения
             // 
             this.максимальныйПроцентИзменения.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBox1});
+            this.процентИзмененияMax});
             this.максимальныйПроцентИзменения.Name = "максимальныйПроцентИзменения";
             this.максимальныйПроцентИзменения.Size = new System.Drawing.Size(274, 22);
             this.максимальныйПроцентИзменения.Text = "Максимальный % изменения";
             // 
-            // toolStripTextBox1
+            // процентИзмененияMax
             // 
-            this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox1.Text = "30";
-            this.toolStripTextBox1.ToolTipText = "целое число от 1 до 100";
+            this.процентИзмененияMax.Name = "процентИзмененияMax";
+            this.процентИзмененияMax.Size = new System.Drawing.Size(100, 23);
+            this.процентИзмененияMax.Text = "30";
+            this.процентИзмененияMax.ToolTipText = "целое число от 1 до 100";
             // 
             // menuРандомныйВыборНабораШрифтов
             // 
@@ -545,6 +545,8 @@ namespace Pattern_generator
             // 
             // включитьРандомныйВыборШрифтов
             // 
+            this.включитьРандомныйВыборШрифтов.Checked = true;
+            this.включитьРандомныйВыборШрифтов.CheckState = System.Windows.Forms.CheckState.Checked;
             this.включитьРандомныйВыборШрифтов.Name = "включитьРандомныйВыборШрифтов";
             this.включитьРандомныйВыборШрифтов.Size = new System.Drawing.Size(136, 22);
             this.включитьРандомныйВыборШрифтов.Text = "Включить";
@@ -552,8 +554,6 @@ namespace Pattern_generator
             // 
             // отключитьРандомныйВыборШрифтов
             // 
-            this.отключитьРандомныйВыборШрифтов.Checked = true;
-            this.отключитьРандомныйВыборШрифтов.CheckState = System.Windows.Forms.CheckState.Checked;
             this.отключитьРандомныйВыборШрифтов.Name = "отключитьРандомныйВыборШрифтов";
             this.отключитьРандомныйВыборШрифтов.Size = new System.Drawing.Size(136, 22);
             this.отключитьРандомныйВыборШрифтов.Text = "Отключить";
@@ -1170,7 +1170,7 @@ namespace Pattern_generator
         private ToolStripMenuItem включитьРандомныйВыборШрифтов;
         private ToolStripMenuItem отключитьРандомныйВыборШрифтов;
         private ToolStripMenuItem максимальныйПроцентИзменения;
-        private ToolStripTextBox toolStripTextBox1;
+        private ToolStripTextBox процентИзмененияMax;
         private ToolStripMenuItem menuПерестановкаТегов;
         private ToolStripMenuItem включитьПеретасовкаТегов;
         private ToolStripMenuItem отключитьПеретасовкаТегов;

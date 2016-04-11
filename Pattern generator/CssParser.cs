@@ -11,7 +11,7 @@ namespace Pattern_generator
     class CssParser
     {
 
-        private string css_information;
+        private static string css_information;
         private string[] css_information_array;
         private struct SelectorsInformation
         {
@@ -26,6 +26,21 @@ namespace Pattern_generator
         {
             css_information = File.ReadAllText(css_path);
             css_information_array = File.ReadAllLines(css_path);
+        }
+
+
+        public static void AddNewRule(string name_class, int css_properties_min, int css_properties_max)
+        {
+            string css_properties = "\r\n." + name_class + "{";
+            int count_css_properties = Form1.rnd_org.Next(css_properties_min, css_properties_max);
+            int[] rand_css_properties = Form1.rnd_org.Sequence(0, Form1.safe_css_properties.Count - 1);
+
+            for (int i = 0; i < count_css_properties; i++)
+            {
+                css_properties += "\r\n\t" + Form1.safe_css_properties[rand_css_properties[i]][0] + ";";
+            }
+            css_properties += "\r\n}";
+            css_information += css_properties;
         }
 
         public void ParseSelectors()
@@ -62,7 +77,7 @@ namespace Pattern_generator
                 temp_css_info += line + "\r\n";
                 line = strReader.ReadLine();
             }
-            css_information = temp_css_info;
+            css_information = temp_css_info.Remove(temp_css_info.LastIndexOf("\r\n"), temp_css_info.Length - temp_css_info.LastIndexOf("\r\n"));
             strReader.Close();
         }
 
@@ -79,7 +94,7 @@ namespace Pattern_generator
                 {
                     flag_fixed_area = !flag_fixed_area;
                 }
-                while (flag_fixed_area && (line.Contains("background:") || line.Contains("background-color:")) && !line.Contains("[FIXED]"))
+                while (flag_fixed_area && (line.Contains("background:") || line.Contains("background-color:")) && !line.Contains("[FIXED]") && !line.Contains("[bg-"))
                 {
                     string tabulation = line.Substring(0, line.IndexOf("back"));
                     string bg_color = line.Substring(line.IndexOf('#') + 1, line.IndexOf(';') - line.IndexOf('#'));
@@ -99,7 +114,7 @@ namespace Pattern_generator
                 temp_css_info += line + "\r\n";
                 line = strReader.ReadLine();
             }
-            css_information = temp_css_info;
+            css_information = temp_css_info.Remove(temp_css_info.LastIndexOf("\r\n"), temp_css_info.Length - temp_css_info.LastIndexOf("\r\n"));
             strReader.Close();
         }
 
@@ -128,7 +143,7 @@ namespace Pattern_generator
                 temp_css_info += line + "\r\n";
                 line = strReader.ReadLine();
             }
-            css_information = temp_css_info;
+            css_information = temp_css_info.Remove(temp_css_info.LastIndexOf("\r\n"), temp_css_info.Length - temp_css_info.LastIndexOf("\r\n"));
             strReader.Close();
         }
 
@@ -138,12 +153,14 @@ namespace Pattern_generator
             StringReader strReader = new StringReader(css_information);
             string temp_css_info = "";
             bool flag_fixed_area = true;
-            int ident;
-            //Regex regex = new Regex();
-            Match indent;
+            int ident, top_indent, bottom_indent, count_indent, indent_changes;
+            double indent_changes_level;
+            int probability_change, probability, probability_more_less;
 
-            int probability_change = Form1.rnd_org.Next(probability_min, probability_max);
-            int probability = Form1.rnd_org.Next(1, 100);
+            MatchCollection  match_indent;
+
+
+            
 
             string line = strReader.ReadLine();
             while (line != null)
@@ -160,17 +177,135 @@ namespace Pattern_generator
                     //string[] indent_definition = indent_numbers.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (line.Contains("margin-bottom") || line.Contains("margin-top") || line.Contains("padding-bottom") || line.Contains("padding-top"))
                     {
-                        int.TryParse(Regex.Match(line, @"-?\d+").Value, out ident);
+                        if (int.TryParse(Regex.Match(line, @"-?\d+").Value, out ident) && ident > 0)
+                        {
+                            probability_change = Form1.rnd_org.Next(probability_min, probability_max);
+                            probability = Form1.rnd_org.Next(1, 100);
+                            if (probability < probability_change)
+                            {
+                                probability_more_less = Form1.rnd_org.Next(-100, 100);
+                                if (probability_more_less >= 0)
+                                {
+                                    indent_changes_level = Math.Ceiling((100 + (double)percent_changes) * (double)ident / 100);
+                                    indent_changes = Form1.rnd_org.Next(ident, (int)indent_changes_level);
+                                    line = line.Replace(ident.ToString(), indent_changes.ToString());
+                                }
+                                else
+                                {
+                                    indent_changes_level = Math.Ceiling((100 - (double)percent_changes) * (double)ident / 100);
+                                    if ((int)indent_changes_level < 0)
+                                    {
+                                        indent_changes = Form1.rnd_org.Next(0, ident);
+                                    }
+                                    else
+                                    {
+                                        indent_changes = Form1.rnd_org.Next((int)indent_changes_level, ident);
+                                    }
+                                    line = line.Replace(ident.ToString(), indent_changes.ToString());
+                                }
+                            }
+                        }
                     }
-                    string aaa = Regex.Match(line, @"[auto]?\d+").Value;
-
-
+                    else
+                    {
+                        match_indent = Regex.Matches(line, @"(auto)|(-?\d+)");
+                        count_indent = match_indent.Count;
+                        switch (count_indent)
+                        {
+                            case 1: case 2:
+                                {
+                                    if (int.TryParse(match_indent[0].Value, out ident) && (ident > 0))
+                                    {
+                                        probability_change = Form1.rnd_org.Next(probability_min, probability_max);
+                                        probability = Form1.rnd_org.Next(1, 100);
+                                        if (probability < probability_change)
+                                        {
+                                            probability_more_less = Form1.rnd_org.Next(-100, 100);
+                                            if (probability_more_less >= 0)
+                                            {
+                                                indent_changes_level = Math.Ceiling((100 + (double)percent_changes) * (double)ident / 100);
+                                                indent_changes = Form1.rnd_org.Next(ident, (int)indent_changes_level);
+                                                line = line.Replace(ident.ToString(), indent_changes.ToString());
+                                            }
+                                            else
+                                            {
+                                                indent_changes_level = Math.Ceiling((100 - (double)percent_changes) * (double)ident / 100);
+                                                if ((int)indent_changes_level < 0)
+                                                {
+                                                    indent_changes = Form1.rnd_org.Next(0, ident);
+                                                }
+                                                else
+                                                {
+                                                    indent_changes = Form1.rnd_org.Next((int)indent_changes_level, ident);
+                                                }
+                                                line = line.Replace(ident.ToString(), indent_changes.ToString());
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            case 3: case 4:
+                                {
+                                    probability_change = Form1.rnd_org.Next(probability_min, probability_max);
+                                    probability = Form1.rnd_org.Next(1, 100);
+                                    probability_more_less = Form1.rnd_org.Next(-100, 100);
+                                    if (probability < probability_change)
+                                    {
+                                        if (int.TryParse(match_indent[0].Value, out top_indent) && (top_indent > 0))
+                                        {
+                                            if (probability_more_less >= 0)
+                                            {
+                                                indent_changes_level = Math.Ceiling((100 + (double)percent_changes) * (double)top_indent / 100);
+                                                indent_changes = Form1.rnd_org.Next(top_indent, (int)indent_changes_level);
+                                                line = line.Replace(top_indent.ToString(), indent_changes.ToString());
+                                            }
+                                            else
+                                            {
+                                                indent_changes_level = Math.Ceiling((100 - (double)percent_changes) * (double)top_indent / 100);
+                                                if ((int)indent_changes_level < 0)
+                                                {
+                                                    indent_changes = Form1.rnd_org.Next(0, top_indent);
+                                                }
+                                                else
+                                                {
+                                                    indent_changes = Form1.rnd_org.Next((int)indent_changes_level, top_indent);
+                                                }
+                                                line = line.Replace(top_indent.ToString(), indent_changes.ToString());
+                                            }
+                                        }
+                                        if (int.TryParse(match_indent[2].Value, out bottom_indent) && (bottom_indent > 0))
+                                        {
+                                            if (probability_more_less >= 0)
+                                            {
+                                                indent_changes_level = Math.Ceiling((100 + (double)percent_changes) * (double)bottom_indent / 100);
+                                                indent_changes = Form1.rnd_org.Next(bottom_indent, (int)indent_changes_level);
+                                                line = line.Replace(bottom_indent.ToString(), indent_changes.ToString());
+                                            }
+                                            else
+                                            {
+                                                indent_changes_level = Math.Ceiling((100 - (double)percent_changes) * (double)bottom_indent / 100);
+                                                if ((int)indent_changes_level < 0)
+                                                {
+                                                    indent_changes = Form1.rnd_org.Next(0, bottom_indent);
+                                                }
+                                                else
+                                                {
+                                                    indent_changes = Form1.rnd_org.Next((int)indent_changes_level, bottom_indent);
+                                                }
+                                                line = line.Replace(bottom_indent.ToString(), indent_changes.ToString());
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                        }
+                    }
                     break;
                 }
                 temp_css_info += line + "\r\n";
                 line = strReader.ReadLine();
             }
-            css_information = temp_css_info;
+            css_information = temp_css_info.Remove(temp_css_info.LastIndexOf("\r\n"), temp_css_info.Length - temp_css_info.LastIndexOf("\r\n"));
             strReader.Close();
         }
 
