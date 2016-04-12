@@ -49,8 +49,12 @@ namespace Pattern_generator
             Match element;
             MatchCollection elements, elements1;
             elements = Regex.Matches(css_information, @"\[FIXED_AREA\](.*)\[/FIXED_AREA\]", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
-            elements1 = Regex.Matches(css_information, @"[^{}]*{[^{}]*}", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
-
+            while (true)
+            {
+                elements1 = Regex.Matches(css_information, @"[^{}]*{
+                                                                    ([^{}]*{[^{}]*})*?
+                                                             [^{}]*}", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace); // RegexOptions.Singleline | RegexOptions.Multiline);
+            }
         }
 
         public void ChoiceColorScheme()
@@ -313,6 +317,14 @@ namespace Pattern_generator
 
         public void SaveCsslDoc(string css_path)
         {
+            Regex fixe_tag = new Regex(@"\r*\n*\s*\[/?FIXED_AREA\]");
+            Regex fixe = new Regex(@"\s*\[FIXED\]\s*");
+            css_information = fixe_tag.Replace(css_information, "");
+            css_information = fixe.Replace(css_information, "");
+            if (css_information.IndexOf("\r\n") == 0)
+            {
+                css_information = css_information.Remove(css_information.IndexOf("\r\n"), 2);
+            }
             File.WriteAllText(css_path, css_information);
         }
 

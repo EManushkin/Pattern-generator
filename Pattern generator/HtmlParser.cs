@@ -184,7 +184,7 @@ namespace Pattern_generator
 
 
 
-        public void InsertInnerWithProbability(int nesting_level, int probability_min, int probability_max, int probability_css_min, int probability_css_max)
+        public void InsertInnerWithProbability(int nesting_level, int probability_min, int probability_max, int probability_css_min, int probability_css_max, int count_css_min, int count_css_max)
         {
             Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
 
@@ -211,7 +211,7 @@ namespace Pattern_generator
                                 probability_css = rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
-                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][2]), 1, 5);
+                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][2]), count_css_min, count_css_max);
                                 }
                             }
                             if (probability_html < probability_inner2)
@@ -221,7 +221,7 @@ namespace Pattern_generator
                                 probability_css = rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
-                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][1]), 1, 5);
+                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][1]), count_css_min, count_css_max);
                                 }
                             }
 
@@ -232,7 +232,7 @@ namespace Pattern_generator
                                 probability_css = rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
-                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][0]), 1, 5);
+                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][0]), count_css_min, count_css_max);
                                 }
                             }
                             j++;
@@ -254,7 +254,7 @@ namespace Pattern_generator
                                 probability_css = rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
-                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][1]), 1, 5);
+                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][1]), count_css_min, count_css_max);
                                 }
                             }
 
@@ -265,7 +265,7 @@ namespace Pattern_generator
                                 probability_css = rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
-                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][0]), 1, 5);
+                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][0]), count_css_min, count_css_max);
                                 }
                             }
                             j++;
@@ -288,7 +288,7 @@ namespace Pattern_generator
                                 probability_css = rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
-                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][0]), 1, 5);
+                                    CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][0]), count_css_min, count_css_max);
                                 }
                             }
                             j++;
@@ -361,7 +361,7 @@ namespace Pattern_generator
 
 
 
-        public void InsertOuterWithProbability(int probability_min, int probability_max, int probability_css_min, int probability_css_max)
+        public void InsertOuterWithProbability(int probability_min, int probability_max, int probability_css_min, int probability_css_max, int count_css_min, int count_css_max)
         {
             Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
 
@@ -382,7 +382,7 @@ namespace Pattern_generator
                     probability_css = rnd_org.Next(1, 100);
                     if (probability_css < probability_css_rule)
                     {
-                        CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.outer_classes[rand_index_outer_classes][0]), 1, 5);
+                        CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.outer_classes[rand_index_outer_classes][0]), count_css_min, count_css_max);
                     }
                 }
                 j++;
@@ -498,6 +498,8 @@ namespace Pattern_generator
 
         public void SaveHtmlDoc(string html_path)
         {
+            Regex fixe = new Regex(@"\s*\[FIXED\]\s*");
+            html_doc.DocumentNode.InnerHtml = fixe.Replace(html_doc.DocumentNode.InnerHtml, "");
             html_doc.Save(html_path);
         }
     }

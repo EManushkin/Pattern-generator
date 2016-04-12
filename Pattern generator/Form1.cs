@@ -59,7 +59,7 @@ namespace Pattern_generator
             try
             {
                 DateTime now = GetDate.GetNetworkTime();
-                DateTime work = new DateTime(2016, 4, 11, 23, 59, 59);
+                DateTime work = new DateTime(2016, 4, 12, 23, 59, 59);
                 if (now > work)
                 {
                     new Thread(() => { Thread.Sleep(2000); Application.Exit(); }).Start();
@@ -140,8 +140,8 @@ namespace Pattern_generator
             CssParser style_css = new CssParser(style_path);
 
             index_html.ParseTags(tags);
-            index_html.InsertInnerWithProbability(int.Parse(this.УстановкаЧислаВложенности.Text), int.Parse(this.вероятностьInnerMin.Text), int.Parse(this.вероятностьInnerMax.Text), int.Parse(this.вероятностьСозданияПравилMin.Text), int.Parse(this.вероятностьСозданияПравилMax.Text));
-            index_html.InsertOuterWithProbability(int.Parse(this.вероятностьOuterMin.Text), int.Parse(this.вероятностьOuterMax.Text), int.Parse(this.вероятностьСозданияПравилMin.Text), int.Parse(this.вероятностьСозданияПравилMax.Text));
+            index_html.InsertInnerWithProbability(int.Parse(this.УстановкаЧислаВложенности.Text), int.Parse(this.вероятностьInnerMin.Text), int.Parse(this.вероятностьInnerMax.Text), int.Parse(this.вероятностьСозданияПравилMin.Text), int.Parse(this.вероятностьСозданияПравилMax.Text), int.Parse(this.количествоСвойствCSSInnerOuterMin.Text), int.Parse(this.количествоСвойствCSSInnerOuterMax.Text));
+            index_html.InsertOuterWithProbability(int.Parse(this.вероятностьOuterMin.Text), int.Parse(this.вероятностьOuterMax.Text), int.Parse(this.вероятностьСозданияПравилMin.Text), int.Parse(this.вероятностьСозданияПравилMax.Text), int.Parse(this.количествоСвойствCSSInnerOuterMin.Text), int.Parse(this.количествоСвойствCSSInnerOuterMax.Text));
 
             index_html.SaveHtmlDoc(index_save_path);
             style_css.SaveCsslDoc(style_save_path);
@@ -232,8 +232,8 @@ namespace Pattern_generator
             if (this.включитьInnerOuter.Checked == true)
             {
                 index_html.ParseTags(tags);
-                index_html.InsertInnerWithProbability(int.Parse(this.УстановкаЧислаВложенности.Text), int.Parse(this.вероятностьInnerMin.Text), int.Parse(this.вероятностьInnerMax.Text), int.Parse(this.вероятностьСозданияПравилMin.Text), int.Parse(this.вероятностьСозданияПравилMax.Text));
-                index_html.InsertOuterWithProbability(int.Parse(this.вероятностьOuterMin.Text), int.Parse(this.вероятностьOuterMax.Text), int.Parse(this.вероятностьСозданияПравилMin.Text), int.Parse(this.вероятностьСозданияПравилMax.Text));
+                index_html.InsertInnerWithProbability(int.Parse(this.УстановкаЧислаВложенности.Text), int.Parse(this.вероятностьInnerMin.Text), int.Parse(this.вероятностьInnerMax.Text), int.Parse(this.вероятностьСозданияПравилMin.Text), int.Parse(this.вероятностьСозданияПравилMax.Text), int.Parse(this.количествоСвойствCSSInnerOuterMin.Text), int.Parse(this.количествоСвойствCSSInnerOuterMax.Text));
+                index_html.InsertOuterWithProbability(int.Parse(this.вероятностьOuterMin.Text), int.Parse(this.вероятностьOuterMax.Text), int.Parse(this.вероятностьСозданияПравилMin.Text), int.Parse(this.вероятностьСозданияПравилMax.Text), int.Parse(this.количествоСвойствCSSInnerOuterMin.Text), int.Parse(this.количествоСвойствCSSInnerOuterMax.Text));
                 textBox4.Text += "Вставка иннеров и аутеров в " + RandSelectTemplate.Text + " прошла успешно." + Environment.NewLine;
                 textBox4.Text += "При добавлении иннеров и аутеров созданы соответствующие правила в css." + Environment.NewLine;
             }
@@ -261,8 +261,6 @@ namespace Pattern_generator
             {
                 style_css.ChoiceColorScheme();
                 textBox4.Text += "Выбор цветовых схем " + RandSelectTemplate.Text + " произведен." + Environment.NewLine;
-                style_css.ContrastTextColor();
-                textBox4.Text += "Определен контрастный цвет текста для заданного фона." + Environment.NewLine;
             }
 
             if (this.включитьРандомизацияВертОтступов.Checked == true)
@@ -277,25 +275,13 @@ namespace Pattern_generator
                 textBox4.Text += "Выбор набора шрифтов для всего шаблона " + RandSelectTemplate.Text + " произведен." + Environment.NewLine;
             }
 
+            style_css.ContrastTextColor();
+            textBox4.Text += "Определен контрастный цвет текста для заданного фона." + Environment.NewLine;
 
             index_html.SaveHtmlDoc(index_save_path);
             style_css.SaveCsslDoc(style_save_path);
-            textBox4.Text += "Все изменения в " + RandSelectTemplate.Text + " сохранены!" + Environment.NewLine;
+            textBox4.Text += "Все метки [FIXED] в " + RandSelectTemplate.Text + " удалены, все изменения сохранены!" + Environment.NewLine;
 
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
-            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
-
-            CssParser style_css = new CssParser(style_path);
-
-
-            //style_css.AddNewRule("class-INNER");
-
-            style_css.SaveCsslDoc(style_save_path);
-            textBox4.Text = "Start with CSS";
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -335,6 +321,20 @@ namespace Pattern_generator
             style_css.RandVerticalMarginPadding(int.Parse(this.вероятностьИзмененияОтступовMin.Text), int.Parse(this.вероятностьИзмененияОтступовMax.Text), int.Parse(this.процентИзмененияMax.Text));
             style_css.SaveCsslDoc(style_save_path);
             textBox4.Text += "Рандомизация вертикальных внешних и внутренних отступов " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            CssParser style_css = new CssParser(style_path);
+
+
+            style_css.ParseSelectors();
+
+            style_css.SaveCsslDoc(style_save_path);
+            textBox4.Text = "Start with CSS";
         }
     }
 }

@@ -66,6 +66,9 @@ namespace Pattern_generator
             this.вероятностьСозданияОтдельныхCssПравил = new System.Windows.Forms.ToolStripMenuItem();
             this.вероятностьСозданияПравилMin = new System.Windows.Forms.ToolStripTextBox();
             this.вероятностьСозданияПравилMax = new System.Windows.Forms.ToolStripTextBox();
+            this.количествоБезопасныхСвойствCSSInnerOuter = new System.Windows.Forms.ToolStripMenuItem();
+            this.количествоСвойствCSSInnerOuterMin = new System.Windows.Forms.ToolStripTextBox();
+            this.количествоСвойствCSSInnerOuterMax = new System.Windows.Forms.ToolStripTextBox();
             this.menuВыборЦветовыхСхем = new System.Windows.Forms.ToolStripMenuItem();
             this.включитьВыборЦветовыхСхем = new System.Windows.Forms.ToolStripMenuItem();
             this.отключитьВыборЦветовыхСхем = new System.Windows.Forms.ToolStripMenuItem();
@@ -120,7 +123,6 @@ namespace Pattern_generator
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
@@ -185,7 +187,7 @@ namespace Pattern_generator
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(29, 259);
+            this.button1.Location = new System.Drawing.Point(29, 217);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(163, 38);
             this.button1.TabIndex = 8;
@@ -198,12 +200,12 @@ namespace Pattern_generator
             this.textBox4.Location = new System.Drawing.Point(406, 35);
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(413, 438);
+            this.textBox4.Size = new System.Drawing.Size(413, 396);
             this.textBox4.TabIndex = 9;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(29, 303);
+            this.button3.Location = new System.Drawing.Point(29, 261);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(163, 38);
             this.button3.TabIndex = 12;
@@ -292,7 +294,8 @@ namespace Pattern_generator
             this.вероятностьВставкиInner,
             this.вероятностьВставкиOuter,
             this.toolStripSeparator3,
-            this.вероятностьСозданияОтдельныхCssПравил});
+            this.вероятностьСозданияОтдельныхCssПравил,
+            this.количествоБезопасныхСвойствCSSInnerOuter});
             this.menuInnerOuter.Name = "menuInnerOuter";
             this.menuInnerOuter.Size = new System.Drawing.Size(296, 22);
             this.menuInnerOuter.Text = "Создание inners, outers";
@@ -419,6 +422,29 @@ namespace Pattern_generator
             this.вероятностьСозданияПравилMax.Text = "60";
             this.вероятностьСозданияПравилMax.ToolTipText = "граница \"до\", вводить целое число от 2 до 100";
             // 
+            // количествоБезопасныхСвойствCSSInnerOuter
+            // 
+            this.количествоБезопасныхСвойствCSSInnerOuter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.количествоСвойствCSSInnerOuterMin,
+            this.количествоСвойствCSSInnerOuterMax});
+            this.количествоБезопасныхСвойствCSSInnerOuter.Name = "количествоБезопасныхСвойствCSSInnerOuter";
+            this.количествоБезопасныхСвойствCSSInnerOuter.Size = new System.Drawing.Size(335, 22);
+            this.количествоБезопасныхСвойствCSSInnerOuter.Text = "Количество безопасных свойств css";
+            // 
+            // количествоСвойствCSSInnerOuterMin
+            // 
+            this.количествоСвойствCSSInnerOuterMin.Name = "количествоСвойствCSSInnerOuterMin";
+            this.количествоСвойствCSSInnerOuterMin.Size = new System.Drawing.Size(100, 23);
+            this.количествоСвойствCSSInnerOuterMin.Text = "1";
+            this.количествоСвойствCSSInnerOuterMin.ToolTipText = "Минимальное количество безопасных свойств css в значении атрибута";
+            // 
+            // количествоСвойствCSSInnerOuterMax
+            // 
+            this.количествоСвойствCSSInnerOuterMax.Name = "количествоСвойствCSSInnerOuterMax";
+            this.количествоСвойствCSSInnerOuterMax.Size = new System.Drawing.Size(100, 23);
+            this.количествоСвойствCSSInnerOuterMax.Text = "5";
+            this.количествоСвойствCSSInnerOuterMax.ToolTipText = "Максимальное количество безопасных свойств css в значении атрибута";
+            // 
             // menuВыборЦветовыхСхем
             // 
             this.menuВыборЦветовыхСхем.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -433,14 +459,14 @@ namespace Pattern_generator
             this.включитьВыборЦветовыхСхем.Checked = true;
             this.включитьВыборЦветовыхСхем.CheckState = System.Windows.Forms.CheckState.Checked;
             this.включитьВыборЦветовыхСхем.Name = "включитьВыборЦветовыхСхем";
-            this.включитьВыборЦветовыхСхем.Size = new System.Drawing.Size(152, 22);
+            this.включитьВыборЦветовыхСхем.Size = new System.Drawing.Size(136, 22);
             this.включитьВыборЦветовыхСхем.Text = "Включить";
             this.включитьВыборЦветовыхСхем.Click += new System.EventHandler(this.включитьВыборЦветовыхСхем_Click);
             // 
             // отключитьВыборЦветовыхСхем
             // 
             this.отключитьВыборЦветовыхСхем.Name = "отключитьВыборЦветовыхСхем";
-            this.отключитьВыборЦветовыхСхем.Size = new System.Drawing.Size(152, 22);
+            this.отключитьВыборЦветовыхСхем.Size = new System.Drawing.Size(136, 22);
             this.отключитьВыборЦветовыхСхем.Text = "Отключить";
             this.отключитьВыборЦветовыхСхем.Click += new System.EventHandler(this.отключитьВыборЦветовыхСхем_Click);
             // 
@@ -830,7 +856,7 @@ namespace Pattern_generator
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(29, 347);
+            this.button2.Location = new System.Drawing.Point(29, 305);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(163, 38);
             this.button2.TabIndex = 15;
@@ -840,7 +866,7 @@ namespace Pattern_generator
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(29, 391);
+            this.button4.Location = new System.Drawing.Point(29, 349);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(163, 38);
             this.button4.TabIndex = 16;
@@ -850,7 +876,7 @@ namespace Pattern_generator
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(29, 435);
+            this.button5.Location = new System.Drawing.Point(29, 393);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(163, 38);
             this.button5.TabIndex = 17;
@@ -861,28 +887,18 @@ namespace Pattern_generator
             // button6
             // 
             this.button6.BackColor = System.Drawing.Color.Green;
-            this.button6.Font = new System.Drawing.Font("Viner Hand ITC", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(29, 158);
+            this.button6.Font = new System.Drawing.Font("Viner Hand ITC", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button6.Location = new System.Drawing.Point(29, 160);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(361, 38);
             this.button6.TabIndex = 18;
-            this.button6.Text = "Работа с файлом \"index.html\"";
+            this.button6.Text = "Работа над шаблоном";
             this.button6.UseVisualStyleBackColor = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(29, 207);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(361, 38);
-            this.button7.TabIndex = 19;
-            this.button7.Text = "Работа с файлом \"style.css\"";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(227, 435);
+            this.button8.Location = new System.Drawing.Point(227, 393);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(163, 38);
             this.button8.TabIndex = 24;
@@ -890,15 +906,16 @@ namespace Pattern_generator
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(227, 391);
+            this.button9.Location = new System.Drawing.Point(227, 349);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(163, 38);
             this.button9.TabIndex = 23;
             this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(227, 347);
+            this.button10.Location = new System.Drawing.Point(227, 305);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(163, 38);
             this.button10.TabIndex = 22;
@@ -908,7 +925,7 @@ namespace Pattern_generator
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(227, 303);
+            this.button11.Location = new System.Drawing.Point(227, 261);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(163, 38);
             this.button11.TabIndex = 21;
@@ -918,7 +935,7 @@ namespace Pattern_generator
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(227, 259);
+            this.button12.Location = new System.Drawing.Point(227, 217);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(163, 38);
             this.button12.TabIndex = 20;
@@ -930,13 +947,12 @@ namespace Pattern_generator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(851, 496);
+            this.ClientSize = new System.Drawing.Size(851, 453);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.button12);
-            this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -1211,12 +1227,14 @@ namespace Pattern_generator
         private Button button4;
         private Button button5;
         private Button button6;
-        private Button button7;
         private Button button8;
         private Button button9;
         private Button button10;
         private Button button11;
         private Button button12;
+        private ToolStripMenuItem количествоБезопасныхСвойствCSSInnerOuter;
+        private ToolStripTextBox количествоСвойствCSSInnerOuterMin;
+        private ToolStripTextBox количествоСвойствCSSInnerOuterMax;
     }
 }
 
