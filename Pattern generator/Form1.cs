@@ -260,6 +260,10 @@ namespace Pattern_generator
                 textBox4.Text += "Выбор цветовых схем " + RandSelectTemplate.Text + " произведен." + Environment.NewLine;
             }
 
+            style_css.ContrastTextColor();
+            textBox4.Text += "Определен контрастный цвет текста для заданного фона." + Environment.NewLine;
+
+
             if (this.включитьРандомизацияВертОтступов.Checked == true)
             {
                 style_css.RandVerticalMarginPadding(int.Parse(this.вероятностьИзмененияОтступовMin.Text), int.Parse(this.вероятностьИзмененияОтступовMax.Text), int.Parse(this.процентИзмененияMax.Text));
@@ -285,9 +289,6 @@ namespace Pattern_generator
                 textBox4.Text += "Рандомная простановка комментариев в файле css " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
             }
 
-
-            style_css.ContrastTextColor();
-            textBox4.Text += "Определен контрастный цвет текста для заданного фона." + Environment.NewLine;
 
             index_html.SaveHtmlDoc(index_save_path);
             style_css.SaveCsslDoc(style_save_path);
