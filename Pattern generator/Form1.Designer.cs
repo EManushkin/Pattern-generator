@@ -481,6 +481,8 @@ namespace Pattern_generator
             // 
             // включитьРандомизацияЧастейКода
             // 
+            this.включитьРандомизацияЧастейКода.Checked = true;
+            this.включитьРандомизацияЧастейКода.CheckState = System.Windows.Forms.CheckState.Checked;
             this.включитьРандомизацияЧастейКода.Name = "включитьРандомизацияЧастейКода";
             this.включитьРандомизацияЧастейКода.Size = new System.Drawing.Size(136, 22);
             this.включитьРандомизацияЧастейКода.Text = "Включить";
@@ -488,8 +490,6 @@ namespace Pattern_generator
             // 
             // отключитьРандомизацияЧастейКода
             // 
-            this.отключитьРандомизацияЧастейКода.Checked = true;
-            this.отключитьРандомизацияЧастейКода.CheckState = System.Windows.Forms.CheckState.Checked;
             this.отключитьРандомизацияЧастейКода.Name = "отключитьРандомизацияЧастейКода";
             this.отключитьРандомизацияЧастейКода.Size = new System.Drawing.Size(136, 22);
             this.отключитьРандомизацияЧастейКода.Text = "Отключить";
@@ -647,6 +647,8 @@ namespace Pattern_generator
             // 
             // включитьПростановкаКомментариев
             // 
+            this.включитьПростановкаКомментариев.Checked = true;
+            this.включитьПростановкаКомментариев.CheckState = System.Windows.Forms.CheckState.Checked;
             this.включитьПростановкаКомментариев.Name = "включитьПростановкаКомментариев";
             this.включитьПростановкаКомментариев.Size = new System.Drawing.Size(271, 22);
             this.включитьПростановкаКомментариев.Text = "Включить";
@@ -654,8 +656,6 @@ namespace Pattern_generator
             // 
             // отключитьПростановкаКомментариев
             // 
-            this.отключитьПростановкаКомментариев.Checked = true;
-            this.отключитьПростановкаКомментариев.CheckState = System.Windows.Forms.CheckState.Checked;
             this.отключитьПростановкаКомментариев.Name = "отключитьПростановкаКомментариев";
             this.отключитьПростановкаКомментариев.Size = new System.Drawing.Size(271, 22);
             this.отключитьПростановкаКомментариев.Text = "Отключить";
@@ -902,7 +902,9 @@ namespace Pattern_generator
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(163, 38);
             this.button8.TabIndex = 24;
+            this.button8.Text = "Рандомная простановка комментариев в файле css";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button9
             // 
@@ -910,6 +912,7 @@ namespace Pattern_generator
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(163, 38);
             this.button9.TabIndex = 23;
+            this.button9.Text = "Рандомизация частей css кода";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 

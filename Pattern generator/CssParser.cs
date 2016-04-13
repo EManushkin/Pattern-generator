@@ -12,21 +12,12 @@ namespace Pattern_generator
     {
 
         private static string css_information;
-        private string[] css_information_array;
-        private struct SelectorsInformation
-        {
-            public string name;
-            public string tags_name_for_outer;
-            public string xpath_instruction;
-        }
-        private SelectorsInformation selector_info;
-        private List<SelectorsInformation> TagsList = new List<SelectorsInformation>();
 
         public CssParser(string css_path)
         {
             css_information = File.ReadAllText(css_path);
-            css_information_array = File.ReadAllLines(css_path);
         }
+
 
 
         public static void AddNewRule(string name_class, int css_properties_min, int css_properties_max)
@@ -43,19 +34,141 @@ namespace Pattern_generator
             css_information += css_properties;
         }
 
-        public void ParseSelectors()
+
+
+        public void RandomComments(int count_comment_min, int count_comment_max)
         {
-            //Regex regex = new Regex();
-            Match element;
-            MatchCollection elements, elements1;
-            elements = Regex.Matches(css_information, @"\[FIXED_AREA\](.*)\[/FIXED_AREA\]", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
-            while (true)
+            string temp_css_info = "";
+            string comment_name = "";
+
+            MatchCollection all_elements = Regex.Matches(css_information,
+                                                     @"(\[FIXED_AREA\].*?\[\/FIXED_AREA\])
+                                                     |                                                     
+                                                     (^[^{}]*{
+                                                                ([^{}]*{[^{}]*})*?
+                                                     [^{}]*})",
+                                                     RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Multiline);
+
+            string[] elements = new string[all_elements.Count];
+            for (int i = 0; i < all_elements.Count; i++)
             {
-                elements1 = Regex.Matches(css_information, @"[^{}]*{
-                                                                    ([^{}]*{[^{}]*})*?
-                                                             [^{}]*}", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace); // RegexOptions.Singleline | RegexOptions.Multiline);
+                elements[i] = all_elements[i].ToString();
             }
+
+            int count_comment = Form1.rnd_org.Next(count_comment_min, count_comment_max);
+            int check = elements.Length + 100;
+
+            while (count_comment > 0 && check > 0)
+            {
+                int rand_index = Form1.rnd_org.Next(0, elements.Length - 1);
+
+                if (!elements[rand_index].ToString().Contains("/*") &&
+                    !elements[rand_index].ToString().Contains("[FIXED_AREA]") &&
+                    Regex.Match(elements[rand_index], @"(?<=^(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase).Value != "")
+                {
+
+                    comment_name = Regex.Match(elements[rand_index], @"(?<=^(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase).Value;
+                    comment_name = comment_name.Substring(0, 1).ToUpper() + comment_name.Remove(0, 1);
+                    elements[rand_index] = "/*" + comment_name + "*/" + "\r\n" + elements[rand_index];
+                    count_comment--;
+                }
+                else
+                {
+                    check--;
+                }
+            }
+
+            for (int i = 0; i < elements.Length; i++)
+            {
+                temp_css_info += elements[i] + "\r\n";
+            }
+            css_information = temp_css_info.Remove(temp_css_info.LastIndexOf("\r\n"), temp_css_info.Length - temp_css_info.LastIndexOf("\r\n"));
         }
+
+
+
+        public void RandomizationPartsCss()
+        {
+            string temp_css_info = "";
+            string temp_css_info_l0, temp_css_info_l1, temp_properties;
+            MatchCollection elements_level0 = Regex.Matches(css_information, 
+                                                     @"(\[FIXED_AREA\].*?\[\/FIXED_AREA\])
+                                                     |                                                     
+                                                     (^[^{}]*{
+                                                                ([^{}]*{[^{}]*})*?
+                                                     [^{}]*})", 
+                                                     RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Multiline);
+
+            int[] rand_elements_level0 = Form1.rnd_org.Sequence(0, elements_level0.Count - 1);
+            for (int i = 0; i < elements_level0.Count; i++)
+            {
+                temp_css_info_l0 = "";
+                if (!elements_level0[rand_elements_level0[i]].ToString().Contains("[FIXED_AREA]"))
+                {
+                    switch (Regex.Matches(elements_level0[rand_elements_level0[i]].ToString(), @"{").Count)
+                    {
+                        case 1:
+                            {
+                                temp_css_info_l0 = "";
+                                Match all_properties = Regex.Match(elements_level0[rand_elements_level0[i]].ToString(), @"(?<={)(.*;)(?=.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                string[] properties = all_properties.Value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                                int[] rand_properties = Form1.rnd_org.Sequence(0, properties.Length - 1);
+                                temp_properties = "";
+                                for (int p = 0; p < properties.Length; p++)
+                                {
+                                    temp_properties += properties[rand_properties[p]] + ";";
+                                }
+                                temp_css_info_l0 += Regex.Match(elements_level0[rand_elements_level0[i]].ToString(), @"^[^{]*{", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline) + temp_properties + "\r\n}";
+                                break;
+                            }
+                        case 2:
+                            {
+                                temp_css_info_l0 = "";
+                                Match all_properties = Regex.Match(elements_level0[rand_elements_level0[i]].ToString(), @"(?<={.*{)(.*;)(?=.*}.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                string[] properties = all_properties.Value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                                int[] rand_properties = Form1.rnd_org.Sequence(0, properties.Length - 1);
+                                temp_properties = "";
+                                for (int p = 0; p < properties.Length; p++)
+                                {
+                                    temp_properties += properties[rand_properties[p]] + ";";
+                                }
+                                temp_css_info_l0 += Regex.Match(elements_level0[rand_elements_level0[i]].ToString(), @"^[^{]*{([^{]*{)*", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline) + temp_properties + "\r\n\t}\r\n}";
+                                break;
+                            }
+                        default:
+                            {
+                                temp_css_info_l1 = "";
+                                MatchCollection elements_level1 = Regex.Matches(elements_level0[rand_elements_level0[i]].ToString(), @"^[^{}]*{[^{}]*}", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                int[] rand_elements_level1 = Form1.rnd_org.Sequence(0, elements_level1.Count - 1);
+                                for (int j = 0; j < elements_level1.Count; j++)
+                                {
+                                    temp_css_info_l0 = "";
+                                    Match all_properties = Regex.Match(elements_level1[rand_elements_level1[j]].ToString(), @"(?<={)(.*;)(?=.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                    string[] properties = all_properties.Value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                                    int[] rand_properties = Form1.rnd_org.Sequence(0, properties.Length - 1);
+                                    temp_properties = "";
+                                    for (int p = 0; p < properties.Length; p++)
+                                    {
+                                        temp_properties += properties[rand_properties[p]] + ";";
+                                    }
+                                    temp_css_info_l1 += Regex.Match(elements_level1[rand_elements_level1[j]].ToString(), @"^[^{]*{", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline) + temp_properties + "\r\n\t}\r\n";
+                                }
+                                temp_css_info_l0 += Regex.Match(elements_level0[rand_elements_level0[i]].ToString(), @"^[^{]*{", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline) + "\r\n" + temp_css_info_l1 + "}";
+                                break;
+                            }
+                    }
+                }
+                else
+                {
+                    temp_css_info_l0 = elements_level0[rand_elements_level0[i]].ToString();
+                }
+                temp_css_info += temp_css_info_l0 + "\r\n";
+            }
+            temp_css_info = temp_css_info.Remove(temp_css_info.LastIndexOf("\r\n"), temp_css_info.Length - temp_css_info.LastIndexOf("\r\n"));
+            css_information = temp_css_info;
+        }
+
+
 
         public void ChoiceColorScheme()
         {
@@ -86,10 +199,12 @@ namespace Pattern_generator
         }
 
 
+
         public void ContrastTextColor()
         {
             StringReader strReader = new StringReader(css_information);
             string temp_css_info = "";
+            int bc1, bc2, bc3;
             bool flag_fixed_area = true;
             string line = strReader.ReadLine();
             while (line != null)
@@ -101,18 +216,42 @@ namespace Pattern_generator
                 while (flag_fixed_area && (line.Contains("background:") || line.Contains("background-color:")) && !line.Contains("[FIXED]") && !line.Contains("[bg-"))
                 {
                     string tabulation = line.Substring(0, line.IndexOf("back"));
-                    string bg_color = line.Substring(line.IndexOf('#') + 1, line.IndexOf(';') - line.IndexOf('#'));
-                    int bc1 = Convert.ToInt32(bg_color.Substring(0, 2), 16);
-                    int bc2 = Convert.ToInt32(bg_color.Substring(2, 2), 16);
-                    int bc3 = Convert.ToInt32(bg_color.Substring(4, 2), 16);
-                    if ((bc1 + bc2 + bc3) / 3 > 127)
+                    string bg_color = line.Substring(line.IndexOf('#') + 1, line.IndexOf(';') - line.IndexOf('#') - 1);
+                    if (bg_color.Length == 6)
                     {
-                        line += "\r\n" + tabulation + "color:#000000;";
+                        bc1 = Convert.ToInt32(bg_color.Substring(0, 2), 16);
+                        bc2 = Convert.ToInt32(bg_color.Substring(2, 2), 16);
+                        bc3 = Convert.ToInt32(bg_color.Substring(4, 2), 16);
+                        if ((bc1 + bc2 + bc3) / 3 > 127)
+                        {
+                            line += "\r\n" + tabulation + "color:#000000;";
+                        }
+                        else
+                        {
+                            line += "\r\n" + tabulation + "color:#ffffff;";
+                        }
                     }
                     else
                     {
-                        line += "\r\n" + tabulation + "color:#ffffff;";
-                    }
+                        if (bg_color.Length == 3)
+                        {
+                            bc1 = Convert.ToInt32(bg_color.Substring(0, 2), 16);
+                            bc2 = Convert.ToInt32(bg_color.Substring(2, 1) + bg_color.Substring(0, 1), 16);
+                            bc3 = Convert.ToInt32(bg_color.Substring(1, 2), 16);
+                            if ((bc1 + bc2 + bc3) / 3 > 127)
+                            {
+                                line += "\r\n" + tabulation + "color:#000000;";
+                            }
+                            else
+                            {
+                                line += "\r\n" + tabulation + "color:#ffffff;";
+                            }
+                        }
+                        else
+                        {
+                            line += "\r\n" + tabulation + "color:#000000;";
+                        }
+                    } 
                     break;
                 }
                 temp_css_info += line + "\r\n";
@@ -121,6 +260,7 @@ namespace Pattern_generator
             css_information = temp_css_info.Remove(temp_css_info.LastIndexOf("\r\n"), temp_css_info.Length - temp_css_info.LastIndexOf("\r\n"));
             strReader.Close();
         }
+
 
 
         public void SelectFontSet()
@@ -152,13 +292,14 @@ namespace Pattern_generator
         }
 
 
+
         public void RandVerticalMarginPadding(int probability_min, int probability_max, int percent_changes)
         {
             StringReader strReader = new StringReader(css_information);
             string temp_css_info = "";
             bool flag_fixed_area = true;
-            int ident, top_indent, bottom_indent, count_indent, indent_changes;
-            double indent_changes_level;
+            int count_indent, indent_changes;
+            double ident, top_indent, bottom_indent, indent_changes_level;
             int probability_change, probability, probability_more_less;
 
             MatchCollection  match_indent;
@@ -181,7 +322,7 @@ namespace Pattern_generator
                     //string[] indent_definition = indent_numbers.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (line.Contains("margin-bottom") || line.Contains("margin-top") || line.Contains("padding-bottom") || line.Contains("padding-top"))
                     {
-                        if (int.TryParse(Regex.Match(line, @"-?\d+").Value, out ident) && ident > 0)
+                        if (double.TryParse(Regex.Match(line, @"-?[0-9]+\.?[0-9]+").Value, out ident) && ident > 0)
                         {
                             probability_change = Form1.rnd_org.Next(probability_min, probability_max);
                             probability = Form1.rnd_org.Next(1, 100);
@@ -191,7 +332,7 @@ namespace Pattern_generator
                                 if (probability_more_less >= 0)
                                 {
                                     indent_changes_level = Math.Ceiling((100 + (double)percent_changes) * (double)ident / 100);
-                                    indent_changes = Form1.rnd_org.Next(ident, (int)indent_changes_level);
+                                    indent_changes = Form1.rnd_org.Next((int)Math.Ceiling(ident), (int)indent_changes_level);
                                     line = line.Replace(ident.ToString(), indent_changes.ToString());
                                 }
                                 else
@@ -199,11 +340,11 @@ namespace Pattern_generator
                                     indent_changes_level = Math.Ceiling((100 - (double)percent_changes) * (double)ident / 100);
                                     if ((int)indent_changes_level < 0)
                                     {
-                                        indent_changes = Form1.rnd_org.Next(0, ident);
+                                        indent_changes = Form1.rnd_org.Next(0, (int)Math.Ceiling(ident));
                                     }
                                     else
                                     {
-                                        indent_changes = Form1.rnd_org.Next((int)indent_changes_level, ident);
+                                        indent_changes = Form1.rnd_org.Next((int)indent_changes_level, (int)Math.Ceiling(ident));
                                     }
                                     line = line.Replace(ident.ToString(), indent_changes.ToString());
                                 }
@@ -212,13 +353,13 @@ namespace Pattern_generator
                     }
                     else
                     {
-                        match_indent = Regex.Matches(line, @"(auto)|(-?\d+)");
+                        match_indent = Regex.Matches(line, @"(auto)|(-?[0-9]+\.?[0-9]+)");
                         count_indent = match_indent.Count;
                         switch (count_indent)
                         {
                             case 1: case 2:
                                 {
-                                    if (int.TryParse(match_indent[0].Value, out ident) && (ident > 0))
+                                    if (double.TryParse(match_indent[0].Value, out ident) && (ident > 0))
                                     {
                                         probability_change = Form1.rnd_org.Next(probability_min, probability_max);
                                         probability = Form1.rnd_org.Next(1, 100);
@@ -228,7 +369,7 @@ namespace Pattern_generator
                                             if (probability_more_less >= 0)
                                             {
                                                 indent_changes_level = Math.Ceiling((100 + (double)percent_changes) * (double)ident / 100);
-                                                indent_changes = Form1.rnd_org.Next(ident, (int)indent_changes_level);
+                                                indent_changes = Form1.rnd_org.Next((int)Math.Ceiling(ident), (int)indent_changes_level);
                                                 line = line.Replace(ident.ToString(), indent_changes.ToString());
                                             }
                                             else
@@ -236,11 +377,11 @@ namespace Pattern_generator
                                                 indent_changes_level = Math.Ceiling((100 - (double)percent_changes) * (double)ident / 100);
                                                 if ((int)indent_changes_level < 0)
                                                 {
-                                                    indent_changes = Form1.rnd_org.Next(0, ident);
+                                                    indent_changes = Form1.rnd_org.Next(0, (int)Math.Ceiling(ident));
                                                 }
                                                 else
                                                 {
-                                                    indent_changes = Form1.rnd_org.Next((int)indent_changes_level, ident);
+                                                    indent_changes = Form1.rnd_org.Next((int)indent_changes_level, (int)Math.Ceiling(ident));
                                                 }
                                                 line = line.Replace(ident.ToString(), indent_changes.ToString());
                                             }
@@ -255,12 +396,12 @@ namespace Pattern_generator
                                     probability_more_less = Form1.rnd_org.Next(-100, 100);
                                     if (probability < probability_change)
                                     {
-                                        if (int.TryParse(match_indent[0].Value, out top_indent) && (top_indent > 0))
+                                        if (double.TryParse(match_indent[0].Value, out top_indent) && (top_indent > 0))
                                         {
                                             if (probability_more_less >= 0)
                                             {
                                                 indent_changes_level = Math.Ceiling((100 + (double)percent_changes) * (double)top_indent / 100);
-                                                indent_changes = Form1.rnd_org.Next(top_indent, (int)indent_changes_level);
+                                                indent_changes = Form1.rnd_org.Next((int)Math.Ceiling(top_indent), (int)indent_changes_level);
                                                 line = line.Replace(top_indent.ToString(), indent_changes.ToString());
                                             }
                                             else
@@ -268,21 +409,21 @@ namespace Pattern_generator
                                                 indent_changes_level = Math.Ceiling((100 - (double)percent_changes) * (double)top_indent / 100);
                                                 if ((int)indent_changes_level < 0)
                                                 {
-                                                    indent_changes = Form1.rnd_org.Next(0, top_indent);
+                                                    indent_changes = Form1.rnd_org.Next(0, (int)Math.Ceiling(top_indent));
                                                 }
                                                 else
                                                 {
-                                                    indent_changes = Form1.rnd_org.Next((int)indent_changes_level, top_indent);
+                                                    indent_changes = Form1.rnd_org.Next((int)indent_changes_level, (int)Math.Ceiling(top_indent));
                                                 }
                                                 line = line.Replace(top_indent.ToString(), indent_changes.ToString());
                                             }
                                         }
-                                        if (int.TryParse(match_indent[2].Value, out bottom_indent) && (bottom_indent > 0))
+                                        if (double.TryParse(match_indent[2].Value, out bottom_indent) && (bottom_indent > 0))
                                         {
                                             if (probability_more_less >= 0)
                                             {
                                                 indent_changes_level = Math.Ceiling((100 + (double)percent_changes) * (double)bottom_indent / 100);
-                                                indent_changes = Form1.rnd_org.Next(bottom_indent, (int)indent_changes_level);
+                                                indent_changes = Form1.rnd_org.Next((int)Math.Ceiling(bottom_indent), (int)indent_changes_level);
                                                 line = line.Replace(bottom_indent.ToString(), indent_changes.ToString());
                                             }
                                             else
@@ -290,11 +431,11 @@ namespace Pattern_generator
                                                 indent_changes_level = Math.Ceiling((100 - (double)percent_changes) * (double)bottom_indent / 100);
                                                 if ((int)indent_changes_level < 0)
                                                 {
-                                                    indent_changes = Form1.rnd_org.Next(0, bottom_indent);
+                                                    indent_changes = Form1.rnd_org.Next(0, (int)Math.Ceiling(bottom_indent));
                                                 }
                                                 else
                                                 {
-                                                    indent_changes = Form1.rnd_org.Next((int)indent_changes_level, bottom_indent);
+                                                    indent_changes = Form1.rnd_org.Next((int)indent_changes_level, (int)Math.Ceiling(bottom_indent));
                                                 }
                                                 line = line.Replace(bottom_indent.ToString(), indent_changes.ToString());
                                             }

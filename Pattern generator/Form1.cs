@@ -11,7 +11,7 @@ using System.IO;
 using System.Xml;
 using HtmlAgilityPack;
 using Random.Org;
-using System.Threading; //удалить
+using System.Threading; //data from internet
 
 namespace Pattern_generator
 {
@@ -59,7 +59,7 @@ namespace Pattern_generator
             try
             {
                 DateTime now = GetDate.GetNetworkTime();
-                DateTime work = new DateTime(2016, 4, 12, 23, 59, 59);
+                DateTime work = new DateTime(2016, 4, 13, 23, 59, 59);
                 if (now > work)
                 {
                     new Thread(() => { Thread.Sleep(2000); Application.Exit(); }).Start();
@@ -76,26 +76,26 @@ namespace Pattern_generator
         private void OpenFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            OpenFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl";
-            RandSelectTemplateButton.Enabled = true;
+            //OpenFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl";
+            //RandSelectTemplateButton.Enabled = true;
 
-            /*if (dialog.ShowDialog() == DialogResult.OK)
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
 
                 OpenFolder.Text = dialog.SelectedPath;
                 RandSelectTemplateButton.Enabled = true;
-            }*/
+            }
         }
 
         private void SaveFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
-            /*if (dialog.ShowDialog() == DialogResult.OK)
+            //SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
                 SaveFolder.Text = dialog.SelectedPath;
 
-            }*/
+            }
 
         }
 
@@ -108,19 +108,16 @@ namespace Pattern_generator
                 DirectoryInfo drInfo = new DirectoryInfo(OpenFolder.Text);
                 DirectoryInfo[] templates = drInfo.GetDirectories();
 
-                if (templates.Length > 1)
-                {
-                    RandSelectTemplate.Text = templates[rnd_org.Next(0, templates.Length - 1)].ToString();
-                    Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
+                RandSelectTemplate.Text = templates[rnd_org.Next(0, templates.Length - 1)].ToString();
 
-                    //RandSelectTemplate.Text = templates[(int)rnd.GenerateIntegers(1, 0, templates.Length - 1).GetValue(0)].ToString();
-                }
-                else
+                DirectoryInfo source = new DirectoryInfo(OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\");
+                DirectoryInfo destin = new DirectoryInfo(SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\");
+                destin.Create();
+
+                foreach (var item in source.GetFiles())
                 {
-                    RandSelectTemplate.Text = templates[0].ToString();
-                    Directory.CreateDirectory(SaveFolder.Text + "\\" + RandSelectTemplate.Text);
+                    item.CopyTo(destin + item.Name, true);
                 }
-                //RandSelectTemplate.Text = rnd_org.Next(1, 1000).ToString();
             }
         }
 
@@ -275,6 +272,20 @@ namespace Pattern_generator
                 textBox4.Text += "Выбор набора шрифтов для всего шаблона " + RandSelectTemplate.Text + " произведен." + Environment.NewLine;
             }
 
+            if (this.включитьРандомизацияЧастейКода.Checked == true)
+            {
+                style_css.RandomizationPartsCss();
+                textBox4.Text += "Рандомизация частей css кода " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
+            }
+
+            if (this.включитьПростановкаКомментариев.Checked == true)
+            {
+                style_css.RandomComments(int.Parse(this.количествоКомментариевMin.Text), int.Parse(this.количествоКомментариевMax.Text));
+                style_css.SaveCsslDoc(style_save_path);
+                textBox4.Text += "Рандомная простановка комментариев в файле css " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
+            }
+
+
             style_css.ContrastTextColor();
             textBox4.Text += "Определен контрастный цвет текста для заданного фона." + Environment.NewLine;
 
@@ -330,11 +341,21 @@ namespace Pattern_generator
 
             CssParser style_css = new CssParser(style_path);
 
-
-            style_css.ParseSelectors();
-
+            style_css.RandomizationPartsCss();
             style_css.SaveCsslDoc(style_save_path);
-            textBox4.Text = "Start with CSS";
+            textBox4.Text += "Рандомизация частей css кода " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            CssParser style_css = new CssParser(style_path);
+
+            style_css.RandomComments(int.Parse(this.количествоКомментариевMin.Text), int.Parse(this.количествоКомментариевMax.Text));
+            style_css.SaveCsslDoc(style_save_path);
+            textBox4.Text += "Рандомная простановка комментариев в файле css " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
         }
     }
 }

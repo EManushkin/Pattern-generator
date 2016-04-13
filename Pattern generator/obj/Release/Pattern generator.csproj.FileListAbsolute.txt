@@ -9,3 +9,4 @@ D:\Генератор шаблонов\Project\Pattern generator\Pattern generat
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\obj\Release\Pattern generator.csproj.GenerateResource.Cache
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\obj\Release\Pattern generator.exe
 D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\obj\Release\Pattern generator.pdb
+D:\Генератор шаблонов\Project\Pattern generator\Pattern generator\obj\Release\Pattern generator.csprojResolveAssemblyReference.cache

@@ -104,11 +104,11 @@ namespace Pattern_generator
                         }
                         if ((n.Attributes["id"] == null) && (n.Attributes["class"] != null))
                         {
-                            if (n.Attributes["class"].Value.IndexOf(' ') > 0)
+                            if (n.Attributes["class"].Value.Trim().IndexOf(' ') > 0)
                             {
-                                tags_info.tags_name_for_inner = "<div class=\"" + n.Attributes["class"].Value.Remove(n.Attributes["class"].Value.IndexOf(' ')) + "-INNER\">";
-                                tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["class"].Value.Remove(n.Attributes["class"].Value.IndexOf(' ')) + "-OUTER\">";
-                                tags_info.css_rule_name = n.Attributes["class"].Value.Remove(n.Attributes["class"].Value.IndexOf(' ')) + "-ELEMENT";
+                                tags_info.tags_name_for_inner = "<div class=\"" + n.Attributes["class"].Value.Trim().Remove(n.Attributes["class"].Value.Trim().IndexOf(' ')) + "-INNER\">";
+                                tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["class"].Value.Trim().Remove(n.Attributes["class"].Value.Trim().IndexOf(' ')) + "-OUTER\">";
+                                tags_info.css_rule_name = n.Attributes["class"].Value.Trim().Remove(n.Attributes["class"].Value.Trim().IndexOf(' ')) + "-ELEMENT";
                             }
                             else
                             {
