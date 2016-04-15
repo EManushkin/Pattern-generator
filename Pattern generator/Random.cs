@@ -61,7 +61,7 @@ namespace Random.Org
 
         public int[] Sequence(int min, int max)
         {
-            int[] value = new int [max-min+1];
+            int[] value = new int [max - min + 1];
             if (!UseLocalMode)
             {
                 string url = string.Format(Sequence_Generator, min, max);
@@ -80,7 +80,7 @@ namespace Random.Org
             }
             else
             {
-                for (int i = min; i <= max; i++)
+                for (int i = 0; i <= max; i++)
                 {
                     value[i] = i;
                 }

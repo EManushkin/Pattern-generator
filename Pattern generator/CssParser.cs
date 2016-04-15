@@ -10,7 +10,6 @@ namespace Pattern_generator
 {
     class CssParser
     {
-
         private static string css_information;
 
         public CssParser(string css_path)
@@ -40,6 +39,8 @@ namespace Pattern_generator
         {
             string temp_css_info = "";
             string comment_name = "";
+            string temp_elements_all = "";
+            int where_ins;
 
             MatchCollection all_elements = Regex.Matches(css_information,
                                                      @"(\[FIXED_AREA\].*?\[\/FIXED_AREA\])
@@ -56,25 +57,116 @@ namespace Pattern_generator
             }
 
             int count_comment = Form1.rnd_org.Next(count_comment_min, count_comment_max);
-            int check = elements.Length + 100;
+            int check = elements.Length + 1000;
 
             while (count_comment > 0 && check > 0)
             {
                 int rand_index = Form1.rnd_org.Next(0, elements.Length - 1);
 
-                if (!elements[rand_index].ToString().Contains("/*") &&
-                    !elements[rand_index].ToString().Contains("[FIXED_AREA]") &&
-                    Regex.Match(elements[rand_index], @"(?<=^(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase).Value != "")
+                if (!elements[rand_index].ToString().Contains("[FIXED_AREA]"))
                 {
+                    int count_prop = Regex.Matches(elements[rand_index].ToString(), @"{").Count;
+                    switch (count_prop)
+                    {
+                        case 1:
+                            {
+                                if (!elements[rand_index].ToString().Contains("/*") &&
+                                    Regex.Match(elements[rand_index], @"(?<=^(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase).Value != "")
+                                {
+                                    comment_name = Regex.Match(elements[rand_index], @"(?<=^(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase).Value;
+                                    comment_name = comment_name.Substring(0, 1).ToUpper() + comment_name.Remove(0, 1);
+                                    elements[rand_index] = "/*" + comment_name + "*/" + "\r\n" + elements[rand_index];
+                                    count_comment--;
+                                }
+                                else
+                                {
+                                    check--;
+                                }
+                                break;
+                            }
+                        case 2:
+                            {
+                                where_ins = Form1.rnd_org.Next(1, 100);
+                                if (where_ins >= 70)
+                                {
+                                    if (!elements[rand_index].Remove(0, elements[rand_index].IndexOf('{')).Contains("/*") &&
+                                        Regex.Match(elements[rand_index], @"(?<=^(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase).Value != "")
+                                    {
+                                        comment_name = Regex.Match(elements[rand_index], @"(?<=^(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase).Value;
+                                        comment_name = comment_name.Substring(0, 1).ToUpper() + comment_name.Remove(0, 1);
+                                        elements[rand_index] = "/*" + comment_name + "*/" + "\r\n" + elements[rand_index];
+                                        count_comment--;
+                                    }
+                                    else
+                                    {
+                                        check--;
+                                    }
+                                }
+                                else
+                                {
+                                    Match reg = Regex.Match(elements[rand_index], @"(?<={.*(\.|#))([a-z0-9_-]*)(?=.*}.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
 
-                    comment_name = Regex.Match(elements[rand_index], @"(?<=^(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase).Value;
-                    comment_name = comment_name.Substring(0, 1).ToUpper() + comment_name.Remove(0, 1);
-                    elements[rand_index] = "/*" + comment_name + "*/" + "\r\n" + elements[rand_index];
-                    count_comment--;
-                }
-                else
-                {
-                    check--;
+                                    if (!elements[rand_index].Substring(elements[rand_index].IndexOf('{'), elements[rand_index].IndexOf('}') - elements[rand_index].IndexOf('{')).Contains("/*") &&
+                                            Regex.Match(elements[rand_index], @"(?<={.*(\.|#))([a-z0-9_-]*)(?=.*}.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline).Value != "")
+                                    {
+                                        comment_name = Regex.Match(elements[rand_index], @"(?<={.*(\.|#))([a-z0-9_-]*)(?=.*}.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline).Value;
+                                        comment_name = comment_name.Substring(0, 1).ToUpper() + comment_name.Remove(0, 1);
+                                        elements[rand_index] = elements[rand_index].Substring(0, elements[rand_index].IndexOf('{')) + "\r\n\t/*" + comment_name + "*/" + elements[rand_index].Substring(elements[rand_index].IndexOf('{') + 1, elements[rand_index].Length - 1 - elements[rand_index].IndexOf('{'));
+                                        count_comment--;
+                                    }
+                                    else
+                                    {
+                                        check--;
+                                    }
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                where_ins = Form1.rnd_org.Next(1, 100);
+                                if (where_ins >= 70)
+                                {
+                                    if (!elements[rand_index].Remove(0, elements[rand_index].IndexOf('{')).Contains("/*") &&
+                                        Regex.Match(elements[rand_index], @"(?<=^(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase).Value != "")
+                                    {
+                                        comment_name = Regex.Match(elements[rand_index], @"(?<=^(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase).Value;
+                                        comment_name = comment_name.Substring(0, 1).ToUpper() + comment_name.Remove(0, 1);
+                                        elements[rand_index] = "/*" + comment_name + "*/" + "\r\n" + elements[rand_index];
+                                        count_comment--;
+                                    }
+                                    else
+                                    {
+                                        check--;
+                                    }
+                                }
+                                else
+                                {
+                                    MatchCollection elements_level1 = Regex.Matches(elements[rand_index], @"^[^{}]*{[^{}]*}", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                    int rand_elements_level1 = Form1.rnd_org.Next(0, elements_level1.Count - 1);
+                                    temp_elements_all = "";
+                                    for (int i = 0; i < elements_level1.Count; i++)
+                                    {
+                                        Match aaa = Regex.Match(elements_level1[i].Value.ToString(), @"(?<=(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                        if (i == rand_elements_level1 &&
+                                            !elements_level1[i].Value.Contains("/*") &&
+                                            Regex.Match(elements_level1[i].Value, @"(?<=(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline).Value != "")
+                                        {
+                                            comment_name = Regex.Match(elements_level1[i].Value, @"(?<=(\.|#))([a-z0-9_-]*)", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline).Value;
+                                            comment_name = comment_name.Substring(0, 1).ToUpper() + comment_name.Remove(0, 1);
+                                            temp_elements_all += "\r\n\t/*" + comment_name + "*/" + "\r\n" + elements_level1[i].Value;
+                                            count_comment--;
+                                        }
+                                        else
+                                        {
+                                            temp_elements_all += "\r\n" + elements_level1[i];
+                                            check--;
+                                        }
+                                    }
+                                    elements[rand_index] = elements[rand_index].Substring(0, elements[rand_index].IndexOf('{') + 1) + temp_elements_all + "\r\n}";
+                                }
+                                break;
+                            }
+                    }
                 }
             }
 
@@ -89,8 +181,7 @@ namespace Pattern_generator
 
         public void RandomizationPartsCss()
         {
-            string temp_css_info = "";
-            string temp_css_info_l0, temp_css_info_l1, temp_properties;
+            string temp_css_info, temp_css_info_l0, temp_css_info_l1, temp_properties;
             MatchCollection elements_level0 = Regex.Matches(css_information, 
                                                      @"(\[FIXED_AREA\].*?\[\/FIXED_AREA\])
                                                      |                                                     
@@ -98,6 +189,16 @@ namespace Pattern_generator
                                                                 ([^{}]*{[^{}]*})*?
                                                      [^{}]*})", 
                                                      RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Multiline);
+
+
+            if (elements_level0[0].ToString().Contains("[FIXED_AREA]"))
+            {
+                temp_css_info = elements_level0[0].ToString() + "\r\n";
+            }
+            else
+            {
+                temp_css_info = "";
+            }
 
             int[] rand_elements_level0 = Form1.rnd_org.Sequence(0, elements_level0.Count - 1);
             for (int i = 0; i < elements_level0.Count; i++)
@@ -160,7 +261,10 @@ namespace Pattern_generator
                 }
                 else
                 {
-                    temp_css_info_l0 = elements_level0[rand_elements_level0[i]].ToString();
+                    if (rand_elements_level0[i] != 0)
+                    {
+                        temp_css_info_l0 = elements_level0[rand_elements_level0[i]].ToString();
+                    }
                 }
                 temp_css_info += temp_css_info_l0 + "\r\n";
             }
@@ -301,11 +405,7 @@ namespace Pattern_generator
             int count_indent, indent_changes;
             double ident, top_indent, bottom_indent, indent_changes_level;
             int probability_change, probability, probability_more_less;
-
             MatchCollection  match_indent;
-
-
-            
 
             string line = strReader.ReadLine();
             while (line != null)
@@ -316,10 +416,6 @@ namespace Pattern_generator
                 }
                 while (flag_fixed_area && (line.Contains("margin") || line.Contains("padding")) && !line.Contains("[FIXED]"))
                 {
-                    //string indent_property = line.Substring((line.IndexOf("margin") | line.IndexOf("padding")), line.IndexOf(":") - 1);
-                    //string[] bg_color = line.Substring(line.IndexOf('#') + 1, line.IndexOf(';') - line.IndexOf('#'));
-                    //string indent_numbers = line.Substring(line.IndexOf(":"), line.IndexOf(";") - 1);
-                    //string[] indent_definition = indent_numbers.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (line.Contains("margin-bottom") || line.Contains("margin-top") || line.Contains("padding-bottom") || line.Contains("padding-top"))
                     {
                         if (double.TryParse(Regex.Match(line, @"-?[0-9]+\.?[0-9]+").Value, out ident) && ident > 0)

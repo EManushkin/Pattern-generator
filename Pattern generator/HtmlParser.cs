@@ -39,8 +39,6 @@ namespace Pattern_generator
             for (int i = 0; i < tag.Length; i++)
             {
                 nodes = html_doc.DocumentNode.SelectNodes("//" + tag[i] + "[not(contains(@class, '[FIXED]')) and not(contains(@id, '[FIXED]'))]");
-                //nodes = html_doc.DocumentNode.SelectNodes("/html//div[2][@class='both']");
-                //nodes = html_doc.DocumentNode.SelectNodes("//ancestor::div[2][@class='both'] | //descendant::div[2][@class='both'] | //following::div[2][@class='both'] | //preceding::div[2][@class='both'] | //self::div[2][@class='both']");
 
                 if (nodes != null)
                 {
@@ -55,11 +53,6 @@ namespace Pattern_generator
                                 tags_info.tags_name_for_outer = "<div class=\"" + tag[i] + "-OUTER\">";
                                 tags_info.css_rule_name = tag[i] + "-ELEMENT";
                                 tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i]));
-                                /*tags_info.xpath_instruction = "//ancestor::" + n.XPath +
-                                                           " | //descendant::" + n.XPath +
-                                                           " | //following::" + n.XPath +
-                                                           " | //preceding::" + n.XPath +
-                                                           " | //self::" + n.XPath;*/
                                 TagsList.Add(tags_info);
                             }
                             else
@@ -68,12 +61,6 @@ namespace Pattern_generator
                                 tags_info.tags_name_for_outer = "";
                                 tags_info.css_rule_name = "";
                                 tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i]));
-                                /*tags_info.xpath_instruction = "//ancestor::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) +
-                                                           " | //descendant::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) +
-                                                           " | //following::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) +
-                                                           " | //preceding::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) +
-                                                           " | //self::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i]));
-                                TagsList.Add(tags_info);*/
                             }
                         }
                         if ((n.Attributes["id"] != null) && (n.Attributes["class"] == null))
@@ -82,12 +69,7 @@ namespace Pattern_generator
                             tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["id"].Value + "-OUTER\">";
                             tags_info.css_rule_name = n.Attributes["id"].Value + "-ELEMENT";
                             tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']";
-                            /*tags_info.xpath_instruction = "//ancestor::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']" +
-                                                       " | //descendant::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']" +
-                                                       " | //following::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']" +
-                                                       " | //preceding::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']" +
-                                                       " | //self::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "']";
-                            */TagsList.Add(tags_info);
+                            TagsList.Add(tags_info);
                         }
                         if ((n.Attributes["id"] != null) && (n.Attributes["class"] != null))
                         {
@@ -95,12 +77,7 @@ namespace Pattern_generator
                             tags_info.tags_name_for_outer = "<div class=\"" + n.Attributes["id"].Value + "-OUTER\">";
                             tags_info.css_rule_name = n.Attributes["id"].Value + "-ELEMENT";
                             tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']";
-                            /*tags_info.xpath_instruction = "//ancestor::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
-                                                       " | //descendant::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
-                                                       " | //following::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
-                                                       " | //preceding::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
-                                                       " | //self::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["id"].Name + "='" + n.Attributes["id"].Value + "' and @" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']";
-                            */TagsList.Add(tags_info);
+                            TagsList.Add(tags_info);
                         }
                         if ((n.Attributes["id"] == null) && (n.Attributes["class"] != null))
                         {
@@ -117,12 +94,7 @@ namespace Pattern_generator
                                 tags_info.css_rule_name = n.Attributes["class"].Value + "-ELEMENT";
                             }
                             tags_info.xpath_instruction = "//" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']";
-                            /*tags_info.xpath_instruction = "//ancestor::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
-                                                       " | //descendant::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
-                                                       " | //following::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
-                                                       " | //preceding::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']" +
-                                                       " | //self::" + n.XPath.Remove(0, n.XPath.LastIndexOf(tag[i])) + "[@" + n.Attributes["class"].Name + "='" + n.Attributes["class"].Value + "']";
-                            */TagsList.Add(tags_info);
+                            TagsList.Add(tags_info);
                         }
                     }
                 }
@@ -178,20 +150,16 @@ namespace Pattern_generator
                 parent_tag.PrependChild(inner_tag);
                 parent_tag.InnerHtml = initital_tabulation + parent_tag.InnerHtml;
             }
-
-            
         }
 
 
 
         public void InsertInnerWithProbability(int nesting_level, int probability_min, int probability_max, int probability_css_min, int probability_css_max, int count_css_min, int count_css_max)
         {
-            Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
-
             int probability_html, probability_css, probability_css_rule, probability_inner1, probability_inner2, probability_inner3;
             int j = 0;
 
-            int rand_index_inner_classes = rnd_org.Next(0, Form1.inner_classes.Count - 1);
+            int rand_index_inner_classes = Form1.rnd_org.Next(0, Form1.inner_classes.Count - 1);
 
             switch (nesting_level)
             {
@@ -199,16 +167,16 @@ namespace Pattern_generator
                     {
                         foreach (var t in TagsList)
                         {
-                            probability_inner1 = rnd_org.Next(probability_min, probability_max);
+                            probability_inner1 = Form1.rnd_org.Next(probability_min, probability_max);
                             probability_inner2 = probability_inner1 / 2;
                             probability_inner3 = probability_inner2 / 2;
-                            probability_html = rnd_org.Next(1, 100);
+                            probability_html = Form1.rnd_org.Next(1, 100);
 
                             if (probability_html < probability_inner3)
                             {
                                 InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][2]), TagsList[j].xpath_instruction);
-                                probability_css_rule = rnd_org.Next(probability_css_min, probability_css_max);
-                                probability_css = rnd_org.Next(1, 100);
+                                probability_css_rule = Form1.rnd_org.Next(probability_css_min, probability_css_max);
+                                probability_css = Form1.rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
                                     CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][2]), count_css_min, count_css_max);
@@ -217,8 +185,8 @@ namespace Pattern_generator
                             if (probability_html < probability_inner2)
                             {
                                 InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][1]), TagsList[j].xpath_instruction);
-                                probability_css_rule = rnd_org.Next(probability_css_min, probability_css_max);
-                                probability_css = rnd_org.Next(1, 100);
+                                probability_css_rule = Form1.rnd_org.Next(probability_css_min, probability_css_max);
+                                probability_css = Form1.rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
                                     CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][1]), count_css_min, count_css_max);
@@ -228,8 +196,8 @@ namespace Pattern_generator
                             if (probability_html < probability_inner1)
                             {
                                 InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][0]), TagsList[j].xpath_instruction);
-                                probability_css_rule = rnd_org.Next(probability_css_min, probability_css_max);
-                                probability_css = rnd_org.Next(1, 100);
+                                probability_css_rule = Form1.rnd_org.Next(probability_css_min, probability_css_max);
+                                probability_css = Form1.rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
                                     CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][0]), count_css_min, count_css_max);
@@ -243,15 +211,15 @@ namespace Pattern_generator
                     {
                         foreach (var t in TagsList)
                         {
-                            probability_inner1 = rnd_org.Next(probability_min, probability_max);
+                            probability_inner1 = Form1.rnd_org.Next(probability_min, probability_max);
                             probability_inner2 = probability_inner1 / 2;
-                            probability_html = rnd_org.Next(1, 100);
+                            probability_html = Form1.rnd_org.Next(1, 100);
 
                             if (probability_html < probability_inner2)
                             {
                                 InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][1]), TagsList[j].xpath_instruction);
-                                probability_css_rule = rnd_org.Next(probability_css_min, probability_css_max);
-                                probability_css = rnd_org.Next(1, 100);
+                                probability_css_rule = Form1.rnd_org.Next(probability_css_min, probability_css_max);
+                                probability_css = Form1.rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
                                     CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][1]), count_css_min, count_css_max);
@@ -261,8 +229,8 @@ namespace Pattern_generator
                             if (probability_html < probability_inner1)
                             {
                                 InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][0]), TagsList[j].xpath_instruction);
-                                probability_css_rule = rnd_org.Next(probability_css_min, probability_css_max);
-                                probability_css = rnd_org.Next(1, 100);
+                                probability_css_rule = Form1.rnd_org.Next(probability_css_min, probability_css_max);
+                                probability_css = Form1.rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
                                     CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][0]), count_css_min, count_css_max);
@@ -278,14 +246,14 @@ namespace Pattern_generator
                         foreach (var t in TagsList)
                         {
 
-                            probability_inner1 = rnd_org.Next(probability_min, probability_max);
-                            probability_html = rnd_org.Next(1, 100);
+                            probability_inner1 = Form1.rnd_org.Next(probability_min, probability_max);
+                            probability_html = Form1.rnd_org.Next(1, 100);
 
                             if (probability_html < probability_inner1)
                             {
                                 InsertInner(TagsList[j].tags_name_for_inner.Replace("INNER", Form1.inner_classes[rand_index_inner_classes][0]), TagsList[j].xpath_instruction);
-                                probability_css_rule = rnd_org.Next(probability_css_min, probability_css_max);
-                                probability_css = rnd_org.Next(1, 100);
+                                probability_css_rule = Form1.rnd_org.Next(probability_css_min, probability_css_max);
+                                probability_css = Form1.rnd_org.Next(1, 100);
                                 if (probability_css < probability_css_rule)
                                 {
                                     CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.inner_classes[rand_index_inner_classes][0]), count_css_min, count_css_max);
@@ -306,80 +274,85 @@ namespace Pattern_generator
             string initital_tabulation;
             string final_tabulation;
 
-            var parent_tag = html_doc.DocumentNode.SelectSingleNode(xpath_instr);
+            if (name_for_outer != "")
+            {
+                var parent_tag = html_doc.DocumentNode.SelectSingleNode(xpath_instr);
 
-            if (parent_tag.FirstChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
-            {
-                initital_tabulation = parent_tag.FirstChild.InnerText;
-            }
-            else
-            {
-                initital_tabulation = parent_tag.ParentNode.FirstChild.InnerText + "\t";
-            }
-            if (parent_tag.LastChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
-            {
-                final_tabulation = parent_tag.LastChild.InnerText;
-            }
-            else
-            {
-                final_tabulation = parent_tag.ParentNode.LastChild.InnerText + "\t";
-            }
-
-            var outer_tag = HtmlNode.CreateNode(name_for_outer);
-            var child_to_outer = parent_tag.ChildNodes;
-
-            int j = 0;
-            foreach (var ch in child_to_outer)
-            {
-                int pos = child_to_outer[j].InnerHtml.IndexOf("\r\n");
-                while (pos >= 0)
+                if (parent_tag != null)
                 {
-                    child_to_outer[j].InnerHtml = child_to_outer[j].InnerHtml.Insert(pos + 2, "\t");
-                    pos = child_to_outer[j].InnerHtml.IndexOf("\r\n", pos + 1);
+
+                    if (parent_tag.FirstChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
+                    {
+                        initital_tabulation = parent_tag.FirstChild.InnerText;
+                    }
+                    else
+                    {
+                        initital_tabulation = parent_tag.ParentNode.FirstChild.InnerText + "\t";
+                    }
+                    if (parent_tag.LastChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
+                    {
+                        final_tabulation = parent_tag.LastChild.InnerText;
+                    }
+                    else
+                    {
+                        final_tabulation = parent_tag.ParentNode.LastChild.InnerText + "\t";
+                    }
+
+                    var outer_tag = HtmlNode.CreateNode(name_for_outer);
+                    var child_to_outer = parent_tag.ChildNodes;
+
+                    int j = 0;
+                    foreach (var ch in child_to_outer)
+                    {
+                        int pos = child_to_outer[j].InnerHtml.IndexOf("\r\n");
+                        while (pos >= 0)
+                        {
+                            child_to_outer[j].InnerHtml = child_to_outer[j].InnerHtml.Insert(pos + 2, "\t");
+                            pos = child_to_outer[j].InnerHtml.IndexOf("\r\n", pos + 1);
+                        }
+                        j++;
+                    }
+                    string temp_name = outer_tag.Name;
+                    string temp_att_name = outer_tag.Attributes[0].Name;
+                    string temp_att_value = outer_tag.Attributes[0].Value;
+
+                    outer_tag.RemoveAll();
+                    outer_tag.AppendChildren(child_to_outer);
+                    foreach (var att in parent_tag.Attributes)
+                    {
+                        outer_tag.SetAttributeValue(att.Name, att.Value);
+                    }
+                    outer_tag.Name = parent_tag.Name;
+
+                    parent_tag.RemoveAll();
+                    parent_tag.SetAttributeValue(temp_att_name, temp_att_value);
+                    parent_tag.Name = temp_name;
+                    parent_tag.InnerHtml = parent_tag.InnerHtml + final_tabulation;
+                    parent_tag.PrependChild(outer_tag);
+                    parent_tag.InnerHtml = initital_tabulation + parent_tag.InnerHtml;
                 }
-                j++;
             }
-            string temp_name = outer_tag.Name;
-            string temp_att_name = outer_tag.Attributes[0].Name;
-            string temp_att_value = outer_tag.Attributes[0].Value;
-
-            outer_tag.RemoveAll();
-            outer_tag.AppendChildren(child_to_outer);
-            foreach (var att in parent_tag.Attributes)
-            {
-                outer_tag.SetAttributeValue(att.Name, att.Value);
-            }
-            outer_tag.Name = parent_tag.Name;
-
-            parent_tag.RemoveAll();
-            parent_tag.SetAttributeValue(temp_att_name, temp_att_value);
-            parent_tag.Name = temp_name;
-            parent_tag.InnerHtml = parent_tag.InnerHtml + final_tabulation;
-            parent_tag.PrependChild(outer_tag);
-            parent_tag.InnerHtml = initital_tabulation + parent_tag.InnerHtml;
         }
 
 
 
         public void InsertOuterWithProbability(int probability_min, int probability_max, int probability_css_min, int probability_css_max, int count_css_min, int count_css_max)
         {
-            Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
-
             int probability_html, probability_css, probability_css_rule, probability_outer;
             int j = 0;
 
-            int rand_index_outer_classes = rnd_org.Next(0, Form1.outer_classes.Count - 1);
+            int rand_index_outer_classes = Form1.rnd_org.Next(0, Form1.outer_classes.Count - 1);
 
             foreach (var t in TagsList)
             {
-                probability_outer = rnd_org.Next(probability_min, probability_max);
-                probability_html = rnd_org.Next(1, 100);
+                probability_outer = Form1.rnd_org.Next(probability_min, probability_max);
+                probability_html = Form1.rnd_org.Next(1, 100);
 
                 if (probability_html < probability_outer)
                 {
                     InsertOuter(TagsList[j].tags_name_for_outer.Replace("OUTER", Form1.outer_classes[rand_index_outer_classes][0]), TagsList[j].xpath_instruction);
-                    probability_css_rule = rnd_org.Next(probability_css_min, probability_css_max);
-                    probability_css = rnd_org.Next(1, 100);
+                    probability_css_rule = Form1.rnd_org.Next(probability_css_min, probability_css_max);
+                    probability_css = Form1.rnd_org.Next(1, 100);
                     if (probability_css < probability_css_rule)
                     {
                         CssParser.AddNewRule(TagsList[j].css_rule_name.Replace("ELEMENT", Form1.outer_classes[rand_index_outer_classes][0]), count_css_min, count_css_max);
@@ -393,13 +366,11 @@ namespace Pattern_generator
 
         public void MixTagsHead()
         {
-            Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
-
             var nodes_head = html_doc.DocumentNode.SelectNodes("//head");
             var head_child = nodes_head["head"].ChildNodes;
             var temp_head = HtmlNode.CreateNode("<>");
             temp_head.AppendChildren(head_child);
-            int[] temp = rnd_org.Sequence(0, temp_head.ChildNodes.Where(x => x.Name != "#text").Count() - 1);
+            int[] temp = Form1.rnd_org.Sequence(0, temp_head.ChildNodes.Where(x => x.Name != "#text").Count() - 1);
             int j = 0;
 
             for (int i = 0; i < nodes_head["head"].ChildNodes.Count; i++)
@@ -417,14 +388,12 @@ namespace Pattern_generator
 
         public void MixNameClass()
         {
-            Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
-
             var nodes_many_class = html_doc.DocumentNode.SelectNodes("//*[contains(@class, ' ') and not(contains(@class, '[FIXED]'))]");
 
             foreach (var m in nodes_many_class)
             {
                 string [] class_name = m.Attributes["class"].Value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                int[] temp = rnd_org.Sequence(0, class_name.Length - 1);
+                int[] temp = Form1.rnd_org.Sequence(0, class_name.Length - 1);
                 m.Attributes["class"].Value = "";
                 for (int i = 0; i < temp.Length; i++)
                 {
@@ -432,29 +401,18 @@ namespace Pattern_generator
                 }
                 m.Attributes["class"].Value = m.Attributes["class"].Value.Remove(m.Attributes["class"].Value.Length - 1);
             }
-
         }
 
 
 
         public void AddNewClass(string[] tags, int class_names_min, int class_names_max, int tag_min, int tag_max, int css_properties_min, int css_properties_max)
         {
-            //Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
-
-
             int count_class_names = Form1.rnd_org.Next(class_names_min, class_names_max);
             int[] rand_mix_class = Form1.rnd_org.Sequence(0, Form1.random_class_names.Count - 1);
 
             for (int i = 0; i < count_class_names; i++)
             {
-                //int count_css_properties = Form1.rnd_org.Next(css_properties_min, css_properties_max);
-                //int[] rand_mix_css = Form1.rnd_org.Sequence(0, Form1.safe_css_properties.Count - 1);
-                //for (int j = 0; j < count_css_properties; j++)
-                //{
-                    CssParser.AddNewRule(Form1.random_class_names[rand_mix_class[i]][0], css_properties_min, css_properties_max);
-                    //вставка в css
-                    //Form1.safe_css_properties[rand_mix_css[j]]
-                //}
+                CssParser.AddNewRule(Form1.random_class_names[rand_mix_class[i]][0], css_properties_min, css_properties_max);
                 ParseTags(tags);
                 int count_tag = Form1.rnd_org.Next(tag_min, tag_max);
                 int[] rand_mix_all_tags = Form1.rnd_org.Sequence(0, TagsList.Count - 1);

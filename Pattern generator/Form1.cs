@@ -11,7 +11,6 @@ using System.IO;
 using System.Xml;
 using HtmlAgilityPack;
 using Random.Org;
-using System.Threading; //data from internet
 
 namespace Pattern_generator
 {
@@ -19,7 +18,6 @@ namespace Pattern_generator
     public partial class Form1 : Form
     {
         public string[] tags = { "div", "article", "aside", "footer", "menu", "nav", "section" };
-        //public RandomJSONRPC rnd = new RandomJSONRPC("6d99774c-ee16-48a1-a703-ad4ef5c6f2d6");
         public static List<string[]> inner_classes = new List<string[]>();
         public static List<string[]> outer_classes = new List<string[]>();
         public static List<string[]> color_scheme = new List<string[]>();
@@ -53,32 +51,11 @@ namespace Pattern_generator
             random_class_names = ReadCSVFile.OpenFile(@"random_class_names.csv");
             fonts = ReadCSVFile.OpenFile(@"fonts.csv");
             safe_css_properties = ReadCSVFile.OpenFile(@"safe_css_properties.csv");
-
-
-            
-            try
-            {
-                DateTime now = GetDate.GetNetworkTime();
-                DateTime work = new DateTime(2016, 4, 13, 23, 59, 59);
-                if (now > work)
-                {
-                    new Thread(() => { Thread.Sleep(2000); Application.Exit(); }).Start();
-                }
-            }
-            catch
-            {
-                new Thread(() => { Thread.Sleep(2000); Application.Exit(); }).Start();
-            } 
-
-
         }
 
         private void OpenFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            //OpenFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl";
-            //RandSelectTemplateButton.Enabled = true;
-
             if (dialog.ShowDialog() == DialogResult.OK)
             {
 
@@ -90,13 +67,12 @@ namespace Pattern_generator
         private void SaveFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            //SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
+            SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 SaveFolder.Text = dialog.SelectedPath;
 
             }
-
         }
 
         private void RandSelectTemplateButton_Click(object sender, EventArgs e)
