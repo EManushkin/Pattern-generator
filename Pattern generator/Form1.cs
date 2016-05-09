@@ -24,6 +24,7 @@ namespace Pattern_generator
         public static List<string[]> random_class_names = new List<string[]>();
         public static List<string[]> fonts = new List<string[]>();
         public static List<string[]> safe_css_properties = new List<string[]>();
+        public static List<string[]> class_names = new List<string[]>();
 
         public static Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
 
@@ -51,28 +52,30 @@ namespace Pattern_generator
             random_class_names = ReadCSVFile.OpenFile(@"random_class_names.csv");
             fonts = ReadCSVFile.OpenFile(@"fonts.csv");
             safe_css_properties = ReadCSVFile.OpenFile(@"safe_css_properties.csv");
+            class_names = ReadCSVFile.OpenFile(@"class_names.csv");
         }
 
         private void OpenFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            if (dialog.ShowDialog() == DialogResult.OK)
+            /*if (dialog.ShowDialog() == DialogResult.OK)
             {
 
                 OpenFolder.Text = dialog.SelectedPath;
                 RandSelectTemplateButton.Enabled = true;
-            }
+            }*/
+            OpenFolder.Text = @"C:\Users\Mann\Desktop\tpl";
+            RandSelectTemplateButton.Enabled = true;
         }
 
         private void SaveFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            SaveFolder.Text = "C:\\Users\\Mann\\Desktop\\tpl_finish";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            /*if (dialog.ShowDialog() == DialogResult.OK)
             {
                 SaveFolder.Text = dialog.SelectedPath;
-
-            }
+            }*/
+            SaveFolder.Text = @"C:\Users\Mann\Desktop\tpl_finish";
         }
 
         private void RandSelectTemplateButton_Click(object sender, EventArgs e)
@@ -333,6 +336,18 @@ namespace Pattern_generator
             style_css.RandomComments(int.Parse(this.количествоКомментариевMin.Text), int.Parse(this.количествоКомментариевMax.Text));
             style_css.SaveCsslDoc(style_save_path);
             textBox4.Text += "Рандомная простановка комментариев в файле css " + RandSelectTemplate.Text + " произведена." + Environment.NewLine;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            CssParser style_css = new CssParser(style_path);
+
+            style_css.BackgroundProcessing();
+            style_css.SaveCsslDoc(style_save_path);
+            textBox4.Text += "Значения свойств background в файле css " + RandSelectTemplate.Text + " приведены к \"стандартному\" виду." + Environment.NewLine;
         }
     }
 }

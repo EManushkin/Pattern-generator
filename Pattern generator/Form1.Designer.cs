@@ -128,6 +128,7 @@ namespace Pattern_generator
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -946,11 +947,23 @@ namespace Pattern_generator
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
+            // button7
+            // 
+            this.button7.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.button7.Location = new System.Drawing.Point(227, 437);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(163, 38);
+            this.button7.TabIndex = 25;
+            this.button7.Text = "Обработка случаев background";
+            this.button7.UseVisualStyleBackColor = false;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(851, 453);
+            this.ClientSize = new System.Drawing.Size(851, 525);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button10);
@@ -1238,6 +1251,7 @@ namespace Pattern_generator
         private ToolStripMenuItem количествоБезопасныхСвойствCSSInnerOuter;
         private ToolStripTextBox количествоСвойствCSSInnerOuterMin;
         private ToolStripTextBox количествоСвойствCSSInnerOuterMax;
+        private Button button7;
     }
 }
 

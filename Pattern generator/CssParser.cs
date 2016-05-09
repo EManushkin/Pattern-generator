@@ -565,5 +565,37 @@ namespace Pattern_generator
             File.WriteAllText(css_path, css_information);
         }
 
+
+        public void BackgroundProcessing()
+        {
+            StringReader strReader = new StringReader(css_information);
+            string temp_css_info = "";
+            string standard_color = "";
+            byte bc1, bc2, bc3;
+            bool flag_fixed_area = true;
+            string line = strReader.ReadLine();
+            while (line != null)
+            {
+                if (line == "[FIXED_AREA]" || line == "[/FIXED_AREA]")
+                {
+                    flag_fixed_area = !flag_fixed_area;
+                }
+                while (flag_fixed_area && (line.Contains("background:") || line.Contains("background-color:")) && line.Contains("(") && line.Contains(")") && !line.Contains("[FIXED]"))
+                {
+                    string [] bg_color = line.Substring(line.IndexOf('(') + 1, line.IndexOf(')') - line.IndexOf('(') - 1).Trim().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    bc1 = Convert.ToByte(bg_color[0].Trim(), 10);
+                    bc2 = Convert.ToByte(bg_color[1].Trim(), 10);
+                    bc3 = Convert.ToByte(bg_color[2].Trim(), 10);
+                    standard_color = "#" + bc1.ToString("x2") + bc2.ToString("x2") + bc3.ToString("x2");
+                    line = line.Replace(line.Substring(line.IndexOf('('), line.IndexOf(')') - line.IndexOf('(') + 1), standard_color);
+                    break;
+                }
+                temp_css_info += line + "\r\n";
+                line = strReader.ReadLine();
+            }
+            css_information = temp_css_info.Remove(temp_css_info.LastIndexOf("\r\n"), temp_css_info.Length - temp_css_info.LastIndexOf("\r\n"));
+            strReader.Close();
+        }
+
     }
 }
