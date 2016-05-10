@@ -45,7 +45,7 @@ namespace Pattern_generator
             MatchCollection all_elements = Regex.Matches(css_information,
                                                      @"(\[FIXED_AREA\].*?\[\/FIXED_AREA\])
                                                      |                                                     
-                                                     (^[^{}]*{
+                                                     ([^{}]*{
                                                                 ([^{}]*{[^{}]*})*?
                                                      [^{}]*})",
                                                      RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Multiline);
@@ -596,6 +596,147 @@ namespace Pattern_generator
             css_information = temp_css_info.Remove(temp_css_info.LastIndexOf("\r\n"), temp_css_info.Length - temp_css_info.LastIndexOf("\r\n"));
             strReader.Close();
         }
+
+        public void DeleteColor()
+        {
+            string temp_css_info, temp_css_info_l0, temp_css_info_l1;
+            Regex color = new Regex(@"\s*[^\w-]color:.*?;", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+            MatchCollection all_elements = Regex.Matches(css_information,
+                                                     @"(\[FIXED_AREA\].*?\[\/FIXED_AREA\])
+                                                     |                                                     
+                                                     ([^{}]*{
+                                                                ([^{}]*{[^{}]*})*?
+                                                     [^{}]*})",
+                                                     RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Multiline);
+
+
+            temp_css_info = "";
+            for (int i = 0; i < all_elements.Count; i++)
+            {
+                temp_css_info_l0 = "";
+                if (!all_elements[i].ToString().Contains("[FIXED_AREA]"))
+                {
+                    switch (Regex.Matches(all_elements[i].ToString(), @"{").Count)
+                    {
+                        case 1:
+                            {
+                                temp_css_info_l0 = all_elements[i].ToString();
+                                Match all_properties = Regex.Match(all_elements[i].ToString(), @"(?<={)(.*;)(?=.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                if (color.IsMatch(all_properties.ToString()) && !all_properties.ToString().Contains("background:") && !all_properties.ToString().Contains("background-color:"))
+                                {
+                                    temp_css_info_l0 = color.Replace(temp_css_info_l0, "");
+                                }
+                                break;
+                            }
+                        case 2:
+                            {
+                                temp_css_info_l0 = all_elements[i].ToString();
+                                Match all_properties = Regex.Match(all_elements[i].ToString(), @"(?<={.*{)(.*;)(?=.*}.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                if (color.IsMatch(all_properties.ToString()) && !all_properties.ToString().Contains("background:") && !all_properties.ToString().Contains("background-color:"))
+                                {
+                                    temp_css_info_l0 = color.Replace(temp_css_info_l0, "");
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                temp_css_info_l1 = "";
+                                MatchCollection elements_level1 = Regex.Matches(all_elements[i].ToString(), @"[^{}]*{[^{}]*}", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                for (int j = 0; j < elements_level1.Count; j++)
+                                {
+                                    temp_css_info_l1 = elements_level1[j].ToString();
+                                    Match all_properties = Regex.Match(elements_level1[j].ToString(), @"(?<={)(.*;)(?=.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                    if (color.IsMatch(all_properties.ToString()) && !all_properties.ToString().Contains("background:") && !all_properties.ToString().Contains("background-color:"))
+                                    {
+                                        temp_css_info_l1 = color.Replace(temp_css_info_l1, "");
+                                    }
+                                    temp_css_info_l0 += temp_css_info_l1;
+                                }
+                                temp_css_info_l0 = Regex.Match(all_elements[i].ToString(), @"^[^{]*{", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline) + temp_css_info_l0 + Regex.Match(all_elements[i].ToString(), @"\s*}$", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                break;
+                            }
+                    }
+                }
+                else
+                {
+                    temp_css_info_l0 = all_elements[i].ToString();
+                }
+                temp_css_info += temp_css_info_l0;
+            }
+            css_information = temp_css_info;
+        }
+
+
+
+        public void DeleteEmptyRule()
+        {
+            string temp_css_info, temp_css_info_l0, temp_css_info_l1;
+            Regex rule = new Regex(@"\S*;", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+            MatchCollection all_elements = Regex.Matches(css_information,
+                                                     @"(\[FIXED_AREA\].*?\[\/FIXED_AREA\])
+                                                     |                                                     
+                                                     ([^{}]*{
+                                                                ([^{}]*{[^{}]*})*?
+                                                     [^{}]*})",
+                                                     RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Multiline);
+
+
+            temp_css_info = "";
+            for (int i = 0; i < all_elements.Count; i++)
+            {
+                temp_css_info_l0 = "";
+                if (!all_elements[i].ToString().Contains("[FIXED_AREA]"))
+                {
+                    switch (Regex.Matches(all_elements[i].ToString(), @"{").Count)
+                    {
+                        case 1:
+                            {
+                                Match all_properties = Regex.Match(all_elements[i].ToString(), @"(?<={)(.*;)(?=.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                if (rule.IsMatch(all_properties.ToString()))
+                                {
+                                    temp_css_info_l0 = all_elements[i].ToString();
+                                }
+                                break;
+                            }
+                        case 2:
+                            {
+                                Match all_properties = Regex.Match(all_elements[i].ToString(), @"(?<={.*{)(.*;)(?=.*}.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                if (rule.IsMatch(all_properties.ToString()))
+                                {
+                                    temp_css_info_l0 = all_elements[i].ToString();
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                MatchCollection elements_level1 = Regex.Matches(all_elements[i].ToString(), @"[^{}]*{[^{}]*}", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                for (int j = 0; j < elements_level1.Count; j++)
+                                {
+                                    temp_css_info_l1 = "";
+                                    Match all_properties = Regex.Match(elements_level1[j].ToString(), @"(?<={)(.*;)(?=.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                    if (rule.IsMatch(all_properties.ToString()))
+                                    {
+                                        temp_css_info_l1 = elements_level1[j].ToString();
+                                    }
+                                    temp_css_info_l0 += temp_css_info_l1;
+                                }
+                                if (temp_css_info_l0 != "")
+                                {
+                                    temp_css_info_l0 = Regex.Match(all_elements[i].ToString(), @"^[^{]*{", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline) + temp_css_info_l0 + Regex.Match(all_elements[i].ToString(), @"\s*}$", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                }
+                                break;
+                            }
+                    }
+                }
+                else
+                {
+                    temp_css_info_l0 = all_elements[i].ToString();
+                }
+                temp_css_info += temp_css_info_l0;
+            }
+            css_information = temp_css_info;
+        }
+
 
     }
 }

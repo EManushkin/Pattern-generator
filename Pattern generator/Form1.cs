@@ -349,5 +349,29 @@ namespace Pattern_generator
             style_css.SaveCsslDoc(style_save_path);
             textBox4.Text += "Значения свойств background в файле css " + RandSelectTemplate.Text + " приведены к \"стандартному\" виду." + Environment.NewLine;
         }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            CssParser style_css = new CssParser(style_path);
+
+            style_css.DeleteColor();
+            style_css.SaveCsslDoc(style_save_path);
+            textBox4.Text += "В правилах без свойств background, background-color удалено свойство color." + Environment.NewLine;
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            CssParser style_css = new CssParser(style_path);
+
+            style_css.DeleteEmptyRule();
+            style_css.SaveCsslDoc(style_save_path);
+            textBox4.Text += "В файле css шаблона " + RandSelectTemplate.Text + " удалены все пустые правила." + Environment.NewLine;
+        }
     }
 }
