@@ -746,5 +746,11 @@ namespace Pattern_generator
         }
 
 
+
+        public void SetLinkColor()
+        {
+
+        }
+
     }
 }

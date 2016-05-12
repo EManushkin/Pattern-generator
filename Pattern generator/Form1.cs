@@ -401,9 +401,9 @@ namespace Pattern_generator
 
             CssParser style_css = new CssParser(style_path);
 
-            //style_css.();
+            style_css.SetLinkColor();
             style_css.SaveCsslDoc(style_save_path);
-            textBox4.Text += "В файле css шаблона " + RandSelectTemplate.Text + " выполнена установка цветов для ссылок." + Environment.NewLine;
+            textBox4.Text += "В файле css шаблона " + RandSelectTemplate.Text + " выполнена установка цвета для ссылок." + Environment.NewLine;
         }
 
         private void button17_Click(object sender, EventArgs e)
