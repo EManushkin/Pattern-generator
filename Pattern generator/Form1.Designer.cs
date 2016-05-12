@@ -261,7 +261,7 @@ namespace Pattern_generator
             // выходToolStripMenuItem
             // 
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.выходToolStripMenuItem.Text = "Выход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
             // 
@@ -922,7 +922,7 @@ namespace Pattern_generator
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(361, 38);
             this.button6.TabIndex = 18;
-            this.button6.Text = "Работа над шаблоном";
+            this.button6.Text = "Основной функционал";
             this.button6.UseVisualStyleBackColor = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
