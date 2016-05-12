@@ -112,21 +112,21 @@ namespace Pattern_generator
             {
                 var parent_tag = html_doc.DocumentNode.SelectSingleNode(xpath_instr);
 
-                if (parent_tag.FirstChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
+                if (parent_tag.FirstChild != null)
                 {
-                    initital_tabulation = parent_tag.FirstChild.InnerText;
+                    initital_tabulation = Regex.Match(parent_tag.FirstChild.InnerHtml, @"^\r\n\s*").ToString();
                 }
                 else
                 {
-                    initital_tabulation = parent_tag.ParentNode.FirstChild.InnerText + "\t";
+                    initital_tabulation = Regex.Match(parent_tag.ParentNode.FirstChild.InnerHtml, @"^\r\n\s*").ToString() + "\t";
                 }
-                if (parent_tag.LastChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
+                if (parent_tag.LastChild != null)
                 {
-                    final_tabulation = parent_tag.LastChild.InnerText;
+                    final_tabulation = Regex.Match(parent_tag.LastChild.InnerHtml, @"^\r\n\s*").ToString();
                 }
                 else
                 {
-                    final_tabulation = parent_tag.ParentNode.LastChild.InnerText + "\t";
+                    final_tabulation = Regex.Match(parent_tag.ParentNode.LastChild.InnerHtml, @"^\r\n\s*").ToString() + "\t";
                 }
 
                 var inner_tag = HtmlNode.CreateNode(name_for_inner);
@@ -281,21 +281,21 @@ namespace Pattern_generator
                 if (parent_tag != null)
                 {
 
-                    if (parent_tag.FirstChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
+                    if (parent_tag.FirstChild != null)
                     {
-                        initital_tabulation = parent_tag.FirstChild.InnerText;
+                        initital_tabulation = Regex.Match(parent_tag.FirstChild.InnerHtml, @"^\r\n\s*").ToString();
                     }
                     else
                     {
-                        initital_tabulation = parent_tag.ParentNode.FirstChild.InnerText + "\t";
+                        initital_tabulation = Regex.Match(parent_tag.ParentNode.FirstChild.InnerHtml, @"^\r\n\s*").ToString() + "\t";
                     }
-                    if (parent_tag.LastChild != null && (Regex.IsMatch(parent_tag.FirstChild.InnerText, @"[^\r\n\t]") == false))
+                    if (parent_tag.LastChild != null)
                     {
-                        final_tabulation = parent_tag.LastChild.InnerText;
+                        final_tabulation = Regex.Match(parent_tag.LastChild.InnerHtml, @"^\r\n\s*").ToString();
                     }
                     else
                     {
-                        final_tabulation = parent_tag.ParentNode.LastChild.InnerText + "\t";
+                        final_tabulation = Regex.Match(parent_tag.ParentNode.LastChild.InnerHtml, @"^\r\n\s*").ToString() + "\t";
                     }
 
                     var outer_tag = HtmlNode.CreateNode(name_for_outer);
@@ -460,5 +460,87 @@ namespace Pattern_generator
             html_doc.DocumentNode.InnerHtml = fixe.Replace(html_doc.DocumentNode.InnerHtml, "");
             html_doc.Save(html_path);
         }
+
+
+
+        public void ReplaceIdClass()
+        {
+            List<string> id_list = new List<string>();
+            List<string> class_list = new List<string>();
+            List<string> full_class_list = new List<string>();
+            string[] temp_class_name;
+            int[] rand_mix_names = Form1.rnd_org.Sequence(0, Form1.class_names.Count - 1);
+            int j = 0;
+
+
+            var nodes_id = html_doc.DocumentNode.SelectNodes("//*[(@id) and not(contains(@class, '[FIXED]'))]");
+            foreach (var id_name in nodes_id)
+            {
+                if (!id_list.Contains(id_name.Attributes["id"].Value))
+                {
+                    id_list.Add(id_name.Attributes["id"].Value);
+                }
+            }
+            var nodes_class = html_doc.DocumentNode.SelectNodes("//*[(@class) and not(contains(@class, '[FIXED]'))]");
+            foreach (var class_name in nodes_class)
+            {
+                temp_class_name = class_name.Attributes["class"].Value.Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                class_name.Attributes["class"].Value = " " + class_name.Attributes["class"].Value.Trim() + " ";
+                for (int i = 0; i < temp_class_name.Length; i++)
+                {
+                    if (!class_list.Contains(temp_class_name[i]))
+                    {
+                        class_list.Add(temp_class_name[i]);
+                    }
+                } 
+            }
+
+
+            for (int i = 0; i < id_list.Count; i++)
+            {
+                var nodes = html_doc.DocumentNode.SelectNodes("//*[normalize-space(@id)='" + id_list[i] + "' and not(contains(@class, '[FIXED]'))]");
+                while (j < Form1.class_names.Count)
+                {
+                    if (!id_list.Contains(Form1.class_names[rand_mix_names[j]][0]))
+                    {
+                        foreach (var n in nodes)
+                        {
+                            n.Attributes["id"].Value = Form1.class_names[rand_mix_names[j]][0];
+                        }
+                        CssParser.ReplaceIdClass("#" + id_list[i], "#" + Form1.class_names[rand_mix_names[j]][0]);
+                        j++;
+                        break;
+                    }
+                    j++;
+                }
+            }
+
+
+            for (int i = 0; i < class_list.Count; i++)
+            {
+                var nodes = html_doc.DocumentNode.SelectNodes("//*[contains(@class, ' " + class_list[i] + " ') and not(contains(@class, '[FIXED]'))]");
+                while (j < Form1.class_names.Count)
+                {
+                    if (!class_list.Contains(Form1.class_names[rand_mix_names[j]][0]))
+                    {
+                        foreach (var n in nodes)
+                        {
+                            n.Attributes["class"].Value = n.Attributes["class"].Value.Replace(" " + class_list[i] + " ", " " + Form1.class_names[rand_mix_names[j]][0] + " ");
+                        }
+                        CssParser.ReplaceIdClass(@"\." + class_list[i], "." + Form1.class_names[rand_mix_names[j]][0]);
+                        j++;
+                        break;
+                    }
+                    j++;
+                }
+            }
+            foreach (var class_name in nodes_class)
+            {
+                class_name.Attributes["class"].Value = class_name.Attributes["class"].Value.Trim();
+            }
+
+        }
+
+
     }
 }

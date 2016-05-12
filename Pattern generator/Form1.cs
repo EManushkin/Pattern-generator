@@ -104,8 +104,6 @@ namespace Pattern_generator
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Random.Org.Random rnd_org = new Random.Org.Random(menuLocalRandom.Checked);
-
             string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
             string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
 
@@ -372,6 +370,71 @@ namespace Pattern_generator
             style_css.DeleteEmptyRule();
             style_css.SaveCsslDoc(style_save_path);
             textBox4.Text += "В файле css шаблона " + RandSelectTemplate.Text + " удалены все пустые правила." + Environment.NewLine;
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+            string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            HtmlParser index_html = new HtmlParser(index_path);
+            CssParser style_css = new CssParser(style_path);
+
+            index_html.ReplaceIdClass();
+ 
+            index_html.SaveHtmlDoc(index_save_path);
+            style_css.SaveCsslDoc(style_save_path);
+
+            textBox4.Text += "В файле html шаблона " + RandSelectTemplate.Text + " произведена замена id и классов." + Environment.NewLine;
+            textBox4.Text += "В файле css шаблона " + RandSelectTemplate.Text + " произведена соответствующая замена id и классов." + Environment.NewLine;
+
+
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            CssParser style_css = new CssParser(style_path);
+
+            //style_css.();
+            style_css.SaveCsslDoc(style_save_path);
+            textBox4.Text += "В файле css шаблона " + RandSelectTemplate.Text + " выполнена установка цветов для ссылок." + Environment.NewLine;
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            textBox4.Text = "";
+
+            string index_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+            string index_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\index.html";
+
+            string style_path = OpenFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+            string style_save_path = SaveFolder.Text + "\\" + RandSelectTemplate.Text + "\\style.css";
+
+            HtmlParser index_html = new HtmlParser(index_path);
+            CssParser style_css = new CssParser(style_path);
+
+            index_html.ReplaceIdClass();
+            textBox4.Text += "В файле html шаблона " + RandSelectTemplate.Text + " произведена замена id и классов." + Environment.NewLine;
+            textBox4.Text += "В файле css шаблона " + RandSelectTemplate.Text + " произведена соответствующая замена id и классов." + Environment.NewLine;
+
+            style_css.BackgroundProcessing();
+            textBox4.Text += "Значения свойств background в файле css " + RandSelectTemplate.Text + " приведены к \"стандартному\" виду." + Environment.NewLine;
+
+            style_css.DeleteColor();
+            textBox4.Text += "В правилах без свойств background, background-color удалено свойство color." + Environment.NewLine;
+
+            style_css.DeleteEmptyRule();
+            textBox4.Text += "В файле css шаблона " + RandSelectTemplate.Text + " удалены все пустые правила." + Environment.NewLine;
+
+            index_html.SaveHtmlDoc(index_save_path);
+            style_css.SaveCsslDoc(style_save_path);
+            textBox4.Text += "Все метки [FIXED] в " + RandSelectTemplate.Text + " удалены, все изменения сохранены!" + Environment.NewLine;
         }
     }
 }

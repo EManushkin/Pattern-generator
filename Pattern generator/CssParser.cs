@@ -35,6 +35,14 @@ namespace Pattern_generator
 
 
 
+        public static void ReplaceIdClass(string name, string new_name)
+        {
+            Regex replace = new Regex("(" + name + @")(?=[^\w-]*)", RegexOptions.Singleline | RegexOptions.Multiline);
+            css_information = replace.Replace(css_information, new_name);
+        }
+
+
+
         public void RandomComments(int count_comment_min, int count_comment_max)
         {
             string temp_css_info = "";
@@ -111,7 +119,7 @@ namespace Pattern_generator
                                     {
                                         comment_name = Regex.Match(elements[rand_index], @"(?<={.*(\.|#))([a-z0-9_-]*)(?=.*}.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline).Value;
                                         comment_name = comment_name.Substring(0, 1).ToUpper() + comment_name.Remove(0, 1);
-                                        elements[rand_index] = elements[rand_index].Substring(0, elements[rand_index].IndexOf('{')) + "\r\n\t/*" + comment_name + "*/" + elements[rand_index].Substring(elements[rand_index].IndexOf('{') + 1, elements[rand_index].Length - 1 - elements[rand_index].IndexOf('{'));
+                                        elements[rand_index] = elements[rand_index].Substring(0, elements[rand_index].IndexOf('{') + 1) + "\r\n\t/*" + comment_name + "*/" + elements[rand_index].Substring(elements[rand_index].IndexOf('{') + 1, elements[rand_index].Length - 1 - elements[rand_index].IndexOf('{'));
                                         count_comment--;
                                     }
                                     else
