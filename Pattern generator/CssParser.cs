@@ -574,6 +574,7 @@ namespace Pattern_generator
         }
 
 
+
         public void BackgroundProcessing()
         {
             StringReader strReader = new StringReader(css_information);
@@ -604,6 +605,8 @@ namespace Pattern_generator
             css_information = temp_css_info.Remove(temp_css_info.LastIndexOf("\r\n"), temp_css_info.Length - temp_css_info.LastIndexOf("\r\n"));
             strReader.Close();
         }
+
+
 
         public void DeleteColor()
         {
@@ -749,7 +752,181 @@ namespace Pattern_generator
 
         public void SetLinkColor()
         {
+            string temp_css_info, temp_css_info_l0, temp_css_info_l1, name_element_class_id;
+            string link_color = "";
+            int bc1, bc2, bc3;
+            int rand_index_color_scheme = Form1.rnd_org.Next(0, Form1.color_scheme.Count - 1);
+            Regex a = new Regex(@"[^\w-]+a[^\w-]+", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+            Regex background = new Regex(@"(?<=background(-color)?\s*:\s*#)([\w]{3,6})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+            MatchCollection all_elements = Regex.Matches(css_information,
+                                                     @"(\[FIXED_AREA\].*?\[\/FIXED_AREA\])
+                                                     |                                                     
+                                                     ([^{}]*{
+                                                                ([^{}]*{[^{}]*})*?
+                                                     [^{}]*})",
+                                                     RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Multiline);
 
+
+            temp_css_info = css_information;
+            for (int i = 0; i < all_elements.Count; i++)
+            {
+                name_element_class_id = "";
+                if (!all_elements[i].ToString().Contains("[FIXED_AREA]"))
+                {
+                    switch (Regex.Matches(all_elements[i].ToString(), @"{").Count)
+                    {
+                        case 1:
+                            {
+                                Match all_properties = Regex.Match(all_elements[i].ToString(), @"(?<={)(.*;)(?=.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                if (all_properties.ToString().Contains("background:") || all_properties.ToString().Contains("background-color:"))
+                                {
+                                    string bg_color = background.Match(all_properties.ToString()).Value;
+                                    if (bg_color.Length == 6)
+                                    {
+                                        bc1 = Convert.ToInt32(bg_color.Substring(0, 2), 16);
+                                        bc2 = Convert.ToInt32(bg_color.Substring(2, 2), 16);
+                                        bc3 = Convert.ToInt32(bg_color.Substring(4, 2), 16);
+                                    }
+                                    else
+                                    {
+                                        if (bg_color.Length == 3)
+                                        {
+                                            bc1 = Convert.ToInt32(bg_color.Substring(0, 2), 16);
+                                            bc2 = Convert.ToInt32(bg_color.Substring(2, 1) + bg_color.Substring(0, 1), 16);
+                                            bc3 = Convert.ToInt32(bg_color.Substring(1, 2), 16);
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+
+                                    int avr_dec_bg_color = (bc1 + bc2 + bc3) / 3;
+
+                                    int[] abs_avr_dec = new int[Form1.color_scheme[rand_index_color_scheme].Length];
+                                    for (int j = 0; j < Form1.color_scheme[rand_index_color_scheme].Length; j++)
+                                    {
+                                        bc1 = Convert.ToInt32(Form1.color_scheme[rand_index_color_scheme][j].Substring(1, 2), 16);
+                                        bc2 = Convert.ToInt32(Form1.color_scheme[rand_index_color_scheme][j].Substring(3, 2), 16);
+                                        bc3 = Convert.ToInt32(Form1.color_scheme[rand_index_color_scheme][j].Substring(5, 2), 16);
+                                        abs_avr_dec[j] = Math.Abs((bc1 + bc2 + bc3) / 3 - avr_dec_bg_color);
+                                    }
+                                    if (abs_avr_dec.Max() < 80)
+                                    {
+                                        if (avr_dec_bg_color < 128)
+                                        {
+                                            link_color = "#FFFFFF";
+                                        }
+                                        else
+                                        {
+                                            link_color = "#000000";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        link_color = Form1.color_scheme[rand_index_color_scheme][Array.IndexOf(abs_avr_dec, abs_avr_dec.Max())];
+                                    }
+
+                                    name_element_class_id = Regex.Match(all_elements[i].ToString(), @"[^{]*", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline).Value;
+                                }
+                                break;
+                            }
+                        case 2:
+                            {
+                                Match all_properties = Regex.Match(all_elements[i].ToString(), @"(?<={.*{)(.*;)(?=.*}.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                if (all_properties.ToString().Contains("background:") || all_properties.ToString().Contains("background-color:"))
+                                {
+                                    string bg_color = background.Match(all_properties.ToString()).Value;
+                                    if (bg_color.Length == 6)
+                                    {
+                                        bc1 = Convert.ToInt32(bg_color.Substring(0, 2), 16);
+                                        bc2 = Convert.ToInt32(bg_color.Substring(2, 2), 16);
+                                        bc3 = Convert.ToInt32(bg_color.Substring(4, 2), 16);
+                                    }
+                                    else
+                                    {
+                                        if (bg_color.Length == 3)
+                                        {
+                                            bc1 = Convert.ToInt32(bg_color.Substring(0, 2), 16);
+                                            bc2 = Convert.ToInt32(bg_color.Substring(2, 1) + bg_color.Substring(0, 1), 16);
+                                            bc3 = Convert.ToInt32(bg_color.Substring(1, 2), 16);
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+
+                                    int avr_dec_bg_color = (bc1 + bc2 + bc3) / 3;
+
+                                    int[] abs_avr_dec = new int[Form1.color_scheme[rand_index_color_scheme].Length];
+                                    for (int j = 0; j < Form1.color_scheme[rand_index_color_scheme].Length; j++)
+                                    {
+                                        bc1 = Convert.ToInt32(Form1.color_scheme[rand_index_color_scheme][j].Substring(1, 2), 16);
+                                        bc2 = Convert.ToInt32(Form1.color_scheme[rand_index_color_scheme][j].Substring(3, 2), 16);
+                                        bc3 = Convert.ToInt32(Form1.color_scheme[rand_index_color_scheme][j].Substring(5, 2), 16);
+                                        abs_avr_dec[j] = Math.Abs((bc1 + bc2 + bc3) / 3 - avr_dec_bg_color);
+                                    }
+                                    if (abs_avr_dec.Max() < 80)
+                                    {
+                                        if (avr_dec_bg_color < 128)
+                                        {
+                                            link_color = "#FFFFFF";
+                                        }
+                                        else
+                                        {
+                                            link_color = "#000000";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        link_color = Form1.color_scheme[rand_index_color_scheme][Array.IndexOf(abs_avr_dec, abs_avr_dec.Max())];
+                                    }
+
+                                    name_element_class_id = Regex.Match(all_elements[i].ToString(), @"(?<={)([^{]*)", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline).Value;
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                /*temp_css_info_l1 = "";
+                                MatchCollection elements_level1 = Regex.Matches(all_elements[i].ToString(), @"[^{}]*{[^{}]*}", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                for (int j = 0; j < elements_level1.Count; j++)
+                                {
+                                    temp_css_info_l1 = elements_level1[j].ToString();
+                                    Match all_properties = Regex.Match(elements_level1[j].ToString(), @"(?<={)(.*;)(?=.*})", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                    if (color.IsMatch(all_properties.ToString()) && !all_properties.ToString().Contains("background:") && !all_properties.ToString().Contains("background-color:"))
+                                    {
+                                        temp_css_info_l1 = color.Replace(temp_css_info_l1, "");
+                                    }
+                                    temp_css_info_l0 += temp_css_info_l1;
+                                }
+                                temp_css_info_l0 = Regex.Match(all_elements[i].ToString(), @"^[^{]*{", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline) + temp_css_info_l0 + Regex.Match(all_elements[i].ToString(), @"\s*}$", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                */break;
+                            }
+                    }
+                }
+
+                if (name_element_class_id != "")
+                {
+                    string[] all_elements_name = name_element_class_id.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    name_element_class_id = "";
+                    for (int j = 0; j < all_elements_name.Length; j++)
+                    {
+                        all_elements_name[j] = " " + all_elements_name[j].Trim() + " ";
+                        if (!a.IsMatch(all_elements_name[j]))
+                        {
+                            name_element_class_id += "\r\n" + all_elements_name[j].Trim() + " a, " + all_elements_name[j].Trim() + " a:hover,";
+                        }
+                    }
+                    if (name_element_class_id != "")
+                    {
+                        temp_css_info += name_element_class_id.Remove(name_element_class_id.LastIndexOf(","), name_element_class_id.Length - name_element_class_id.LastIndexOf(",")) + "{\r\n\tcolor: " + link_color + " !important;\r\n}";
+
+                    }
+                }
+            }
+            css_information = temp_css_info;
         }
 
     }

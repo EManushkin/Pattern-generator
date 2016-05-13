@@ -431,6 +431,8 @@ namespace Pattern_generator
             }
         }
 
+
+
         public void AddAttributeStyle(int attr_style_min, int attr_style_max, int css_properties_min, int css_properties_max)
         {
             var nodes_without_style = html_doc.DocumentNode.SelectNodes("html/body//*[not(@style) and not(contains(@class, '[FIXED]')) and not(contains(@id, '[FIXED]'))]");
