@@ -58,24 +58,23 @@ namespace Pattern_generator
         private void OpenFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            /*if (dialog.ShowDialog() == DialogResult.OK)
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
-
                 OpenFolder.Text = dialog.SelectedPath;
                 RandSelectTemplateButton.Enabled = true;
-            }*/
-            OpenFolder.Text = @"C:\Users\Mann\Desktop\tpl";
-            RandSelectTemplateButton.Enabled = true;
+            }
+            //OpenFolder.Text = @"C:\Users\Mann\Desktop\tpl";
+            //RandSelectTemplateButton.Enabled = true;
         }
 
         private void SaveFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            /*if (dialog.ShowDialog() == DialogResult.OK)
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
                 SaveFolder.Text = dialog.SelectedPath;
-            }*/
-            SaveFolder.Text = @"C:\Users\Mann\Desktop\tpl_finish";
+            }
+            //SaveFolder.Text = @"C:\Users\Mann\Desktop\tpl_finish";
         }
 
         private void RandSelectTemplateButton_Click(object sender, EventArgs e)
@@ -431,6 +430,9 @@ namespace Pattern_generator
 
             style_css.DeleteEmptyRule();
             textBox4.Text += "В файле css шаблона " + RandSelectTemplate.Text + " удалены все пустые правила." + Environment.NewLine;
+
+            style_css.SetLinkColor();
+            textBox4.Text += "В файле css шаблона " + RandSelectTemplate.Text + " выполнена установка цвета для ссылок." + Environment.NewLine;
 
             index_html.SaveHtmlDoc(index_save_path);
             style_css.SaveCsslDoc(style_save_path);
