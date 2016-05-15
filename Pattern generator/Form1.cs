@@ -58,23 +58,23 @@ namespace Pattern_generator
         private void OpenFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            if (dialog.ShowDialog() == DialogResult.OK)
+            /*if (dialog.ShowDialog() == DialogResult.OK)
             {
                 OpenFolder.Text = dialog.SelectedPath;
                 RandSelectTemplateButton.Enabled = true;
-            }
-            //OpenFolder.Text = @"C:\Users\Mann\Desktop\tpl";
-            //RandSelectTemplateButton.Enabled = true;
+            }*/
+            OpenFolder.Text = @"C:\Users\Mann\Desktop\tpl";
+            RandSelectTemplateButton.Enabled = true;
         }
 
         private void SaveFolderButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            if (dialog.ShowDialog() == DialogResult.OK)
+            /*if (dialog.ShowDialog() == DialogResult.OK)
             {
                 SaveFolder.Text = dialog.SelectedPath;
-            }
-            //SaveFolder.Text = @"C:\Users\Mann\Desktop\tpl_finish";
+            }*/
+            SaveFolder.Text = @"C:\Users\Mann\Desktop\tpl_finish";
         }
 
         private void RandSelectTemplateButton_Click(object sender, EventArgs e)
@@ -382,8 +382,9 @@ namespace Pattern_generator
             HtmlParser index_html = new HtmlParser(index_path);
             CssParser style_css = new CssParser(style_path);
 
+            index_html.StandardFormat();
             index_html.ReplaceIdClass();
- 
+
             index_html.SaveHtmlDoc(index_save_path);
             style_css.SaveCsslDoc(style_save_path);
 

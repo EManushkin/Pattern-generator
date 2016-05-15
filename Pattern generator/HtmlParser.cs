@@ -103,6 +103,47 @@ namespace Pattern_generator
 
 
 
+        public void StandardFormat()
+        {
+            var nodes = html_doc.DocumentNode.SelectNodes("//*[count(@class)>=2 and not(contains(@class, '[FIXED]'))]");
+            if (nodes != null)
+            {
+                foreach (var n in nodes)
+                {
+                    string class_names = "";
+                    foreach (var clss in n.Attributes.AttributesWithName("class"))
+                    {
+                        class_names += clss.Value + " ";
+                    }
+                    class_names = class_names.Trim();
+                    int count = n.Attributes.AttributesWithName("class").Count();
+                    for (int i = 0; i < count; i++)
+                    {
+                        n.Attributes.Remove("class");
+                    }
+                    n.Attributes.Add("class", class_names);
+                }
+            }
+            nodes = html_doc.DocumentNode.SelectNodes("//*[@id and normalize-space(@id)='' and not(contains(@class, '[FIXED]'))]");
+            if (nodes != null)
+            {
+                foreach (var n in nodes)
+                {
+                    n.Attributes["id"].Remove();
+                }
+            }
+            nodes = html_doc.DocumentNode.SelectNodes("//*[@class and normalize-space(@class)='' and not(contains(@class, '[FIXED]'))]");
+            if (nodes != null)
+            {
+                foreach (var n in nodes)
+                {
+                    n.Attributes["class"].Remove();
+                }
+            }
+        }
+
+
+
         public void InsertInner(string name_for_inner, string xpath_instr)
         {
             string initital_tabulation;
