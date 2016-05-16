@@ -124,6 +124,17 @@ namespace Pattern_generator
                     n.Attributes.Add("class", class_names);
                 }
             }
+            nodes = html_doc.DocumentNode.SelectNodes("//*[count(@id)=2 and not(contains(@class, '[FIXED]'))]");
+            if (nodes != null)
+            {
+                foreach (var n in nodes)
+                {
+                    string id_names = "";
+                    id_names = n.Attributes.AttributesWithName("id").First().Value;
+                    n.Attributes.Remove("id");
+                    n.Attributes.Add("id", id_names);
+                }
+            }
             nodes = html_doc.DocumentNode.SelectNodes("//*[@id and normalize-space(@id)='' and not(contains(@class, '[FIXED]'))]");
             if (nodes != null)
             {
