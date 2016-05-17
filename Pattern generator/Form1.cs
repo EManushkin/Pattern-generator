@@ -24,7 +24,10 @@ namespace Pattern_generator
         public static List<string[]> random_class_names = new List<string[]>();
         public static List<string[]> fonts = new List<string[]>();
         public static List<string[]> safe_css_properties = new List<string[]>();
-        public static List<string[]> class_names = new List<string[]>();
+        public static List<string[]> class_names_head = new List<string[]>();
+        public static List<string[]> class_names_footer = new List<string[]>();
+        public static List<string[]> class_names_main = new List<string[]>();
+        public static List<string[]> class_names_menu = new List<string[]>();
 
         public static Random.Org.Random rnd_org = new Random.Org.Random(Properties.Settings.Default.LocalRandom);
 
@@ -52,7 +55,10 @@ namespace Pattern_generator
             random_class_names = ReadCSVFile.OpenFile(@"random_class_names.csv");
             fonts = ReadCSVFile.OpenFile(@"fonts.csv");
             safe_css_properties = ReadCSVFile.OpenFile(@"safe_css_properties.csv");
-            class_names = ReadCSVFile.OpenFile(@"class_names.csv");
+            class_names_head = ReadCSVFile.OpenFile(@"class_names_head.csv");
+            class_names_footer = ReadCSVFile.OpenFile(@"class_names_footer.csv");
+            class_names_main = ReadCSVFile.OpenFile(@"class_names_main.csv");
+            class_names_menu = ReadCSVFile.OpenFile(@"class_names_menu.csv");
         }
 
         private void OpenFolderButton_Click(object sender, EventArgs e)

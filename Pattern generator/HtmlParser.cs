@@ -520,12 +520,18 @@ namespace Pattern_generator
         public void ReplaceIdClass()
         {
             List<string> id_list = new List<string>();
+            List<string> id_list_replace = new List<string>();
             List<string> class_list = new List<string>();
-            List<string> full_class_list = new List<string>();
+            List<string> class_list_replace = new List<string>();
             string[] temp_class_name;
-            int[] rand_mix_names = Form1.rnd_org.Sequence(0, Form1.class_names.Count - 1);
-            int j = 0;
-
+            int[] rand_mix_head = Form1.rnd_org.Sequence(0, Form1.class_names_head.Count - 1);
+            int[] rand_mix_footer = Form1.rnd_org.Sequence(0, Form1.class_names_footer.Count - 1);
+            int[] rand_mix_main = Form1.rnd_org.Sequence(0, Form1.class_names_main.Count - 1);
+            int[] rand_mix_menu = Form1.rnd_org.Sequence(0, Form1.class_names_menu.Count - 1);
+            int i_head = 0, i_footer = 0, i_main = 0, i_menu = 0;
+            Regex head = new Regex(@"([^\w]head[^\w])|([^\w]header[^\w])|([^\w]logo[^\w])", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+            Regex footer = new Regex(@"([^\w]footer[^\w])|([^\w]copy[^\w])|([^\w]copyright[^\w])", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+            Regex menu = new Regex(@"([^\w]menu[^\w])|([^\w]bar[^\w])|([^\w]list[^\w])|([^\w]items[^\w])|([^\w]nav[^\w])", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
 
             var nodes_id = html_doc.DocumentNode.SelectNodes("//*[(@id) and not(contains(@class, '[FIXED]'))]");
             foreach (var id_name in nodes_id)
@@ -546,26 +552,90 @@ namespace Pattern_generator
                     {
                         class_list.Add(temp_class_name[i]);
                     }
-                } 
+                }
             }
 
 
             for (int i = 0; i < id_list.Count; i++)
             {
                 var nodes = html_doc.DocumentNode.SelectNodes("//*[normalize-space(@id)='" + id_list[i] + "' and not(contains(@class, '[FIXED]'))]");
-                while (j < Form1.class_names.Count)
+                if (head.IsMatch(" " + id_list[i] + " "))
                 {
-                    if (!id_list.Contains(Form1.class_names[rand_mix_names[j]][0]))
+                    while (i_head < Form1.class_names_head.Count)
                     {
-                        foreach (var n in nodes)
+                        if (!id_list.Contains(Form1.class_names_head[rand_mix_head[i_head]][0]) && !id_list_replace.Contains(Form1.class_names_head[rand_mix_head[i_head]][0]))
                         {
-                            n.Attributes["id"].Value = Form1.class_names[rand_mix_names[j]][0];
+                            foreach (var n in nodes)
+                            {
+                                n.Attributes["id"].Value = Form1.class_names_head[rand_mix_head[i_head]][0];
+                            }
+                            CssParser.ReplaceIdClass("#" + id_list[i], "#" + Form1.class_names_head[rand_mix_head[i_head]][0]);
+                            id_list_replace.Add(Form1.class_names_head[rand_mix_head[i_head]][0]);
+                            i_head++;
+                            break;
                         }
-                        CssParser.ReplaceIdClass("#" + id_list[i], "#" + Form1.class_names[rand_mix_names[j]][0]);
-                        j++;
-                        break;
+                        i_head++;
                     }
-                    j++;
+                }
+                else 
+                {
+                    if (footer.IsMatch(" " + id_list[i] + " "))
+                    {
+                        while (i_footer < Form1.class_names_footer.Count)
+                        {
+                            if (!id_list.Contains(Form1.class_names_footer[rand_mix_footer[i_footer]][0]) && !id_list_replace.Contains(Form1.class_names_footer[rand_mix_footer[i_footer]][0]))
+                            {
+                                foreach (var n in nodes)
+                                {
+                                    n.Attributes["id"].Value = Form1.class_names_footer[rand_mix_footer[i_footer]][0];
+                                }
+                                CssParser.ReplaceIdClass("#" + id_list[i], "#" + Form1.class_names_footer[rand_mix_footer[i_footer]][0]);
+                                id_list_replace.Add(Form1.class_names_footer[rand_mix_footer[i_footer]][0]);
+                                i_footer++;
+                                break;
+                            }
+                            i_footer++;
+                        }
+                    }
+                    else
+                    {
+                        if (menu.IsMatch(" " + id_list[i] + " "))
+                        {
+                            while (i_menu < Form1.class_names_menu.Count)
+                            {
+                                if (!id_list.Contains(Form1.class_names_menu[rand_mix_menu[i_menu]][0]) && !id_list_replace.Contains(Form1.class_names_menu[rand_mix_menu[i_menu]][0]))
+                                {
+                                    foreach (var n in nodes)
+                                    {
+                                        n.Attributes["id"].Value = Form1.class_names_menu[rand_mix_menu[i_menu]][0];
+                                    }
+                                    CssParser.ReplaceIdClass("#" + id_list[i], "#" + Form1.class_names_menu[rand_mix_menu[i_menu]][0]);
+                                    id_list_replace.Add(Form1.class_names_menu[rand_mix_menu[i_menu]][0]);
+                                    i_menu++;
+                                    break;
+                                }
+                                i_menu++;
+                            }
+                        }
+                        else
+                        {
+                            while (i_main < Form1.class_names_main.Count)
+                            {
+                                if (!id_list.Contains(Form1.class_names_main[rand_mix_main[i_main]][0]) && !id_list_replace.Contains(Form1.class_names_main[rand_mix_main[i_main]][0]))
+                                {
+                                    foreach (var n in nodes)
+                                    {
+                                        n.Attributes["id"].Value = Form1.class_names_main[rand_mix_main[i_main]][0];
+                                    }
+                                    CssParser.ReplaceIdClass("#" + id_list[i], "#" + Form1.class_names_main[rand_mix_main[i_main]][0]);
+                                    id_list_replace.Add(Form1.class_names_main[rand_mix_main[i_main]][0]);
+                                    i_main++;
+                                    break;
+                                }
+                                i_main++;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -573,21 +643,87 @@ namespace Pattern_generator
             for (int i = 0; i < class_list.Count; i++)
             {
                 var nodes = html_doc.DocumentNode.SelectNodes("//*[contains(@class, ' " + class_list[i] + " ') and not(contains(@class, '[FIXED]'))]");
-                while (j < Form1.class_names.Count)
+                if (head.IsMatch(" " + class_list[i] + " "))
                 {
-                    if (!class_list.Contains(Form1.class_names[rand_mix_names[j]][0]))
+                    while (i_head < Form1.class_names_head.Count)
                     {
-                        foreach (var n in nodes)
+                        if (!class_list.Contains(Form1.class_names_head[rand_mix_head[i_head]][0]) && !class_list_replace.Contains(Form1.class_names_head[rand_mix_head[i_head]][0]))
                         {
-                            n.Attributes["class"].Value = n.Attributes["class"].Value.Replace(" " + class_list[i] + " ", " " + Form1.class_names[rand_mix_names[j]][0] + " ");
+                            foreach (var n in nodes)
+                            {
+                                n.Attributes["class"].Value = n.Attributes["class"].Value.Replace(" " + class_list[i] + " ", " " + Form1.class_names_head[rand_mix_head[i_head]][0] + " ");
+                            }
+                            CssParser.ReplaceIdClass(@"\." + class_list[i], "." + Form1.class_names_head[rand_mix_head[i_head]][0]);
+                            class_list_replace.Add(Form1.class_names_head[rand_mix_head[i_head]][0]);
+                            i_head++;
+                            break;
                         }
-                        CssParser.ReplaceIdClass(@"\." + class_list[i], "." + Form1.class_names[rand_mix_names[j]][0]);
-                        j++;
-                        break;
+                        i_head++;
                     }
-                    j++;
+                }
+                else
+                {
+                    if (footer.IsMatch(" " + class_list[i] + " "))
+                    {
+                        while (i_footer < Form1.class_names_footer.Count)
+                        {
+                            if (!class_list.Contains(Form1.class_names_footer[rand_mix_footer[i_footer]][0]) && !class_list_replace.Contains(Form1.class_names_footer[rand_mix_footer[i_footer]][0]))
+                            {
+                                foreach (var n in nodes)
+                                {
+                                    n.Attributes["class"].Value = n.Attributes["class"].Value.Replace(" " + class_list[i] + " ", " " + Form1.class_names_footer[rand_mix_footer[i_footer]][0] + " ");
+                                }
+                                CssParser.ReplaceIdClass(@"\." + class_list[i], "." + Form1.class_names_footer[rand_mix_footer[i_footer]][0]);
+                                class_list_replace.Add(Form1.class_names_footer[rand_mix_footer[i_footer]][0]);
+                                i_footer++;
+                                break;
+                            }
+                            i_footer++;
+                        }
+                    }
+                    else
+                    {
+                        if (menu.IsMatch(" " + class_list[i] + " "))
+                        {
+                            while (i_menu < Form1.class_names_menu.Count)
+                            {
+                                if (!class_list.Contains(Form1.class_names_menu[rand_mix_menu[i_menu]][0]) && !class_list_replace.Contains(Form1.class_names_menu[rand_mix_menu[i_menu]][0]))
+                                {
+                                    foreach (var n in nodes)
+                                    {
+                                        n.Attributes["class"].Value = n.Attributes["class"].Value.Replace(" " + class_list[i] + " ", " " + Form1.class_names_menu[rand_mix_menu[i_menu]][0] + " ");
+                                    }
+                                    CssParser.ReplaceIdClass(@"\." + class_list[i], "." + Form1.class_names_menu[rand_mix_menu[i_menu]][0]);
+                                    class_list_replace.Add(Form1.class_names_menu[rand_mix_menu[i_menu]][0]);
+                                    i_menu++;
+                                    break;
+                                }
+                                i_menu++;
+                            }
+                        }
+                        else
+                        {
+                            while (i_main < Form1.class_names_main.Count)
+                            {
+                                if (!class_list.Contains(Form1.class_names_main[rand_mix_main[i_main]][0]) && !class_list_replace.Contains(Form1.class_names_main[rand_mix_main[i_main]][0]))
+                                {
+                                    foreach (var n in nodes)
+                                    {
+                                        n.Attributes["class"].Value = n.Attributes["class"].Value.Replace(" " + class_list[i] + " ", " " + Form1.class_names_main[rand_mix_main[i_main]][0] + " ");
+                                    }
+                                    CssParser.ReplaceIdClass(@"\." + class_list[i], "." + Form1.class_names_main[rand_mix_main[i_main]][0]);
+                                    class_list_replace.Add(Form1.class_names_main[rand_mix_main[i_main]][0]);
+                                    i_main++;
+                                    break;
+                                }
+                                i_main++;
+                            }
+                        }
+                    }
                 }
             }
+
+
             foreach (var class_name in nodes_class)
             {
                 class_name.Attributes["class"].Value = class_name.Attributes["class"].Value.Trim();
